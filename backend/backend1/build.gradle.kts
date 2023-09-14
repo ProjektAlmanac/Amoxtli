@@ -6,6 +6,9 @@ plugins {
   	id("org.sonarqube") version "4.3.1.3277"
 }
 
+group = "com.example"
+version = "0.0.1-SNAPSHOT"
+
 sonarqube {
 	properties {
 		property("sonar.projectKey", "test")
@@ -23,9 +26,6 @@ tasks {
 tasks.test {
 	finalizedBy(tasks.named("jacocoTestReport")) // report is always generated after tests run
 }
-
-group = "com.example"
-version = "0.0.1-SNAPSHOT"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
