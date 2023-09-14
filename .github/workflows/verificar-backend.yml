@@ -24,5 +24,18 @@ jobs:
           java-version: 17
           cache: gradle
 
+      - name: Cache SonarQube packages
+        uses: actions/cache@v3
+        with:
+            path: ~/.sonar/cache
+            key: ${{ runner.os }}-sonar
+            restore-keys: ${{ runner.os }}-sonar
+
       - name: Ejecutar pruebas unitarias
         run: ./gradlew test
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: ./gradlew build sonar --info
