@@ -3,7 +3,7 @@ name: Verificar backend
 on:
   push:
     paths:
-      - "backend/backend1"
+      - "backend/backend1/**"
   workflow_dispatch:
 
 defaults:
