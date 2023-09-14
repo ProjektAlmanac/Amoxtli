@@ -6,6 +6,10 @@ on:
       - "backend/backend1"
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: backend/backend1
+
 jobs:
   build:
     name: "Verificar backend"
