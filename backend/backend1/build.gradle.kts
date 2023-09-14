@@ -1,5 +1,6 @@
 plugins {
 	java
+	jacoco
 	id("org.springframework.boot") version "3.1.3"
 	id("io.spring.dependency-management") version "1.1.3"
   	id("org.sonarqube") version "4.3.1.3277"
@@ -9,6 +10,18 @@ sonarqube {
 	properties {
 		property("sonar.projectKey", "test")
 	}
+}
+
+tasks {
+	val jacocoTestReport by getting(JacocoReport::class) {
+		reports {
+			xml.required.set(true)
+		}
+	}
+}
+
+tasks.test {
+	finalizedBy(tasks.named("jacocoTestReport")) // report is always generated after tests run
 }
 
 group = "com.example"
