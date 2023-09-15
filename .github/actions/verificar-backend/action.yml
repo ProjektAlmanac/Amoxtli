@@ -2,6 +2,9 @@ name: Verifica backend
 description: Prueba y analiza un proyecto de backend
 
 inputs:
+  github-token:
+    description: Token de GitHub
+    required: true
   sonar-token:
     description: Token de SonarQube
     required: true
@@ -30,7 +33,7 @@ runs:
 
     - name: Probar y analizar código
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        GITHUB_TOKEN: ${{ inputs.github-token }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ inputs.sonar-token }}
         SONAR_HOST_URL: ${{ inputs.sonar-host-url }}
       run: ./gradlew test sonar --info

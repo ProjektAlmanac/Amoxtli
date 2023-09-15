@@ -16,6 +16,7 @@ jobs:
       - name: Verificar
         uses: ./.github/actions/verificar-backend
         with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
             sonar-token: ${{ secrets.SONAR_TOKEN }}
             sonar-host-url: ${{ secrets.SONAR_HOST_URL }}
             directorio: backend/backend1
