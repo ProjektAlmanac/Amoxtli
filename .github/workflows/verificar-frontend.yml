@@ -51,4 +51,4 @@ jobs:
           node-version: 19
           pnpm-version: 8
       - name: Sonarqube
-        run: pnpm sonar -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} -Dsonar.login=${{ secrets.GITHUB_TOKEN_FRONTEND }}
+        run: pnpm sonar -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} -Dsonar.login=${{ secrets.SONAR_TOKEN_FRONTEND }}
