@@ -1,0 +1,28 @@
+name: "Setup frontend"
+description: "Instala node, pnpm y las dependencias del frontend"
+inputs:
+  node-version:
+    description: "Versión de node a usar"
+    required: true
+    default: "19"
+  pnpm-version:
+    description: "pnpm version to use"
+    required: true
+    default: "8"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: pnpm/action-setup@v2
+      with:
+        version: ${{ inputs.pnpm-version }}
+    - name: Instala Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: "pnpm"
+        cache-dependency-path: ./frontend/pnpm-lock.yaml
+    - name: Instala dependencias
+      working-directory: ./frontend
+      run: pnpm install
+      shell: bash
