@@ -1,0 +1,38 @@
+name: Verifica backend
+description: Prueba y analiza un proyecto de backend
+
+inputs:
+  sonar-token:
+    description: Token de SonarQube
+    required: true
+  sonar-host-url:
+    description: URL de SonarQube
+    required: true
+  directorio:
+    description: Directorio del proyecto
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-java@v3
+      with:
+        distribution: adopt
+        java-version: 17
+        cache: gradle
+
+    - name: Cache SonarQube packages
+      uses: actions/cache@v3
+      with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+    - name: Probar y analizar código
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ inputs.sonar-token }}
+        SONAR_HOST_URL: ${{ inputs.sonar-host-url }}
+      run: ./gradlew test sonar --info
+      working-directory: ${{ inputs.directorio }}
+      shell: bash
