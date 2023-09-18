@@ -1,10 +1,10 @@
-package com.example.demo;
+package io.github.projektalmanac.amoxtli.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoApplicationTests {
+class ApplicationTests {
 
 	@SuppressWarnings("java:S2699") // SonarQube se queja de que este método no tiene asserts
 	@Test
