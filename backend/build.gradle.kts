@@ -12,7 +12,7 @@ version = "0.0.1-SNAPSHOT"
 
 sonarqube {
 	properties {
-		property("sonar.projectKey", "test")
+		property("sonar.projectKey", "AmoxtliBackend")
 	}
 }
 
