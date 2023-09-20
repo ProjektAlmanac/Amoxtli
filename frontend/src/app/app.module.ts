@@ -11,9 +11,9 @@ import {
   Configuration,
   ConfigurationParameters,
   DefaultService,
+  BASE_PATH,
 } from 'src/generated/openapi'
 import { HttpClientModule, HttpHeaders } from '@angular/common/http'
-import { BASE_PATH } from 'src/generated/openapi'
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {}
