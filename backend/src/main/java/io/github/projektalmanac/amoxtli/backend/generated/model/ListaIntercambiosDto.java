@@ -25,11 +25,22 @@ import javax.annotation.Generated;
 
 @Schema(name = "ListaIntercambios", description = "Lista de intercambios")
 @JsonTypeName("ListaIntercambios")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-19T23:47:06.706578245-06:00[America/Mexico_City]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-20T16:35:03.036426542-06:00[America/Mexico_City]")
 public class ListaIntercambiosDto {
 
   @Valid
-  private List<@Valid IntercambioDto> intercambios;
+  private List<@Valid IntercambioDto> intercambios = new ArrayList<>();
+
+  public ListaIntercambiosDto() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public ListaIntercambiosDto(List<@Valid IntercambioDto> intercambios) {
+    this.intercambios = intercambios;
+  }
 
   public ListaIntercambiosDto intercambios(List<@Valid IntercambioDto> intercambios) {
     this.intercambios = intercambios;
@@ -48,8 +59,8 @@ public class ListaIntercambiosDto {
    * Get intercambios
    * @return intercambios
   */
-  @Valid 
-  @Schema(name = "intercambios", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "intercambios", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("intercambios")
   public List<@Valid IntercambioDto> getIntercambios() {
     return intercambios;

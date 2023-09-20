@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.github.projektalmanac.amoxtli.backend.generated.model.InfoBasicaLibroDto;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -21,7 +24,7 @@ import javax.annotation.Generated;
  */
 
 @JsonTypeName("PaginaLibros")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-19T23:47:06.706578245-06:00[America/Mexico_City]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-20T16:35:03.036426542-06:00[America/Mexico_City]")
 public class PaginaLibrosDto {
 
   private Integer pagSiguiente;
@@ -30,7 +33,22 @@ public class PaginaLibrosDto {
 
   private Integer resultados;
 
-  private InfoBasicaLibroDto libros;
+  @Valid
+  private List<@Valid InfoBasicaLibroDto> libros = new ArrayList<>();
+
+  public PaginaLibrosDto() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public PaginaLibrosDto(Integer pagSiguiente, Integer pagAnterior, Integer resultados, List<@Valid InfoBasicaLibroDto> libros) {
+    this.pagSiguiente = pagSiguiente;
+    this.pagAnterior = pagAnterior;
+    this.resultados = resultados;
+    this.libros = libros;
+  }
 
   public PaginaLibrosDto pagSiguiente(Integer pagSiguiente) {
     this.pagSiguiente = pagSiguiente;
@@ -41,8 +59,8 @@ public class PaginaLibrosDto {
    * Número de página siguiente
    * @return pagSiguiente
   */
-  
-  @Schema(name = "pagSiguiente", description = "Número de página siguiente", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "pagSiguiente", description = "Número de página siguiente", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("pagSiguiente")
   public Integer getPagSiguiente() {
     return pagSiguiente;
@@ -61,8 +79,8 @@ public class PaginaLibrosDto {
    * Número de página anterior
    * @return pagAnterior
   */
-  
-  @Schema(name = "pagAnterior", description = "Número de página anterior", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "pagAnterior", description = "Número de página anterior", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("pagAnterior")
   public Integer getPagAnterior() {
     return pagAnterior;
@@ -81,8 +99,8 @@ public class PaginaLibrosDto {
    * Número de resultados por página
    * @return resultados
   */
-  
-  @Schema(name = "resultados", description = "Número de resultados por página", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "resultados", description = "Número de resultados por página", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("resultados")
   public Integer getResultados() {
     return resultados;
@@ -92,8 +110,16 @@ public class PaginaLibrosDto {
     this.resultados = resultados;
   }
 
-  public PaginaLibrosDto libros(InfoBasicaLibroDto libros) {
+  public PaginaLibrosDto libros(List<@Valid InfoBasicaLibroDto> libros) {
     this.libros = libros;
+    return this;
+  }
+
+  public PaginaLibrosDto addLibrosItem(InfoBasicaLibroDto librosItem) {
+    if (this.libros == null) {
+      this.libros = new ArrayList<>();
+    }
+    this.libros.add(librosItem);
     return this;
   }
 
@@ -101,14 +127,14 @@ public class PaginaLibrosDto {
    * Get libros
    * @return libros
   */
-  @Valid 
-  @Schema(name = "libros", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "libros", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("libros")
-  public InfoBasicaLibroDto getLibros() {
+  public List<@Valid InfoBasicaLibroDto> getLibros() {
     return libros;
   }
 
-  public void setLibros(InfoBasicaLibroDto libros) {
+  public void setLibros(List<@Valid InfoBasicaLibroDto> libros) {
     this.libros = libros;
   }
 

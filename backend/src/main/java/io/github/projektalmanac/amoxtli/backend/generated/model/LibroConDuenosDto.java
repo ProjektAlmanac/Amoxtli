@@ -28,14 +28,14 @@ import javax.annotation.Generated;
 
 @Schema(name = "LibroConDuenos", description = "Información detallada de un libro, incluyendo ")
 @JsonTypeName("LibroConDuenos")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-19T23:47:06.706578245-06:00[America/Mexico_City]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-20T16:35:03.036426542-06:00[America/Mexico_City]")
 public class LibroConDuenosDto {
 
   private String isbn;
 
   private String autor;
 
-  private String título;
+  private String titulo;
 
   private URI urlPortada;
 
@@ -61,10 +61,10 @@ public class LibroConDuenosDto {
   /**
    * Constructor with only required parameters
    */
-  public LibroConDuenosDto(String isbn, String autor, String título, URI urlPortada, List<String> generos, String editorial, String idioma, LocalDate fechaPublicacion, List<@Valid DuenoDto> duenos) {
+  public LibroConDuenosDto(String isbn, String autor, String titulo, URI urlPortada, List<String> generos, String editorial, String idioma, LocalDate fechaPublicacion, List<@Valid DuenoDto> duenos) {
     this.isbn = isbn;
     this.autor = autor;
-    this.título = título;
+    this.titulo = titulo;
     this.urlPortada = urlPortada;
     this.generos = generos;
     this.editorial = editorial;
@@ -113,24 +113,24 @@ public class LibroConDuenosDto {
     this.autor = autor;
   }
 
-  public LibroConDuenosDto título(String título) {
-    this.título = título;
+  public LibroConDuenosDto titulo(String titulo) {
+    this.titulo = titulo;
     return this;
   }
 
   /**
    * Título del libro
-   * @return título
+   * @return titulo
   */
   @NotNull 
-  @Schema(name = "título", description = "Título del libro", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("título")
-  public String getTítulo() {
-    return título;
+  @Schema(name = "titulo", description = "Título del libro", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("titulo")
+  public String getTitulo() {
+    return titulo;
   }
 
-  public void setTítulo(String título) {
-    this.título = título;
+  public void setTitulo(String titulo) {
+    this.titulo = titulo;
   }
 
   public LibroConDuenosDto urlPortada(URI urlPortada) {
@@ -300,7 +300,7 @@ public class LibroConDuenosDto {
     LibroConDuenosDto libroConDuenos = (LibroConDuenosDto) o;
     return Objects.equals(this.isbn, libroConDuenos.isbn) &&
         Objects.equals(this.autor, libroConDuenos.autor) &&
-        Objects.equals(this.título, libroConDuenos.título) &&
+        Objects.equals(this.titulo, libroConDuenos.titulo) &&
         Objects.equals(this.urlPortada, libroConDuenos.urlPortada) &&
         Objects.equals(this.generos, libroConDuenos.generos) &&
         Objects.equals(this.editorial, libroConDuenos.editorial) &&
@@ -312,7 +312,7 @@ public class LibroConDuenosDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(isbn, autor, título, urlPortada, generos, editorial, sinopsis, idioma, fechaPublicacion, duenos);
+    return Objects.hash(isbn, autor, titulo, urlPortada, generos, editorial, sinopsis, idioma, fechaPublicacion, duenos);
   }
 
   @Override
@@ -321,7 +321,7 @@ public class LibroConDuenosDto {
     sb.append("class LibroConDuenosDto {\n");
     sb.append("    isbn: ").append(toIndentedString(isbn)).append("\n");
     sb.append("    autor: ").append(toIndentedString(autor)).append("\n");
-    sb.append("    título: ").append(toIndentedString(título)).append("\n");
+    sb.append("    titulo: ").append(toIndentedString(titulo)).append("\n");
     sb.append("    urlPortada: ").append(toIndentedString(urlPortada)).append("\n");
     sb.append("    generos: ").append(toIndentedString(generos)).append("\n");
     sb.append("    editorial: ").append(toIndentedString(editorial)).append("\n");
