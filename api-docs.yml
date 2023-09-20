@@ -1,0 +1,1319 @@
+openapi: 3.0.0
+x-stoplight:
+  id: a9y7m9vndu73f
+x-json-schema-faker:
+  locale: es
+  optionalsProbability: 0.5
+info:
+  title: amoxtli
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /usuarios/:
+    parameters: []
+    post:
+      summary: Registrar usuario
+      operationId: crearUsuario
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioId'
+          headers:
+            Location:
+              schema:
+                type: string
+              description: Ubicación del usuario creado
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-stoplight:
+        id: sagts3fcvh2u1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      description: Registra a un nuevo usuario en el sistema
+  '/usuarios/{id}':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+        description: Id del usuario
+    get:
+      summary: Recuperar usuario
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerfilUsuario'
+              examples:
+                juan-perez:
+                  value:
+                    id: 1
+                    nombre: Juan
+                    apellidos: Pérez Morales
+                    correo: usuario@example.com
+                    teléfono: '9999999'
+                    descripciónFoto: ''
+                    intereses: ''
+                    fotoPerfil: 'https://amoxtli.io/usuarios/1/perfil.png'
+                    correoVerificado: true
+                maria-lopez:
+                  value:
+                    id: 2
+                    nombre: María
+                    apellidos: López
+                    correo: user2@example.com
+                    teléfono: '0000000000'
+                    descripciónFoto: Descripción de mi foto de perfil
+                    intereses: Descripción de mis intereses
+                    fotoPerfil: 'https://amoxtli.io/usuarios/2/perfil.png'
+                    correoVerificado: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getUsuario
+      x-stoplight:
+        id: ng4epkhi8vqk2
+      description: Recupera un usuario mediante su ID
+    patch:
+      summary: Actualizar usuario
+      operationId: actualizarUsuario
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerfilUsuario'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-stoplight:
+        id: k7ky54dj0ji8x
+      description: Actualiza los datos de un usuario
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/PatchRequest'
+  '/usuarios/{id}/libros':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+        description: Id del usuario
+    get:
+      summary: Recuperar libros de un usuario
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibrosUsuario'
+        '204':
+          description: No Content
+          content: {}
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getLibrosUsuario
+      x-stoplight:
+        id: 8dekfihyinqg3
+      description: Recupera la lista de todos los libros en el catálogo de un usuario
+      security: []
+    post:
+      summary: Añadir libro a catálogo de usuario
+      operationId: addLibro
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibroRegistrado'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-stoplight:
+        id: gyrnflybfao0e
+      description: Añade un libro al catálogo de un usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibroRegistrado'
+  '/usuarios/{id}/mandarCorreoConfirmacion':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+        description: Id del usuario
+    post:
+      summary: Mandar correo de confirmación
+      operationId: mandarCorreoConfirmacion
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-stoplight:
+        id: n9t4q22l0qna0
+      description: Manda un correo de confirmación de dirección de correo electrónico al usuario
+  '/usuarios/{id}/verificarCorreo':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+        description: Id del usuario
+    post:
+      summary: Verificar correo
+      operationId: verificarCorreo
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-stoplight:
+        id: ksmk3z851jj4e
+      description: Verifica la dirección de correo de un usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CodigoVerificacion'
+        description: ''
+  '/usuarios/{id}/validaPuedeIntercambiar':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+        description: Id del usuario
+    post:
+      summary: Validar puede intercambiar
+      operationId: validaPuedeIntercambiar
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  puedeIntercambiar:
+                    type: boolean
+                    x-stoplight:
+                      id: yow11bgnv17vg
+                  mensaje:
+                    type: string
+                    x-stoplight:
+                      id: i3vhc72q500a1
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-stoplight:
+        id: 8478m7hqi46zz
+      description: Valida que el usuario cumpla los requerimientos para poder realizar intercambios de libros con otros usuarios
+  '/usuarios/{id}/intercambios':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+        description: Id del usuario que realiza la oferta de intercambio
+    get:
+      summary: Recuperar intercambios de usuario
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  intercambios:
+                    type: array
+                    x-stoplight:
+                      id: atw1bg9zqekdu
+                    items:
+                      $ref: '#/components/schemas/Intercambio'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getIntercambios
+      x-stoplight:
+        id: ymotn2svrq9ze
+      description: Recupera todos los intercambios en los que participa un usuario
+    post:
+      summary: Realizar solicitud de intercambio
+      operationId: addIntercambio
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Intercambio'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-stoplight:
+        id: qvj90wrzucxxo
+      description: Realiza una solicitud de intercambio con otro usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreacionIntercambio'
+  '/usuarios/{idUsuario}/intercambios/{idIntercambio}/aceptar':
+    parameters:
+      - schema:
+          type: integer
+        name: idUsuario
+        in: path
+        required: true
+        description: Id del usuario
+      - schema:
+          type: integer
+        name: idIntercambio
+        in: path
+        required: true
+        description: Id del intercambio
+    post:
+      summary: Aceptar intercambio
+      operationId: aceptarIntercambio
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Intercambio'
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+          description: Ok
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-stoplight:
+        id: ku6mo9p4wy6e8
+      description: Acepta una solicitud de intercambio
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idLibro:
+                  type: number
+                  x-stoplight:
+                    id: z4g16rifart4w
+  '/usuarios/{idUsuario}/intercambios/{idIntercambio}/codigo':
+    parameters:
+      - schema:
+          type: integer
+        name: idUsuario
+        in: path
+        required: true
+        description: Id del usuario
+      - schema:
+          type: integer
+        name: idIntercambio
+        in: path
+        required: true
+        description: Id del intercambio
+    get:
+      summary: Obtener código de intercambio
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CodigoIntercambio'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getCodigoIntercambio
+      x-stoplight:
+        id: zj94rqel01kpd
+      description: Recupera el código requerido para finalizar un intercambio
+  '/usuarios/{idUsuario}/intercambios/{idIntercambio}/finalizar':
+    parameters:
+      - schema:
+          type: integer
+        name: idUsuario
+        in: path
+        required: true
+        description: Id del usuario
+      - schema:
+          type: integer
+        name: idIntercambio
+        in: path
+        required: true
+        description: Id del intercambio
+    post:
+      summary: Finalizar intercambio
+      operationId: finalizarIntercambio
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Intercambio'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-stoplight:
+        id: nz4214glthbgh
+      description: Envía el código de intercambio para finalizarlo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CodigoIntercambio'
+  /libros:
+    get:
+      summary: Recuperar libros
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaLibros'
+      operationId: getLibros
+      x-stoplight:
+        id: t7zlzjxlrwh5i
+      description: Recupera una lista de todos los libros ofrecidos por usuarios
+      security: []
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: pagina
+          description: Página a recuperar
+  '/libros/{isbn}':
+    parameters:
+      - schema:
+          type: string
+        name: isbn
+        in: path
+        required: true
+        description: ISBN del libro
+    get:
+      summary: Recuperar libro
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibroConDuenos'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getLibro
+      x-stoplight:
+        id: 0dmmns2snfs0g
+      description: Recupera un la información de un libro
+      security: []
+  '/libros/{isbn}/detalles':
+    parameters:
+      - schema:
+          type: string
+        name: isbn
+        in: path
+        required: true
+        description: ISBN del libro
+    get:
+      summary: Recuperar información de un libro
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetallesLibro'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: getDetallesLibro
+      x-stoplight:
+        id: h94tofvp3rnxd
+      description: Recupera información detallada de un libro mediante su ISBN
+      security: []
+  /iniciarSesion:
+    post:
+      summary: Iniciar sesión
+      operationId: iniciarSesion
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionToken'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-stoplight:
+        id: ev6hr6vohwq50
+      description: Recupera el token de inicio de sesión de un usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credenciales'
+components:
+  schemas:
+    Usuario:
+      type: object
+      x-stoplight:
+        id: 2b538c254f7e2
+      x-examples:
+        Example 1:
+          correo: usuario@example.com
+          nombre: Juan
+          apellildos: Pérez Morales
+          password: '12345'
+      description: Datos para la creación de un usuario
+      properties:
+        correo:
+          type: string
+          description: Correo electrónico del usuario
+          format: email
+          x-faker: internet.email
+        nombre:
+          type: string
+          description: Nombre del usuario
+          x-faker: name.firstName
+        apellildos:
+          type: string
+          description: Apellido o apellidos del usuario
+          x-faker: name.lastName
+        password:
+          type: string
+          description: Contraseña del usuario
+          format: password
+          x-faker: internet.password
+      required:
+        - correo
+        - nombre
+        - apellildos
+        - password
+    UsuarioId:
+      title: UsuarioId
+      x-stoplight:
+        id: x35p90h4k9hjt
+      type: object
+      description: Contiene el ID de un usuario
+      properties:
+        id:
+          type: integer
+          x-stoplight:
+            id: qlosct3ien4w5
+          description: ID del usuario
+    Error:
+      x-stoplight:
+        id: sdbjvvqfbhfq9
+      type: object
+      description: Información de un error
+      properties:
+        mensaje:
+          type: string
+          x-stoplight:
+            id: nyb49827nm7xq
+          description: Mensaje amigable que describe el error
+        codigo:
+          type: integer
+          x-stoplight:
+            id: on1qw5ccbym94
+          description: Código único asociado con el error
+      required:
+        - mensaje
+        - codigo
+    PerfilUsuario:
+      type: object
+      x-examples: {}
+      description: Datos del perfil de un usuario
+      properties:
+        id:
+          type: integer
+          x-stoplight:
+            id: 7swy86z35e3ff
+          description: ID del usuario
+        nombre:
+          type: string
+          description: Nombre del usuario
+          x-faker: name.firstName
+        apellidos:
+          type: string
+          description: Apellido o apellidos del usuario
+          x-faker: name.lastName
+        correo:
+          type: string
+          format: email
+          description: Correo electrónico del usuario
+          x-faker: internet.email
+        teléfono:
+          type: string
+          x-stoplight:
+            id: skofkbpvlpybv
+          description: Numero telefónico del usuario
+          x-faker: phone.phoneNumber
+        descripciónFoto:
+          type: string
+          description: Descripción de la foto de perfil del usuario
+          x-faker: lorem.sentence
+          nullable: true
+        intereses:
+          type: string
+          description: Descripción de los intereses del usuario
+          x-faker: lorme.paragraphs
+          nullable: true
+        fotoPerfil:
+          type: string
+          x-stoplight:
+            id: faxc76fvjjpbp
+          description: URL de la foto de perfil del usuario
+          format: uri
+          x-faker: image.avatar
+          nullable: true
+        correoVerificado:
+          type: boolean
+          description: Valor que indica si el usuario ha verificado su dirección de correo electrónico
+      required:
+        - id
+        - nombre
+        - apellidos
+        - correo
+        - teléfono
+        - descripciónFoto
+        - intereses
+        - fotoPerfil
+        - correoVerificado
+    Intercambio:
+      type: object
+      x-examples:
+        Example 1:
+          idIntercambio: 0
+          ofertante:
+            id: 0
+            nombre: ''
+            apellidos: ''
+            telefono: null
+            correo: null
+          aceptante:
+            id: 0
+            nombre: ''
+            apellidos: ''
+            telefono: null
+            correo: null
+          libroAceptante:
+            'id ': 0
+            imagen: ''
+            titulo: ''
+            autor: ''
+            isbn: ''
+          libroOfertante: null
+          estado: ''
+      description: Información relacionada con un intercambio de libros que realizará un par de usuarios
+      properties:
+        id:
+          type: integer
+          x-stoplight:
+            id: eb3bnu0y43ul4
+          description: ID del intercambio
+        ofertante:
+          $ref: '#/components/schemas/Ofertante'
+        aceptante:
+          $ref: '#/components/schemas/Aceptante'
+        libroAceptante:
+          $ref: '#/components/schemas/LibroAceptante'
+        libroOfertante:
+          $ref: '#/components/schemas/LibroOfertante'
+        estado:
+          $ref: '#/components/schemas/EstadoIntercambio'
+      required:
+        - id
+        - ofertante
+        - aceptante
+        - libroAceptante
+        - libroOfertante
+        - estado
+    EstadoIntercambio:
+      title: EstadoIntercambio
+      x-stoplight:
+        id: j09866pi8xuyi
+      enum:
+        - Pendiente
+        - Aceptado
+        - Rechazado
+        - Cancelado
+      readOnly: true
+      description: Representa los posibles estados de un intercambio de libros
+    InfoBasicaLibro:
+      type: object
+      x-stoplight:
+        id: 9edfaf04d6bfe
+      x-examples: {}
+      description: Información básica de un libro para ser mostrado en una lista
+      properties:
+        isbn:
+          type: string
+          description: ISBN (International Standard Book Number) del libro
+          x-faker: phonphoneNumberei
+        autor:
+          type: string
+          description: Autor del libro
+          x-faker: name.findName
+        título:
+          type: string
+          description: Título del libro
+          x-faker:
+            random.words:
+              - 4
+        urlPortada:
+          type: string
+          format: uri
+          description: URL de la portada del libro
+          x-faker: image.abstract
+      required:
+        - isbn
+        - autor
+        - título
+        - urlPortada
+    LibroRegistrado:
+      type: object
+      x-examples: {}
+      description: Datos de un libro que está registrado como parte del catálogo de un usario
+      properties:
+        id:
+          type: integer
+          description: ID del libro
+          readOnly: true
+        isbn:
+          type: string
+          description: ISBN (International Standard Book Number) del lib
+          x-faker: phone.phoneNumberei
+        descripcion:
+          type: string
+          description: Descripción de la condición en la que se encuentra la copia del libro que posee el
+          x-faker: lorem.paragraphs
+      required:
+        - id
+        - isbn
+        - descripcion
+    LibroRegistradoConDetalles:
+      x-stoplight:
+        id: 5c0124458d23d
+      x-examples: {}
+      description: Un libro registrado como parte de la biblioteca de un usuario junto con algunos detalles del libro
+      allOf:
+        - type: object
+          x-stoplight:
+            id: untgdt46kw67i
+          properties:
+            id:
+              type: integer
+              x-stoplight:
+                id: dk05yesaikdo6
+              description: ID del libro
+          required:
+            - id
+        - $ref: '#/components/schemas/InfoBasicaLibro'
+    DetallesLibro:
+      x-examples:
+        Example 1:
+          isbn: string
+          titulo: string
+          autor: string
+          genero: string
+          editorial: string
+          sinopsis: string
+          foto: string
+          id: 0
+      description: Información detallada respecto a un libro
+      allOf:
+        - $ref: '#/components/schemas/InfoBasicaLibro'
+        - type: object
+          properties:
+            generos:
+              type: array
+              description: Géneros literarios del libro
+              items:
+                x-stoplight:
+                  id: jlfqp7nmrxuom
+                type: string
+                x-faker: random.word
+            editorial:
+              type: string
+              description: Editorial que publica el libro
+              x-faker: company.companyName
+            sinopsis:
+              type: string
+              description: Sinopsis del libro
+              x-faker: lorem.paragraphs
+            idioma:
+              type: string
+              x-stoplight:
+                id: vpapnbvg25med
+              description: Idioma del libro
+              x-faker: random.locale
+            fechaPublicacion:
+              type: string
+              x-stoplight:
+                id: 6zbf0op55imig
+              format: date
+              description: Fecha de publicación del libro
+              x-faker:
+                date.past:
+                  - 100
+          required:
+            - generos
+            - editorial
+            - idioma
+            - fechaPublicacion
+    LibroConDuenos:
+      x-examples: {}
+      allOf:
+        - $ref: '#/components/schemas/InfoBasicaLibro'
+        - $ref: '#/components/schemas/DetallesLibro'
+        - type: object
+          properties:
+            duenos:
+              x-stoplight:
+                id: ozskd6akltet9
+              type: array
+              description: Lista de usuarios que tienen este libro en su catálogo
+              items:
+                $ref: '#/components/schemas/Dueno'
+          required:
+            - duenos
+      description: 'Información detallada de un libro, incluyendo '
+    LibroAceptante:
+      title: LibroAceptante
+      x-stoplight:
+        id: 08ndmekszfb56
+      allOf:
+        - $ref: '#/components/schemas/LibroRegistrado'
+      description: Libro que pertenece al usuario que recibe la oferta de intercambio
+    LibroOfertante:
+      title: LibroOfertante
+      x-stoplight:
+        id: er3u6hlbp3xtf
+      description: Libro que pertenece al usuario que realiza la oferta de intercambio
+      anyOf:
+        - $ref: '#/components/schemas/LibroRegistrado'
+        - nullable: true
+    Dueno:
+      type: object
+      x-examples: {}
+      description: Detalles de un usuario que es dueño de un libro
+      properties:
+        id:
+          type: integer
+          description: ID del usuario
+        nombre:
+          type: string
+          description: Nombre del usuario
+          x-faker: name.firstName
+        apellido:
+          type: string
+          description: Apellido o apellidos del usuario
+          x-faker: name.lastName
+        foto:
+          type: string
+          format: uri
+          description: Foto de perfil del usuario
+          nullable: true
+          x-faker: image.avatar
+      required:
+        - id
+        - nombre
+        - apellido
+        - foto
+    UsuarioIntercambio:
+      type: object
+      x-examples: {}
+      properties:
+        id:
+          type: integer
+          description: El ID del usuario
+        nombre:
+          type: string
+          description: Nombre del usuario
+          x-faker: name.firstName
+        apellidos:
+          type: string
+          description: Apellido o apellidos del usuario
+          x-faker: name.lastName
+        telefono:
+          type: string
+          description: Numero telefónico del usuario
+          x-faker: phone.phoneNumber
+        correo:
+          type: string
+          format: email
+          description: Correo electrónico del usuario
+          x-faker: internet.email
+      required:
+        - id
+        - nombre
+        - apellidos
+        - telefono
+        - correo
+      title: UsuarioIntercambio
+      description: Detalles de un usuario que participa en un intercambio
+    Aceptante:
+      title: Aceptante
+      x-stoplight:
+        id: rijirn6tjxvhw
+      allOf:
+        - $ref: '#/components/schemas/UsuarioIntercambio'
+      description: Usuario que recibe la oferta de intercambio
+    Ofertante:
+      title: Ofertante
+      x-stoplight:
+        id: 97a35d4jj5sns
+      allOf:
+        - $ref: '#/components/schemas/UsuarioIntercambio'
+      description: Usuario que realiza la oferta de intercambio
+    CreacionIntercambio:
+      title: CreacionIntercambio
+      x-stoplight:
+        id: 2sb8amnkz4ql6
+      type: object
+      description: Informacińo requerida para crear un nuevo intercambio
+      properties:
+        idAceptante:
+          type: integer
+          x-stoplight:
+            id: jsj0noivymw7o
+          description: ID del usuario que recibe la oferta de intercambio
+        idLibroAceptante:
+          type: integer
+          x-stoplight:
+            id: jzwsccpk8uezy
+          description: ID del libro que pertenece al usuario que recibe la oferta de intercambio
+      required:
+        - idAceptante
+        - idLibroAceptante
+    PatchRequest:
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/JSONPatchRequestAddReplaceTest'
+          - $ref: '#/components/schemas/JSONPatchRequestRemove'
+          - $ref: '#/components/schemas/JSONPatchRequestMoveCopy'
+      description: ''
+    JSONPatchRequestAddReplaceTest:
+      type: object
+      additionalProperties: false
+      required:
+        - value
+        - op
+        - path
+      properties:
+        path:
+          description: A JSON Pointer path.
+          type: string
+        value:
+          description: 'The value to add, replace or test.'
+        op:
+          description: The operation to perform.
+          type: string
+          enum:
+            - add
+            - replace
+            - test
+    JSONPatchRequestRemove:
+      type: object
+      additionalProperties: false
+      required:
+        - op
+        - path
+      properties:
+        path:
+          description: A JSON Pointer path.
+          type: string
+        op:
+          description: The operation to perform.
+          type: string
+          enum:
+            - remove
+    JSONPatchRequestMoveCopy:
+      type: object
+      additionalProperties: false
+      required:
+        - from
+        - op
+        - path
+      properties:
+        path:
+          description: A JSON Pointer path.
+          type: string
+        op:
+          description: The operation to perform.
+          type: string
+          enum:
+            - move
+            - copy
+    CodigoIntercambio:
+      title: CodigoIntercambio
+      x-stoplight:
+        id: nhzovzxx0f7ht
+      type: object
+      description: Contiene el código requerido para completar un intercambio
+      properties:
+        codigo:
+          type: string
+          x-stoplight:
+            id: bb1tbfzjnh3d1
+          description: Código requerido para completar un intercambio
+          format: uuid
+      required:
+        - codigo
+    LibrosUsuario:
+      title: LibrosUsuario
+      x-stoplight:
+        id: ntp20ly0azcx1
+      type: object
+      description: Libros que figuran dentro del catálogo de un usuario
+      properties:
+        libros:
+          type: array
+          x-stoplight:
+            id: tm4ubdhcn98gh
+          description: Los libros del usuario
+          items:
+            $ref: '#/components/schemas/LibroRegistradoConDetalles'
+      required:
+        - libros
+    Credenciales:
+      title: Credenciales
+      x-stoplight:
+        id: gsyha12dswv6s
+      type: object
+      properties:
+        email:
+          type: string
+          x-stoplight:
+            id: xh55oucdfzr0a
+          description: Correo electrónico del usuario
+        contrasena:
+          type: string
+          x-stoplight:
+            id: aq6nhktkl3jnr
+          format: password
+          description: Contraseña del usuario
+      required:
+        - email
+        - contrasena
+      description: Datos de inicio de sesión de un usuario
+    SessionToken:
+      title: SessionToken
+      x-stoplight:
+        id: mhl86q9jc09wz
+      type: object
+      description: Token de inicio de sesión de un usuario
+      properties:
+        idUsuario:
+          type: integer
+          x-stoplight:
+            id: abw2ldmgvez7c
+          description: ID del usuario
+        token:
+          type: string
+          x-stoplight:
+            id: oc485nvui4ooh
+          description: Token de inicio de sesión
+          x-faker: internet.password
+      required:
+        - idUsuario
+        - token
+    CodigoVerificacion:
+      title: CodigoVerificacion
+      x-stoplight:
+        id: fn0rc3vfompiy
+      type: object
+      description: Contiene un código usado para validar un correo electrónico
+      properties:
+        codigo:
+          type: string
+          x-stoplight:
+            id: sanoasr5x4htu
+          description: Código de verificación
+      required:
+        - codigo
+    ListaIntercambios:
+      title: ListaIntercambios
+      x-stoplight:
+        id: ey3h1r9xwackp
+      type: object
+      description: Lista de intercambios
+      properties:
+        intercambios:
+          type: array
+          x-stoplight:
+            id: 5ix81948wl50w
+          items:
+            $ref: '#/components/schemas/Intercambio'
+    PaginaLibros:
+      title: PaginaLibros
+      x-stoplight:
+        id: q0ub4iloeo26w
+      type: object
+      properties:
+        pagSiguiente:
+          type: integer
+          x-stoplight:
+            id: nvwzfe4vyz3o2
+          description: Número de página siguiente
+        pagAnterior:
+          type: integer
+          x-stoplight:
+            id: nqw4j6vsn12vz
+          description: Número de página anterior
+        resultados:
+          type: integer
+          x-stoplight:
+            id: aasvjid0x0cze
+          description: Número de resultados por página
+        libros:
+          $ref: '#/components/schemas/InfoBasicaLibro'
+  requestBodies: {}
+  securitySchemes:
+    Token:
+      type: http
+      scheme: bearer
+      description: ''
+security:
+  - Token: []
