@@ -16,16 +16,16 @@ public class User {
     private String name;
     private String lastName;
     private String email;
-    private String hashPassword;
-    private String salPassword;
+    private String passwordHash;
+    private String passwordSalt;
     private String phone;
     private byte[] photo;
-    private String descriptionPhoto;
+    private String photoDescription;
     private String interests;
     private boolean  verifiedEmail;
-    private String verifiedCode;
+    private String verificationCode;
     @OneToMany(targetEntity = Book.class,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "id_book")
-    private List<Book> libro = new ArrayList<>();
+    private List<Book> books = new ArrayList<>();
 
 }
