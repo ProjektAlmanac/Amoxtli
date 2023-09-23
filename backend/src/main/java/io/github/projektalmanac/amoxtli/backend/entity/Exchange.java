@@ -14,7 +14,11 @@ public class Exchange {
     private String offerorConfirmationCode;
     private String confirmationCodeAccepting;
     @OneToOne
-    private User userAccepting;
+    private Book bookOfferor;
     @OneToOne
+    private Book bookAccepting;
+    @ManyToOne
+    private User userAccepting;
+    @ManyToOne
     private User userOfferor;
 }
