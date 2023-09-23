@@ -8,7 +8,9 @@ import javax.persistence.*;
 @Data
 public class Book {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String isbn;
     private String description;
     @OneToOne
