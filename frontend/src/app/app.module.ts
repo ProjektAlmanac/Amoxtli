@@ -14,6 +14,7 @@ import {
   BASE_PATH,
 } from 'src/generated/openapi'
 import { HttpClientModule, HttpHeaders } from '@angular/common/http'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {}
@@ -22,7 +23,13 @@ export function apiConfigFactory(): Configuration {
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, ApiModule.forRoot(apiConfigFactory), HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ApiModule.forRoot(apiConfigFactory),
+    HttpClientModule,
+    BrowserAnimationsModule,
+  ],
   providers: [{ provide: BASE_PATH, useValue: environment.apiBasePath }],
   bootstrap: [AppComponent],
 })
