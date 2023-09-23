@@ -1,4 +1,4 @@
-package io.github.projektalmanac.amoxtli.backend.generated.enums;
+package io.github.projektalmanac.amoxtli.backend.enums;
 
 public enum Status {
     CANCELADO(0),

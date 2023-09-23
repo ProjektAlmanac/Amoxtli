@@ -1,11 +1,13 @@
-package io.github.projektalmanac.amoxtli.backend.generated.controller;
+package io.github.projektalmanac.amoxtli.backend.controller;
 
 import io.github.projektalmanac.amoxtli.backend.generated.api.LibrosApi;
 import io.github.projektalmanac.amoxtli.backend.generated.model.DetallesLibroDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.LibroConDuenosDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.PaginaLibrosDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 public class BookController implements LibrosApi {
     @Override
     public ResponseEntity<DetallesLibroDto> getDetallesLibro(String isbn) {
