@@ -7,7 +7,7 @@ import { Usuario } from 'src/generated/openapi'
   templateUrl: './sign-up-form.component.html',
   styleUrls: ['./sign-up-form.component.sass'],
 })
-export class SignInFormComponent {
+export class SignUpFormComponent {
   @Output()
   formSubmit = new EventEmitter<Usuario>()
 
@@ -18,7 +18,7 @@ export class SignInFormComponent {
 
   showPassword = false
 
-  signInForm = new FormGroup({
+  signUpForm = new FormGroup({
     name: new FormControl('', Validators.required),
     surname: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -30,12 +30,12 @@ export class SignInFormComponent {
   })
 
   public onSubmit() {
-    if (!this.signInForm.valid) return
+    if (!this.signUpForm.valid) return
 
-    const nombre = this.signInForm.value.name
-    const apellidos = this.signInForm.value.surname
-    const correo = this.signInForm.value.email
-    const password = this.signInForm.value.password
+    const nombre = this.signUpForm.value.name
+    const apellidos = this.signUpForm.value.surname
+    const correo = this.signUpForm.value.email
+    const password = this.signUpForm.value.password
 
     if (!nombre || !apellidos || !correo || !password) return
 

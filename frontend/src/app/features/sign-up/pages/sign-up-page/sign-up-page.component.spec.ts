@@ -1,16 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { SignInPageComponent } from './sign-up-page.component'
+import { SignUpPageComponent } from './sign-up-page.component'
+import { SignUpModule } from '../../sign-up.module'
+import { NoopAnimationsModule } from '@angular/platform-browser/animations'
+import { HttpClientTestingModule } from '@angular/common/http/testing'
+import { RouterTestingModule } from '@angular/router/testing'
 
-describe('SignInPageComponent', () => {
-  let component: SignInPageComponent
-  let fixture: ComponentFixture<SignInPageComponent>
+describe('SignUpPageComponent', () => {
+  let component: SignUpPageComponent
+  let fixture: ComponentFixture<SignUpPageComponent>
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SignInPageComponent],
+      declarations: [SignUpPageComponent],
+      imports: [SignUpModule, NoopAnimationsModule, HttpClientTestingModule, RouterTestingModule],
     })
-    fixture = TestBed.createComponent(SignInPageComponent)
+    fixture = TestBed.createComponent(SignUpPageComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 
-import { SignInPageComponent } from './pages/sign-up-page/sign-up-page.component'
-import { SignInFormComponent } from './components/sign-up-form/sign-up-form.component'
+import { SignUpPageComponent } from './pages/sign-up-page/sign-up-page.component'
+import { SignUpFormComponent } from './components/sign-up-form/sign-up-form.component'
 import { VerifyEmailPageComponent } from './pages/verify-email-page/verify-email-page.component'
 import { VerifyEmailFormComponent } from './components/verify-email-form/verify-email-form.component'
 
@@ -19,8 +19,8 @@ import { WelcomePageComponent } from './pages/welcome-page/welcome-page.componen
 
 @NgModule({
   declarations: [
-    SignInPageComponent,
-    SignInFormComponent,
+    SignUpPageComponent,
+    SignUpFormComponent,
     VerifyEmailPageComponent,
     VerifyEmailFormComponent,
     WelcomePageComponent,
@@ -37,6 +37,6 @@ import { WelcomePageComponent } from './pages/welcome-page/welcome-page.componen
     MatSnackBarModule,
     MatIconModule,
   ],
-  exports: [SignInPageComponent, VerifyEmailPageComponent, WelcomePageComponent],
+  exports: [SignUpPageComponent, VerifyEmailPageComponent, WelcomePageComponent],
 })
-export class SignInModule {}
+export class SignUpModule {}

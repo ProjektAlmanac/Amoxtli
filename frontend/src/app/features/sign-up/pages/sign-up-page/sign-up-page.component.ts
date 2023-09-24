@@ -9,7 +9,7 @@ import { DefaultService, Usuario, ModelError } from 'src/generated/openapi'
   templateUrl: './sign-up-page.component.html',
   styleUrls: ['./sign-up-page.component.sass'],
 })
-export class SignInPageComponent {
+export class SignUpPageComponent {
   mensajeError = ''
 
   constructor(
