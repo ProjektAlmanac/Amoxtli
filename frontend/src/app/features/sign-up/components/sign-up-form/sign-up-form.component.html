@@ -1,0 +1,83 @@
+<div class="sign-up-form">
+  <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+    <div class="grid">
+      <mat-form-field class="name">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="name" />
+
+        <mat-error *ngIf="signInForm.get('name')?.hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="surname">
+        <mat-label>Apellido(s)</mat-label>
+        <input matInput formControlName="surname" required />
+
+        <mat-error *ngIf="signInForm.get('surname')?.hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="email">
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput formControlName="email" />
+
+        <mat-error *ngIf="signInForm.get('email')?.hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
+        <mat-error *ngIf="signInForm.get('email')?.hasError('email')">
+          Favor de especificar una dirección de correo electrónico válida
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="password">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password" />
+        <!-- Botón para mostrar la contraseña -->
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="showPassword = !showPassword"
+          aria-label="Mostrar contraseña"
+          [attr.aria-pressed]="showPassword">
+          <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+
+        <mat-error *ngIf="signInForm.get('password')?.hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
+        <mat-error *ngIf="signInForm.get('password')?.hasError('minlength')">
+          La contraseña debe tener al menos {{ PASSWORD_LENGTH }} caracteres
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="confirm-password">
+        <mat-label>Confirmar contraseña</mat-label>
+        <input
+          matInput
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="confirmPassword" />
+        <!-- Botón para mostrar la contraseña -->
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="showPassword = !showPassword"
+          aria-label="Mostrar contraseña"
+          [attr.aria-pressed]="showPassword">
+          <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+
+        <mat-error *ngIf="signInForm.get('confirmPassword')?.hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
+        <mat-error *ngIf="signInForm.get('confirmPassword')?.hasError('confirmPassword')">
+          Las contraseñas no coinciden
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button class="submit" type="submit" color="primary">Crea tu cuenta</button>
+      <mat-error *ngIf="mensajeError"> {{ mensajeError }} </mat-error>
+    </div>
+  </form>
+</div>

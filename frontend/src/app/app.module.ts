@@ -15,6 +15,8 @@ import {
 } from 'src/generated/openapi'
 import { HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { SignInModule } from './features/sign-up/sign-up.module'
+import { ServicioUsuario } from './core/services/servicio-usuario.service'
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {}
@@ -29,8 +31,9 @@ export function apiConfigFactory(): Configuration {
     ApiModule.forRoot(apiConfigFactory),
     HttpClientModule,
     BrowserAnimationsModule,
+    SignInModule,
   ],
-  providers: [{ provide: BASE_PATH, useValue: environment.apiBasePath }],
+  providers: [{ provide: BASE_PATH, useValue: environment.apiBasePath }, ServicioUsuario],
   bootstrap: [AppComponent],
 })
 export class AppModule {
