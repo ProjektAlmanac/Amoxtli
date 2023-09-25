@@ -2,13 +2,20 @@ package io.github.projektalmanac.amoxtli.backend.controller;
 
 import io.github.projektalmanac.amoxtli.backend.generated.api.UsuariosApi;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
+import io.github.projektalmanac.amoxtli.backend.service.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 public class UserController implements UsuariosApi {
+
+    @Autowired
+    private UserService userService;
+
     @Override
     public ResponseEntity<IntercambioDto> aceptarIntercambio(Integer idUsuario, Integer idIntercambio, AceptarIntercambioRequestDto aceptarIntercambioRequestDto) {
         return null;
@@ -51,7 +58,9 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<LibrosUsuarioDto> getLibrosUsuario(Integer id) {
-        return null;
+        LibrosUsuarioDto result = userService.getLibrosUsuario(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @Override

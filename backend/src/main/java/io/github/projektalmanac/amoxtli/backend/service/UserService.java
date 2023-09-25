@@ -1,7 +1,38 @@
 package io.github.projektalmanac.amoxtli.backend.service;
 
+import java.util.List;
+import java.util.Optional;
+
+
+import io.github.projektalmanac.amoxtli.backend.entity.*;
+import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
+import io.github.projektalmanac.amoxtli.backend.exception.EmptyResourceException;
+import io.github.projektalmanac.amoxtli.backend.generated.model.*;
+import io.github.projektalmanac.amoxtli.backend.mapper.BookMapper;
+import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+    @Autowired
+    private UserRepository userRepository;
+    public LibrosUsuarioDto getLibrosUsuario(Integer id){
+
+        Optional <User> userOpt = userRepository.findById(id);
+
+        if(userOpt.isPresent()){
+            User user = userOpt.get();
+            List<Book> books = user.getBooks();
+
+            if(books.isEmpty()){
+                throw new EmptyResourceException();
+            }else{
+                LibrosUsuarioDto booksDto = BookMapper.INSTANCE.booksToLibrosUsuarioDto(user);
+                return booksDto;
+            }
+        }else{
+            throw new UserNotFoundException(id);
+        }
+    }
 }
