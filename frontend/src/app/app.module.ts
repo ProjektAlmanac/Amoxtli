@@ -15,6 +15,7 @@ import {
 } from 'src/generated/openapi'
 import { HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { PerfilComponent } from './perfil/perfil.component'
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {}
@@ -22,7 +23,7 @@ export function apiConfigFactory(): Configuration {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, PerfilComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
