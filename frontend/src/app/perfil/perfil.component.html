@@ -1,1 +1,116 @@
-<p>perfil works!</p>
+<section>
+  <nav>
+    <mat-toolbar color="primary">
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Información del perfil</span>
+      <span class="example-spacer"></span>
+      <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Cerrar sesión</button>
+        <button mat-menu-item>Manual de ayuda</button>
+      </mat-menu>
+    </mat-toolbar>
+  </nav>
+</section>
+<section></section>
+<section>
+  <div
+    style="
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    ">
+    <div
+      [formGroup]="form"
+      style="
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      ">
+      <mat-drawer-container autosize>
+        <mat-drawer #drawer opened="true" mode="side">
+          <mat-nav-list>
+            <mat-list-item>
+              <button mat-button><mat-icon>home</mat-icon>Inicio</button>
+            </mat-list-item>
+            <mat-list-item>
+              <button mat-button><mat-icon>settings</mat-icon>Información de perfil</button>
+            </mat-list-item>
+            <mat-list-item>
+              <button mat-button><mat-icon>dashboard</mat-icon>Mi catálogo</button>
+            </mat-list-item>
+          </mat-nav-list>
+        </mat-drawer>
+        <mat-drawer-content>
+          <div style="text-aling: center; min-height: 100px"></div>
+        </mat-drawer-content>
+      </mat-drawer-container>
+      <mat-form-field appearence="fill">
+        <mat-label>Photo:</mat-label>
+        <input matInput formControlName="photo" />
+      </mat-form-field>
+
+      <mat-form-field appearence="fill">
+        <mat-label>Descripción de foto: </mat-label>
+        <input
+          matInput
+          formControlName="describePhoto"
+          placeholder="Ingrese una descripción sobre la foto" />
+      </mat-form-field>
+
+      <mat-form-field appearence="fill">
+        <mat-label>Nombre de Usuario:</mat-label>
+        <input matInput formControlName="nameUser" />
+      </mat-form-field>
+
+      <mat-form-field appearence="fill">
+        <mat-label>Nombre(s):</mat-label>
+        <input matInput formControlName="name" />
+        <!-- 
+        <div *ngIf="form.get('name').invalid && form.get('name').touched">
+          <mat-error *ngIf="form.get('name').errors.required"> El nombre es requerido</mat-error>
+        </div>
+        -->
+      </mat-form-field>
+
+      <mat-form-field appearence="fill">
+        <mat-label>Apellido(s):</mat-label>
+        <input matInput formControlName="lastname" />
+      </mat-form-field>
+
+      <mat-form-field appearence="fill">
+        <mat-label>Email:</mat-label>
+        <input matInput formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field appearence="fill">
+        <mat-label>Número de teléfono:</mat-label>
+        <input matInput formControlName="phoneNumber" />
+      </mat-form-field>
+
+      <mat-form-field appearence="fill">
+        <mat-label>Intereses:</mat-label>
+        <input
+          matInput
+          formControlName="interests"
+          placeholder="Hable sobre sus libros e intereses sobre libros" />
+      </mat-form-field>
+
+      <div id="footer">
+        <button mat-raised-button color="primary" (click)="sendValues()" [disabled]="form.invalid">
+          Actualizar
+        </button>
+        <button mat-raised-button color="primary" (click)="cancel()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</section>

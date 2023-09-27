@@ -1,10 +1,21 @@
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
-
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
-
 import { environment } from '../environments/environment'
+
+import { MatIconModule } from '@angular/material/icon'
+import { MatToolbarModule } from '@angular/material/toolbar'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { MatInputModule } from '@angular/material/input'
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatButtonModule } from '@angular/material/button'
+
+import { MatSidenavModule } from '@angular/material/sidenav'
+import { MatMenuModule } from '@angular/material/menu'
+import { NgIf } from '@angular/common'
+import { MatBadgeModule } from '@angular/material/badge'
+import { MatListModule } from '@angular/material/list'
 
 import {
   ApiModule,
@@ -25,11 +36,23 @@ export function apiConfigFactory(): Configuration {
 @NgModule({
   declarations: [AppComponent, PerfilComponent],
   imports: [
+    NgIf,
     BrowserModule,
     AppRoutingModule,
     ApiModule.forRoot(apiConfigFactory),
     HttpClientModule,
     BrowserAnimationsModule,
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatMenuModule,
+    MatBadgeModule,
+    MatListModule,
   ],
   providers: [{ provide: BASE_PATH, useValue: environment.apiBasePath }],
   bootstrap: [AppComponent],
