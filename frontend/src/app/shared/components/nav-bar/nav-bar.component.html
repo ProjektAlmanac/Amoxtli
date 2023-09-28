@@ -1,0 +1,34 @@
+<mat-toolbar color="primary">
+  <button (click)="drawer.toggle()" mat-icon-button>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Información del perfil</span>
+  <span class="spacer"></span>
+  <button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+  <mat-menu #menu="matMenu" position="end">
+    <button mat-menu-item>Cerrar sesión</button>
+    <button mat-menu-item>Manual de ayuda</button>
+  </mat-menu>
+</mat-toolbar>
+<mat-drawer-container autosize>
+  <mat-drawer #drawer opened="false" mode="side" position="start">
+    <mat-nav-list>
+      <mat-list-item>
+        <button mat-button><mat-icon>home</mat-icon>Inicio</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button routerLink="welcome" mat-button>
+          <mat-icon>face</mat-icon>Información de perfil
+        </button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button><mat-icon>dashboard</mat-icon>Mi catálogo</button>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div style="min-height: 200px">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
