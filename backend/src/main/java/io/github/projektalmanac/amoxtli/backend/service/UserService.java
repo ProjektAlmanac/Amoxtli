@@ -1,7 +1,6 @@
 package io.github.projektalmanac.amoxtli.backend.service;
 
 import io.github.projektalmanac.amoxtli.backend.entity.User;
-import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.generated.model.UsuarioDto;
 import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,7 @@ public class UserService {
         Optional<User> userOpt = userRepository.findByEmail(usuario.getCorreo());
 
         if (!userOpt.isPresent()) {
+
             User usuario1 = new User();
             usuario1.setName(usuario.getNombre());
             usuario1.setLastName(usuario.getApellidos());
@@ -29,7 +29,6 @@ public class UserService {
             //pasar de DTO a entidad,
             //pasar de entidad a DTO,
              userRepository.save(usuario1);
-
              UsuarioDto usuarioDto1 = new UsuarioDto();
             usuarioDto1.setNombre(usuario1.getName());
             usuarioDto1.setApellidos(usuario1.getLastName());
@@ -41,14 +40,4 @@ public class UserService {
             return null;
         }
     }
-
-
-  /*  public UsuarioDto createuser(UsuarioDto usuario) {
-
-        // Regla de negocio: No se puede crear más de un alumno con el mismo correo
-        Optional <UsuarioDto> userOpt = userRepository.findByCorreo(usuario.getCorreo());
-
-        }
-
-    }*/
 }
