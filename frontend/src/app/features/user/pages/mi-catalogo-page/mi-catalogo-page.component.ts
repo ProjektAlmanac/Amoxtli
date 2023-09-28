@@ -1,14 +1,23 @@
-import { Component } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
+import { DefaultService, LibrosUsuario } from 'src/generated/openapi'
 
 @Component({
   selector: 'app-mi-catalogo-page',
   templateUrl: './mi-catalogo-page.component.html',
   styleUrls: ['./mi-catalogo-page.component.sass'],
 })
-export class MiCatalogoPageComponent {
-  public readonly librosRegistrados = [
-    { titulo: 'Libro 1', descripcion: 'Descripcion 1' },
-    { titulo: 'Libro 2', descripcion: 'Descripcion 2' },
-    { titulo: 'Libro 3', descripcion: 'Descripcion 3' },
-  ]
+export class MiCatalogoPageComponent implements OnInit {
+  public librosUsuario!: LibrosUsuario
+
+  constructor(private serviceApi: DefaultService) {}
+
+  ngOnInit(): void {
+    this.recuperaLibrosUsuario()
+  }
+
+  recuperaLibrosUsuario() {
+    this.serviceApi.getLibrosUsuario(1).subscribe(libros => {
+      this.librosUsuario = libros
+    })
+  }
 }

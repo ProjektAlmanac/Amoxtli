@@ -6,6 +6,7 @@ import { SignUpPageComponent } from './features/sign-up/pages/sign-up-page/sign-
 import { VerifyEmailPageComponent } from './features/sign-up/pages/verify-email-page/verify-email-page.component'
 import { WelcomePageComponent } from './features/sign-up/pages/welcome-page/welcome-page.component'
 import { AgregarLibroComponent } from './features/user/components/agregar-libro/agregar-libro.component'
+import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component'
 
 const routes: Routes = [
   {
@@ -21,16 +22,22 @@ const routes: Routes = [
     component: WelcomePageComponent,
   },
   {
-    path: 'home',
-    component: HomePageComponent,
-  },
-  {
-    path: 'miCatalogo',
-    component: MiCatalogoPageComponent,
-  },
-  {
-    path: 'agregarLibro',
-    component: AgregarLibroComponent,
+    path: '',
+    component: NavBarComponent,
+    children: [
+      {
+        path: 'home',
+        component: HomePageComponent,
+      },
+      {
+        path: 'miCatalogo',
+        component: MiCatalogoPageComponent,
+      },
+      {
+        path: 'agregarLibro',
+        component: AgregarLibroComponent,
+      },
+    ],
   },
 ]
 

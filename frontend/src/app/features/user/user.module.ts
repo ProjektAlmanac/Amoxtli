@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 import { HomePageComponent } from './pages/home-page/home-page.component'
 import { MiCatalogoPageComponent } from './pages/mi-catalogo-page/mi-catalogo-page.component'
 import { AgregarLibroComponent } from './components/agregar-libro/agregar-libro.component'
+import { SharedModule } from 'src/app/shared/shared.module'
 
 @NgModule({
   declarations: [HomePageComponent, MiCatalogoPageComponent, AgregarLibroComponent],
@@ -32,6 +33,7 @@ import { AgregarLibroComponent } from './components/agregar-libro/agregar-libro.
     MatFormFieldModule,
     FormsModule,
     NgIf,
+    SharedModule,
   ],
   exports: [HomePageComponent, MiCatalogoPageComponent, AgregarLibroComponent],
 })
