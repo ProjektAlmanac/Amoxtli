@@ -28,7 +28,7 @@ public class UsuarioDto {
 
   private String nombre;
 
-  private String apellildos;
+  private String apellidos;
 
   private String password;
 
@@ -42,7 +42,7 @@ public class UsuarioDto {
   public UsuarioDto(String correo, String nombre, String apellildos, String password) {
     this.correo = correo;
     this.nombre = nombre;
-    this.apellildos = apellildos;
+    this.apellidos = apellildos;
     this.password = password;
   }
 
@@ -86,8 +86,8 @@ public class UsuarioDto {
     this.nombre = nombre;
   }
 
-  public UsuarioDto apellildos(String apellildos) {
-    this.apellildos = apellildos;
+  public UsuarioDto apellidos(String apellidos) {
+    this.apellidos = apellidos;
     return this;
   }
 
@@ -96,14 +96,14 @@ public class UsuarioDto {
    * @return apellildos
   */
   @NotNull 
-  @Schema(name = "apellildos", description = "Apellido o apellidos del usuario", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("apellildos")
-  public String getApellildos() {
-    return apellildos;
+  @Schema(name = "apellidos", description = "Apellido o apellidos del usuario", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("apellidos")
+  public String getApellidos() {
+    return apellidos;
   }
 
-  public void setApellildos(String apellildos) {
-    this.apellildos = apellildos;
+  public void setApellidos(String apellidos) {
+    this.apellidos = apellidos;
   }
 
   public UsuarioDto password(String password) {
@@ -137,13 +137,13 @@ public class UsuarioDto {
     UsuarioDto usuario = (UsuarioDto) o;
     return Objects.equals(this.correo, usuario.correo) &&
         Objects.equals(this.nombre, usuario.nombre) &&
-        Objects.equals(this.apellildos, usuario.apellildos) &&
+        Objects.equals(this.apellidos, usuario.apellidos) &&
         Objects.equals(this.password, usuario.password);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(correo, nombre, apellildos, password);
+    return Objects.hash(correo, nombre, apellidos, password);
   }
 
   @Override
@@ -152,7 +152,7 @@ public class UsuarioDto {
     sb.append("class UsuarioDto {\n");
     sb.append("    correo: ").append(toIndentedString(correo)).append("\n");
     sb.append("    nombre: ").append(toIndentedString(nombre)).append("\n");
-    sb.append("    apellildos: ").append(toIndentedString(apellildos)).append("\n");
+    sb.append("    apellidos: ").append(toIndentedString(apellidos)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -2,13 +2,24 @@ package io.github.projektalmanac.amoxtli.backend.controller;
 
 import io.github.projektalmanac.amoxtli.backend.generated.api.UsuariosApi;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
+import io.github.projektalmanac.amoxtli.backend.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 public class UserController implements UsuariosApi {
+
+    @Autowired
+    private UserService userService;
+
     @Override
     public ResponseEntity<IntercambioDto> aceptarIntercambio(Integer idUsuario, Integer idIntercambio, AceptarIntercambioRequestDto aceptarIntercambioRequestDto) {
         return null;
@@ -29,9 +40,19 @@ public class UserController implements UsuariosApi {
         return null;
     }
 
+    @PostMapping
     @Override
-    public ResponseEntity<UsuarioIdDto> crearUsuario(UsuarioDto usuarioDto) {
-        return null;
+    public ResponseEntity<UsuarioDto> crearUsuario(@RequestBody @Valid UsuarioDto usuario) {
+
+        UsuarioDto nuevoUsuario = userService.createuser(usuario);
+
+        if(nuevoUsuario != null) {
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
+
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @Override
