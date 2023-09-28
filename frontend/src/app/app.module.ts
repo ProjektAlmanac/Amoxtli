@@ -17,6 +17,7 @@ import { HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { SignUpModule } from './features/sign-up/sign-up.module'
 import { ServicioUsuario } from './core/services/servicio-usuario.service'
+import { SharedModule } from './shared/shared.module'
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {}
@@ -32,6 +33,7 @@ export function apiConfigFactory(): Configuration {
     HttpClientModule,
     BrowserAnimationsModule,
     SignUpModule,
+    SharedModule,
   ],
   providers: [{ provide: BASE_PATH, useValue: environment.apiBasePath }, ServicioUsuario],
   bootstrap: [AppComponent],
