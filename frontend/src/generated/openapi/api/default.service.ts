@@ -43,8 +43,6 @@ import { LibrosUsuario } from '../model/librosUsuario';
 // @ts-ignore
 import { PaginaLibros } from '../model/paginaLibros';
 // @ts-ignore
-import { PatchRequestInner } from '../model/patchRequestInner';
-// @ts-ignore
 import { PerfilUsuario } from '../model/perfilUsuario';
 // @ts-ignore
 import { SessionToken } from '../model/sessionToken';
@@ -208,17 +206,95 @@ export class DefaultService {
     }
 
     /**
-     * Actualizar usuario
-     * Actualiza los datos de un usuario
-     * @param id Id del usuario
-     * @param patchRequestInner 
+     * Actualizar foto de perfil
+     * Actualiza la foto de perfil de un usuario
+     * @param id 
+     * @param body 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public actualizarUsuario(id: number, patchRequestInner?: Array<PatchRequestInner>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PerfilUsuario>;
-    public actualizarUsuario(id: number, patchRequestInner?: Array<PatchRequestInner>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PerfilUsuario>>;
-    public actualizarUsuario(id: number, patchRequestInner?: Array<PatchRequestInner>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PerfilUsuario>>;
-    public actualizarUsuario(id: number, patchRequestInner?: Array<PatchRequestInner>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public actualizarFotoPerfil(id: string, body?: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any>;
+    public actualizarFotoPerfil(id: string, body?: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public actualizarFotoPerfil(id: string, body?: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public actualizarFotoPerfil(id: string, body?: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling actualizarFotoPerfil.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (Token) required
+        localVarCredential = this.configuration.lookupCredential('Token');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'image/png',
+            'image/jpg'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/usuarios/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/fotoPerfil`;
+        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: body,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Actualizar usuario
+     * Actualiza los datos de un usuario
+     * @param id Id del usuario
+     * @param perfilUsuario 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public actualizarUsuario(id: number, perfilUsuario?: PerfilUsuario, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PerfilUsuario>;
+    public actualizarUsuario(id: number, perfilUsuario?: PerfilUsuario, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PerfilUsuario>>;
+    public actualizarUsuario(id: number, perfilUsuario?: PerfilUsuario, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PerfilUsuario>>;
+    public actualizarUsuario(id: number, perfilUsuario?: PerfilUsuario, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling actualizarUsuario.');
         }
@@ -271,10 +347,10 @@ export class DefaultService {
         }
 
         let localVarPath = `/usuarios/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<PerfilUsuario>('patch', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PerfilUsuario>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: patchRequestInner,
+                body: perfilUsuario,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
