@@ -27,7 +27,7 @@ import {
 } from 'src/generated/openapi'
 import { HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { PerfilComponent } from './perfil/perfil.component'
+import { PerfilComponent } from './features/perfil/pages/perfil.component'
 import { SignUpModule } from './features/sign-up/sign-up.module'
 import { ServicioUsuario } from './core/services/servicio-usuario.service'
 import { SharedModule } from './shared/shared.module'

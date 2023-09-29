@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router'
 import { SignUpPageComponent } from './features/sign-up/pages/sign-up-page/sign-up-page.component'
 import { VerifyEmailPageComponent } from './features/sign-up/pages/verify-email-page/verify-email-page.component'
 import { WelcomePageComponent } from './features/sign-up/pages/welcome-page/welcome-page.component'
-import { PerfilComponent } from './perfil/perfil.component'
+import { PerfilComponent } from './features/perfil/component'
 
 const routes: Routes = [
   {
