@@ -24,7 +24,7 @@ import javax.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-20T16:35:03.036426542-06:00[America/Mexico_City]")
 public class SessionTokenDto {
 
-  private Integer idUsuario;
+  private Long idUsuario;
 
   private String token;
 
@@ -35,12 +35,12 @@ public class SessionTokenDto {
   /**
    * Constructor with only required parameters
    */
-  public SessionTokenDto(Integer idUsuario, String token) {
+  public SessionTokenDto(Long idUsuario, String token) {
     this.idUsuario = idUsuario;
     this.token = token;
   }
 
-  public SessionTokenDto idUsuario(Integer idUsuario) {
+  public SessionTokenDto idUsuario(Long idUsuario) {
     this.idUsuario = idUsuario;
     return this;
   }
@@ -52,11 +52,11 @@ public class SessionTokenDto {
   @NotNull 
   @Schema(name = "idUsuario", description = "ID del usuario", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("idUsuario")
-  public Integer getIdUsuario() {
+  public Long getIdUsuario() {
     return idUsuario;
   }
 
-  public void setIdUsuario(Integer idUsuario) {
+  public void setIdUsuario(Long idUsuario) {
     this.idUsuario = idUsuario;
   }
 
