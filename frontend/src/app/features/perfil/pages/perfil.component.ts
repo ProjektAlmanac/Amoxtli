@@ -95,6 +95,7 @@ export class PerfilComponent implements OnInit {
     // eslint-disable-next-line no-console
     console.log('Se canceló')
     this.form.reset()
+    this.recuperaUsuario()
     this.showButtons = false
     this.showInputPhoto = false
     this.success('No se actualizaron los datos')
