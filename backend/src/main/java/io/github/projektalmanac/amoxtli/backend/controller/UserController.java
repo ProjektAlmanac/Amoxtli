@@ -16,6 +16,9 @@ public class UserController implements UsuariosApi {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private BookService bookService;
+
     @Override
     public ResponseEntity<IntercambioDto> aceptarIntercambio(Integer idUsuario, Integer idIntercambio, AceptarIntercambioRequestDto aceptarIntercambioRequestDto) {
         return null;
@@ -33,7 +36,8 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<LibroRegistradoDto> addLibro(Integer id, LibroRegistradoDto libroRegistradoDto) {
-        return null;
+        LibroRegistradoDto result = bookService.addLibro(id, libroRegistradoDto); 
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @Override
