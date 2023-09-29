@@ -11,6 +11,7 @@ import { DefaultService, PerfilUsuario } from 'src/generated/openapi'
 })
 export class PerfilComponent implements OnInit {
   public perfilUsuario!: PerfilUsuario
+  public photoImg = ''
   private _snackBar = inject(MatSnackBar)
 
   form: FormGroup
@@ -50,11 +51,15 @@ export class PerfilComponent implements OnInit {
   ngOnInit(): void {
     this.recuperaUsuario()
     //meter una variable que obtenga el ID para pasarselo
+    // eslint-disable-next-line no-console
   }
 
   recuperaUsuario() {
     this.serviceApi.getUsuario(1).subscribe(usuario => {
       this.perfilUsuario = usuario
+      this.photoImg = usuario.fotoPerfil ?? ''
+      // eslint-disable-next-line no-console
+      console.log(typeof usuario.fotoPerfil)
 
       // Llena los campos del formulario con la información del perfilUsuario
       this.form.patchValue({
@@ -65,6 +70,7 @@ export class PerfilComponent implements OnInit {
         email: usuario.correo,
         phoneNumber: usuario.telfono,
         interests: usuario.intereses,
+        photo: usuario.fotoPerfil,
       })
     })
   }
