@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User,Integer> {
+    
+    @Query("SELECT CASE WHEN COUNT(b) > 0 THEN true ELSE false END FROM User u JOIN u.books b WHERE b.isbn = :isbn AND u.id = :userId")
+    boolean existsBookByIsbnAndUserId(@Param("isbn") String isbn, @Param("userId") Integer userId);
+
 }

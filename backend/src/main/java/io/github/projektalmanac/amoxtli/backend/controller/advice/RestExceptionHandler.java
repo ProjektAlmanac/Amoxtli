@@ -35,4 +35,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BookAlreadyExistsException.class)
+    public final ResponseEntity<Void> handleBookAlreadyExistsException(BookAlreadyExistsException ex, WebRequest request) {
+        var error = new ErrorDto(ex.getMessage(), 1);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
 }

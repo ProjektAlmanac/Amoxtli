@@ -28,4 +28,18 @@ public class User {
     @JoinColumn(name = "id_book")
     private List<Book> books = new ArrayList<>();
 
+    public boolean addBook(Book book) {
+		
+		if(book == null) {
+			throw new EmptyResourceException();
+		}
+		
+		if(books.contains(book)) {
+			// Checo si el libro está en la lista de libros por que no se puede agregar un libro dos veces
+			return false;
+		}
+		
+		return books.add(book); 
+	}
+
 }

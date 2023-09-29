@@ -42,4 +42,13 @@ public interface BookMapper {
     @Mapping(target = "idioma", source = "libroGoogleBooks.language")
     @Mapping(target = "fechaPublicacion", expression = "java(libroGoogleBooks.getPublishedDate() != null && !libroGoogleBooks.getPublishedDate().isEmpty() ? LocalDate.parse(libroGoogleBooks.getPublishedDate(), DateTimeFormatter.ofPattern(\"yyyy-MM-dd\")) : null)")
     DetallesLibroDto toDetallesLibroDto(String ISBN, VolumeInfo libroGoogleBooks);
+
+    @Mapping(target = "isbn", source = "libroRegistradoDto.isbn")
+    @Mapping(target = "description", source = "libroRegistradoDto.descripcion")
+    Book toBook(LibroRegistradoDto libroRegistradoDto);
+
+    @Mapping(target = "id", source = "book.id")
+    @Mapping(target = "isbn", source = "book.isbn")
+    @Mapping(target = "description", source = "book.descripcion")
+    LibroRegistradoDto toLibroRegistradoDto(Book book);
 }
