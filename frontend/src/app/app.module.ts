@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { environment } from '../environments/environment'
-
+import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MatIconModule } from '@angular/material/icon'
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
@@ -16,6 +16,7 @@ import { MatMenuModule } from '@angular/material/menu'
 import { NgIf } from '@angular/common'
 import { MatBadgeModule } from '@angular/material/badge'
 import { MatListModule } from '@angular/material/list'
+import { MatCardModule } from '@angular/material/card'
 
 import {
   ApiModule,
@@ -30,6 +31,8 @@ import { PerfilComponent } from './perfil/perfil.component'
 import { SignUpModule } from './features/sign-up/sign-up.module'
 import { ServicioUsuario } from './core/services/servicio-usuario.service'
 import { SharedModule } from './shared/shared.module'
+import { MenubarComponent } from './menubar/menubar.component'
+import { SharedComponent } from './shared/shared.component'
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {}
@@ -37,7 +40,7 @@ export function apiConfigFactory(): Configuration {
 }
 
 @NgModule({
-  declarations: [AppComponent, PerfilComponent],
+  declarations: [AppComponent, PerfilComponent, MenubarComponent, SharedComponent],
   imports: [
     NgIf,
     BrowserModule,
@@ -58,6 +61,8 @@ export function apiConfigFactory(): Configuration {
     MatListModule,
     SignUpModule,
     SharedModule,
+    MatCardModule,
+    MatSnackBarModule,
   ],
   providers: [{ provide: BASE_PATH, useValue: environment.apiBasePath }, ServicioUsuario],
   bootstrap: [AppComponent],

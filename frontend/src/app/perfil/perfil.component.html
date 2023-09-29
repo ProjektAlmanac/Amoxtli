@@ -1,116 +1,109 @@
-<section>
-  <nav>
-    <mat-toolbar color="primary">
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span>Información del perfil</span>
-      <span class="example-spacer"></span>
-      <button mat-button [matMenuTriggerFor]="menu">Menu</button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>Cerrar sesión</button>
-        <button mat-menu-item>Manual de ayuda</button>
-      </mat-menu>
-    </mat-toolbar>
-  </nav>
-</section>
-<section></section>
-<section>
-  <div
-    style="
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    ">
-    <div
-      [formGroup]="form"
-      style="
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-      ">
-      <mat-drawer-container autosize>
-        <mat-drawer #drawer opened="true" mode="side">
-          <mat-nav-list>
-            <mat-list-item>
-              <button mat-button><mat-icon>home</mat-icon>Inicio</button>
-            </mat-list-item>
-            <mat-list-item>
-              <button mat-button><mat-icon>settings</mat-icon>Información de perfil</button>
-            </mat-list-item>
-            <mat-list-item>
-              <button mat-button><mat-icon>dashboard</mat-icon>Mi catálogo</button>
-            </mat-list-item>
-          </mat-nav-list>
-        </mat-drawer>
-        <mat-drawer-content>
-          <div style="text-aling: center; min-height: 100px"></div>
-        </mat-drawer-content>
-      </mat-drawer-container>
-      <mat-form-field appearence="fill">
-        <mat-label>Photo:</mat-label>
-        <input matInput formControlName="photo" />
-      </mat-form-field>
+<div
+  [formGroup]="form"
+  style="
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  ">
+  <mat-card-content>
+    <mat-label>Ingrese una foto de perfil:</mat-label>
+    <th></th>
+    <mat-form-field appearence="fill" class="mat-50">
+      <mat-label><mat-icon> insert_photo</mat-icon></mat-label>
+      <input matInput formControlName="photo" (ngModelChange)="onChange(1); checkTouchedFielsd()" />
+    </mat-form-field>
 
-      <mat-form-field appearence="fill">
-        <mat-label>Descripción de foto: </mat-label>
-        <input
-          matInput
-          formControlName="describePhoto"
-          placeholder="Ingrese una descripción sobre la foto" />
-      </mat-form-field>
+    <mat-form-field appearence="fill" class="mat-50">
+      <mat-label>Descripción de foto: </mat-label>
+      <input
+        matInput
+        formControlName="describePhoto"
+        placeholder="Ingrese una descripción sobre la foto"
+        (ngModelChange)="onChange(2); checkTouchedFielsd()" />
+    </mat-form-field>
 
-      <mat-form-field appearence="fill">
-        <mat-label>Nombre de Usuario:</mat-label>
-        <input matInput formControlName="nameUser" />
-      </mat-form-field>
+    <th></th>
+    <mat-label>Ingrese los siguientes datos: </mat-label>
+    <th></th>
 
-      <mat-form-field appearence="fill">
-        <mat-label>Nombre(s):</mat-label>
-        <input matInput formControlName="name" />
-        <!-- 
-        <div *ngIf="form.get('name').invalid && form.get('name').touched">
-          <mat-error *ngIf="form.get('name').errors.required"> El nombre es requerido</mat-error>
-        </div>
-        -->
-      </mat-form-field>
-
-      <mat-form-field appearence="fill">
-        <mat-label>Apellido(s):</mat-label>
-        <input matInput formControlName="lastname" />
-      </mat-form-field>
-
-      <mat-form-field appearence="fill">
-        <mat-label>Email:</mat-label>
-        <input matInput formControlName="email" />
-      </mat-form-field>
-
-      <mat-form-field appearence="fill">
-        <mat-label>Número de teléfono:</mat-label>
-        <input matInput formControlName="phoneNumber" />
-      </mat-form-field>
-
-      <mat-form-field appearence="fill">
-        <mat-label>Intereses:</mat-label>
-        <input
-          matInput
-          formControlName="interests"
-          placeholder="Hable sobre sus libros e intereses sobre libros" />
-      </mat-form-field>
-
-      <div id="footer">
-        <button mat-raised-button color="primary" (click)="sendValues()" [disabled]="form.invalid">
-          Actualizar
-        </button>
-        <button mat-raised-button color="primary" (click)="cancel()">Cancelar</button>
+    <mat-form-field appearence="fill">
+      <mat-label>Nombre de Usuario:</mat-label>
+      <input
+        matInput
+        formControlName="nameUser"
+        (ngModelChange)="onChange(3); checkTouchedFielsd()" />
+      <div *ngIf="form.get('nameUser')?.invalid && form.get('nameUser')?.touched">
+        <mat-error>El nombre de usuario es requerido</mat-error>
       </div>
-    </div>
-  </div>
-</section>
+    </mat-form-field>
+
+    <mat-form-field appearence="fill" class="mat-50">
+      <mat-label>Nombre(s):</mat-label>
+      <input matInput formControlName="name" (ngModelChange)="onChange(4); checkTouchedFielsd()" />
+      <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+        <mat-error>El nombre es requerido</mat-error>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field appearence="fill" class="mat-50">
+      <mat-label>Apellido(s):</mat-label>
+      <input
+        matInput
+        formControlName="lastname"
+        (ngModelChange)="onChange(5); checkTouchedFielsd()" />
+      <div *ngIf="form.get('lastname')?.invalid && form.get('lastname')?.touched">
+        <mat-error>El apellido es requerido</mat-error>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field appearence="fill" class="mat-50">
+      <mat-label>Correo electrónico:</mat-label>
+      <input matInput formControlName="email" (ngModelChange)="onChange(6); checkTouchedFielsd()" />
+      <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+        <mat-error>El correo es requerido</mat-error>
+      </div>
+      <div *ngIf="form.get('email')?.hasError('email')">
+        <mat-error>El correo es invalido</mat-error>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field appearence="fill" class="mat-50">
+      <mat-label>Número de teléfono:</mat-label>
+      <input
+        matInput
+        formControlName="phoneNumber"
+        (ngModelChange)="onChange(7); checkTouchedFielsd()" />
+      <div *ngIf="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched">
+        <mat-error>El número es requerido</mat-error>
+      </div>
+      <div *ngIf="form.get('phoneNumber')?.hasError('minlength')">
+        <mat-error>El número debe tener 10 digitos</mat-error>
+      </div>
+      <div *ngIf="form.get('phoneNumber')?.hasError('number')">
+        <mat-error>Debe de registrar un número</mat-error>
+      </div>
+      <div *ngIf="form.get('phoneNumber')?.hasError('maxlength')">
+        <mat-error>El número debe tener 10 digitos</mat-error>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field appearence="fill">
+      <mat-label>Intereses:</mat-label>
+      <input
+        matInput
+        formControlName="interests"
+        placeholder="Hable sobre sus libros e intereses sobre libros"
+        (ngModelChange)="onChange(8); checkTouchedFielsd()" />
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-actions *ngIf="showButtons">
+    <button mat-raised-button color="primary" (click)="sendValues()" [disabled]="form.invalid">
+      Actualizar
+    </button>
+    <button mat-raised-button color="primary" (click)="cancel()">Cancelar</button>
+  </mat-card-actions>
+</div>
