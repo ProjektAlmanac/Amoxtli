@@ -27,6 +27,9 @@ import {
 import { HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { PerfilComponent } from './perfil/perfil.component'
+import { SignUpModule } from './features/sign-up/sign-up.module'
+import { ServicioUsuario } from './core/services/servicio-usuario.service'
+import { SharedModule } from './shared/shared.module'
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {}
@@ -53,8 +56,10 @@ export function apiConfigFactory(): Configuration {
     MatMenuModule,
     MatBadgeModule,
     MatListModule,
+    SignUpModule,
+    SharedModule,
   ],
-  providers: [{ provide: BASE_PATH, useValue: environment.apiBasePath }],
+  providers: [{ provide: BASE_PATH, useValue: environment.apiBasePath }, ServicioUsuario],
   bootstrap: [AppComponent],
 })
 export class AppModule {

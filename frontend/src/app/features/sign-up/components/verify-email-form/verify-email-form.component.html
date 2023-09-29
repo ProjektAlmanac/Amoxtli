@@ -1,0 +1,13 @@
+<form [formGroup]="verifyEmailForm" (ngSubmit)="onSubmit()">
+  <div class="grid">
+    <mat-form-field class="name">
+      <mat-label>Código de verificación</mat-label>
+      <input matInput formControlName="code" />
+
+      <mat-error *ngIf="verifyEmailForm.get('code')?.hasError('required')">
+        Favor de ingresar el código de verificación
+      </mat-error>
+    </mat-form-field>
+    <button mat-raised-button class="submit" type="submit" color="primary">Verificar código</button>
+  </div>
+</form>
