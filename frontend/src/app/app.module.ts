@@ -31,8 +31,8 @@ import { PerfilComponent } from './features/perfil/pages/perfil.component'
 import { SignUpModule } from './features/sign-up/sign-up.module'
 import { ServicioUsuario } from './core/services/servicio-usuario.service'
 import { SharedModule } from './shared/shared.module'
-import { MenubarComponent } from './menubar/menubar.component'
 import { SharedComponent } from './shared/shared.component'
+import { UserModule } from './features/user/user.module'
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {}
@@ -40,7 +40,7 @@ export function apiConfigFactory(): Configuration {
 }
 
 @NgModule({
-  declarations: [AppComponent, PerfilComponent, MenubarComponent, SharedComponent],
+  declarations: [AppComponent, PerfilComponent, SharedComponent],
   imports: [
     NgIf,
     BrowserModule,
@@ -63,6 +63,7 @@ export function apiConfigFactory(): Configuration {
     SharedModule,
     MatCardModule,
     MatSnackBarModule,
+    UserModule,
   ],
   providers: [{ provide: BASE_PATH, useValue: environment.apiBasePath }, ServicioUsuario],
   bootstrap: [AppComponent],
