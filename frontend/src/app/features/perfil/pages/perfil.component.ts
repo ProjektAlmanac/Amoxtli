@@ -16,6 +16,9 @@ export class PerfilComponent {
   //Variable to control the appearance of the buttons
   showButtons = false
 
+  //Variable to control the photo
+  showInputPhoto = false
+
   //State variables to know if a field has been manipulated
   photoTouched = false
   describePhotoTouched = false
@@ -47,15 +50,25 @@ export class PerfilComponent {
     // eslint-disable-next-line no-console
     console.log('Datos actualizados')
     this.success('Datos actualizados')
+
+    const actualizacionExitosa = true
+    if (actualizacionExitosa) {
+      this.showInputPhoto = false // Oculta el campo de foto después de una actualización exitosa
+    }
     this.form.reset()
   }
+
   cancel() {
     // eslint-disable-next-line no-console
     console.log('Se canceló')
     this.form.reset()
     this.showButtons = false
+    this.showInputPhoto = false
     this.success('No se actualizaron los datos')
     //falta poner un metodo GET para mostrar la informacion que tiene
+  }
+  mostrarCampoDeFoto() {
+    this.showInputPhoto = true //show the input photo
   }
 
   //Function to handle the ngModelChange event of the fields

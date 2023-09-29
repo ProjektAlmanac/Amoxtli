@@ -1,3 +1,4 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <div
   [formGroup]="form"
   style="
@@ -12,20 +13,38 @@
   <mat-card-content>
     <mat-label>Ingrese una foto de perfil:</mat-label>
     <th></th>
-    <mat-form-field appearence="fill" class="mat-50">
-      <mat-label><mat-icon> insert_photo</mat-icon></mat-label>
-      <input matInput formControlName="photo" (ngModelChange)="onChange(1); checkTouchedFielsd()" />
-    </mat-form-field>
-
-    <mat-form-field appearence="fill" class="mat-50">
-      <mat-label>Descripción de foto: </mat-label>
-      <input
-        matInput
-        formControlName="describePhoto"
-        placeholder="Ingrese una descripción sobre la foto"
-        (ngModelChange)="onChange(2); checkTouchedFielsd()" />
-    </mat-form-field>
-
+    <!--<mat-form-field appearence="fill" class="mat-50"><mat-label><mat-icon> insert_photo</mat-icon></mat-label><input matInput formControlName="photo" (ngModelChange)="onChange(1); checkTouchedFielsd()" /></mat-form-field>-->
+    <div class="div-photo" style="display: flex; align-items: center">
+      <div class="mat-50">
+        <button (click)="mostrarCampoDeFoto()">
+          <img
+            src="https://img.freepik.com/vector-premium/perfil-hombre-dibujos-animados_18591-58482.jpg?w=740"
+            alt="portada_libro"
+            width="180"
+            height="180"
+            style="display: block; margin: 0 auto" />
+        </button>
+      </div>
+      <mat-form-field
+        appearence="fill"
+        class="mat-50"
+        style="margin-left: 10px"
+        *ngIf="showInputPhoto">
+        <mat-label><mat-icon> insert_photo</mat-icon></mat-label>
+        <input
+          matInput
+          formControlName="photo"
+          (ngModelChange)="onChange(1); checkTouchedFielsd()" />
+      </mat-form-field>
+      <mat-form-field appearence="fill" class="mat-50" style="margin-left: 10px">
+        <mat-label>Descripción de foto: </mat-label>
+        <input
+          matInput
+          formControlName="describePhoto"
+          placeholder="Ingrese una descripción sobre la foto"
+          (ngModelChange)="onChange(2); checkTouchedFielsd()" />
+      </mat-form-field>
+    </div>
     <th></th>
     <mat-label>Ingrese los siguientes datos: </mat-label>
     <th></th>
