@@ -60,6 +60,9 @@ public class BookService {
 			throw new BookAlreadyExistsException(); //Revisar el codigo del error
 		}
 
+        // Se verifica si el ISBN es válido, en caso de no serlo, se mandara una excepción desde el servicio de Google Books
+        googleBookService.getVolumeInfoByIsbn(libroRegistradoDto.getIsbn());
+
         Book book = BookMapper.INSTANCE.toBook(libroRegistradoDto);
 
         bookRepository.save(book); 

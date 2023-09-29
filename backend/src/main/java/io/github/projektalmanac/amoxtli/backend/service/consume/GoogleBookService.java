@@ -28,7 +28,7 @@ public class GoogleBookService {
                 null
             )
             .setApplicationName("Amoxtli")
-            .setGoogleClientRequestInitializer(new BooksRequestInitializer("TuClaveDeAPI"))
+//            .setGoogleClientRequestInitializer(new BooksRequestInitializer("TuClaveDeAPI"))
             .build()
             .volumes();
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class GoogleBookService {
         try {
             for (Book book : books) {
                 String isbn = book.getIsbn(); 
-                Books.Volumes.List volumesList = volumesService.list(isbn);
+                Books.Volumes.List volumesList = volumesService.list("isbn:" + isbn);
                 Volumes volumes = volumesList.execute();
 
                 if (volumes.getItems() != null && !volumes.getItems().isEmpty()) {
@@ -60,7 +60,7 @@ public class GoogleBookService {
 
     public VolumeInfo getVolumeInfoByIsbn(String isbn) {
         try {
-            Books.Volumes.List volumesList = volumesService.list(isbn);
+            Books.Volumes.List volumesList = volumesService.list("isbn:" + isbn);
             Volumes volumes = volumesList.execute();
     
             if (volumes.getItems() == null || volumes.getItems().isEmpty()) {
@@ -70,7 +70,7 @@ public class GoogleBookService {
             Volume volume = volumes.getItems().get(0);
             return volume.getVolumeInfo();
         } catch (IOException e) {
-            throw new RuntimeException("Error al buscar volúmenes en Google Books");
+            throw new RuntimeException(e.getMessage());
         }
     }
     

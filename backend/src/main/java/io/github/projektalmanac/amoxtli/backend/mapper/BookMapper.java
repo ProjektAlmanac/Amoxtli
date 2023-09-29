@@ -9,6 +9,7 @@ import io.github.projektalmanac.amoxtli.backend.generated.model.LibrosUsuarioDto
 import jdk.jfr.Name;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 import java.net.URI;
@@ -25,7 +26,7 @@ public interface BookMapper {
     @Mapping(target = "isbn", source = "book.isbn")
     @Mapping(target = "titulo", source = "libroGoogleBooks.title")
     @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")
-    @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks.medium")
+    @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks")
     LibroRegistradoConDetallesDto toLibroRegistradoConDetallesDto(Book book, VolumeInfo libroGoogleBooks);
 
     default LibrosUsuarioDto toLibrosUsuarioDto(List<Book> books, List<VolumeInfo> librosGoogleBooks) {
@@ -42,7 +43,7 @@ public interface BookMapper {
     @Mapping(target = "isbn", source = "ISBN")
     @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")
     @Mapping(target = "titulo", source = "libroGoogleBooks.title")
-    @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks.medium")
+    @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks")
     @Mapping(target = "generos", source = "libroGoogleBooks.categories")
     @Mapping(target = "editorial", source = "libroGoogleBooks.publisher")
     @Mapping(target = "sinopsis", source = "libroGoogleBooks.description")
@@ -58,10 +59,36 @@ public interface BookMapper {
     LibroRegistradoDto toLibroRegistradoDto(Book book);
 
     default URI stringToUri(String string) {
+        if (string == null) return null;
         return URI.create(string);
     }
 
     default LocalDate stringToDate(String string) {
+        if (string == null) return null;
+        if (!string.contains("-")) {
+            return LocalDate.ofYearDay(Integer.parseInt(string), 1);
+        }
         return LocalDate.parse(string, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+    default URI mapImageLinks(VolumeInfo.ImageLinks imageLinks) {
+        if(imageLinks == null) {
+            return null;
+        }
+        var imageUrl = getImageUrl(imageLinks);
+        if (imageUrl == null) {
+            return null;
+        }
+        return URI.create(imageUrl);
+    }
+
+    default String getImageUrl(VolumeInfo.ImageLinks imageLinks) {
+        if (imageLinks == null) return null;
+        if (imageLinks.getMedium() != null) return imageLinks.getMedium();
+        if (imageLinks.getLarge() != null) return imageLinks.getLarge();
+        if (imageLinks.getExtraLarge() != null) return imageLinks.getExtraLarge();
+        if (imageLinks.getThumbnail() != null) return imageLinks.getThumbnail();
+        if (imageLinks.getSmallThumbnail() != null) return imageLinks.getSmallThumbnail();
+        return null;
     }
 }
