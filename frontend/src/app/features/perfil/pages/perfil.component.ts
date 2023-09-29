@@ -1,14 +1,16 @@
-import { Component, inject } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { successNotification } from '../../../shared/config/LibreryConfig'
+import { DefaultService, PerfilUsuario } from 'src/generated/openapi'
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.sass'],
 })
-export class PerfilComponent {
+export class PerfilComponent implements OnInit {
+  public perfilUsuario!: PerfilUsuario
   private _snackBar = inject(MatSnackBar)
 
   form: FormGroup
@@ -29,7 +31,10 @@ export class PerfilComponent {
   phoneNumberTouched = false
   interestsTouched = false
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private serviceApi: DefaultService
+  ) {
     this.form = this.fb.group({
       photo: [''],
       describePhoto: [''],
@@ -41,13 +46,35 @@ export class PerfilComponent {
       interests: [''],
     })
   }
+  //actualizar los datos en el momento
+  ngOnInit(): void {
+    this.recuperaUsuario()
+    //meter una variable que obtenga el ID para pasarselo
+  }
+
+  recuperaUsuario() {
+    this.serviceApi.getUsuario(1).subscribe(usuario => {
+      this.perfilUsuario = usuario
+
+      // Llena los campos del formulario con la información del perfilUsuario
+      this.form.patchValue({
+        describePhoto: usuario.descripcinFoto,
+        nameUser: usuario.nombre,
+        name: usuario.nombre,
+        lastname: usuario.apellidos,
+        email: usuario.correo,
+        phoneNumber: usuario.telfono,
+        interests: usuario.intereses,
+      })
+    })
+  }
 
   public success(msg: string) {
     successNotification(msg, this._snackBar)
   }
 
   sendValues() {
-    // eslint-disable-next-line no-console
+    //eslint-disable-next-line no-console
     console.log('Datos actualizados')
     this.success('Datos actualizados')
 
@@ -113,5 +140,15 @@ export class PerfilComponent {
     ) {
       this.showButtons = true
     }
+  }
+  resetTouchedFields() {
+    this.photoTouched = false
+    this.describePhotoTouched = false
+    this.nameUserTouched = false
+    this.nameTouched = false
+    this.lastnameTouched = false
+    this.emailTouched = false
+    this.phoneNumberTouched = false
+    this.interestsTouched = false
   }
 }
