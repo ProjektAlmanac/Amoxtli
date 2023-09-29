@@ -9,6 +9,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(org.springframework.security.config.annotation.web.builders.HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/**").permitAll();
+                .antMatchers("/**").permitAll()
+                .and()
+                .csrf().disable();
     }
 }
