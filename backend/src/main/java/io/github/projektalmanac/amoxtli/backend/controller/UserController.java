@@ -4,12 +4,14 @@ import io.github.projektalmanac.amoxtli.backend.generated.api.UsuariosApi;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -39,13 +41,13 @@ public class UserController implements UsuariosApi {
         return null;
     }
 
-    @PostMapping
+    @PostMapping(path = "/usuarios")
     @Override
     public ResponseEntity<UsuarioDto> crearUsuario(@RequestBody @Valid UsuarioDto usuario) {
 
         UsuarioDto nuevoUsuario = userService.createuser(usuario);
 
-        if(nuevoUsuario != null) {
+        if (nuevoUsuario != null) {
 
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
 
@@ -79,18 +81,51 @@ public class UserController implements UsuariosApi {
         return null;
     }
 
+
+    @PostMapping(path = "/usuarios/{id}/mandarCorreoConfirmacion")
     @Override
-    public ResponseEntity<Void> mandarCorreoConfirmacion(Integer id) {
-        return null;
+    public ResponseEntity<String> mandarCorreoConfirmacion(@PathVariable long id) {
+        // Obtén el correo del usuario usando el ID
+        String correoUsuario = userService.obtenerCorreoPorId(id);
+
+        if (correoUsuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado.");
+        }
+
+        String codigoVerificacion = userService.generarCodigoVerificacion();
+
+        try {
+            // Envia el correo de verificación
+            userService.enviarCorreoVerificacion(correoUsuario, codigoVerificacion);
+
+            // Almacena el código de verificación en la base de datos
+            userService.guardarCodigoVerificacion(id, codigoVerificacion);
+
+            return ResponseEntity.ok("Correo de verificación enviado con éxito.");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al enviar el correo de verificación.");
+        }
     }
+
 
     @Override
     public ResponseEntity<ValidaPuedeIntercambiar200ResponseDto> validaPuedeIntercambiar(Integer id) {
         return null;
     }
 
+
+    @PostMapping(path = "/usuarios/{id}/verificarCorreo")
     @Override
-    public ResponseEntity<Void> verificarCorreo(Integer id, CodigoVerificacionDto codigoVerificacionDto) {
-        return null;
+    public ResponseEntity<String> verificarCorreo(@PathVariable long id, @RequestBody @Valid CodigoVerificacionDto codigoVerificacionDto) {
+        // Verificar el código de verificación ingresado por el usuario
+        boolean codigoCorrecto = userService.verificaCorreo(id, codigoVerificacionDto);
+
+        if (codigoCorrecto == true) {
+            return ResponseEntity.ok("Código de verificación correcto. Correo confirmado.");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Código de verificación incorrecto.");
+        }
+
     }
 }

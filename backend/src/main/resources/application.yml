@@ -1,1 +1,12 @@
-
+spring:
+  mail:
+    host: smtp.gmail.com   # Dirección del servidor de correo saliente (SMTP)
+    port: 587                # Puerto del servidor de correo saliente (587 para TLS, 465 para SSL)
+    username: axelguzman117@gmail.com # dirección de correo electrónico
+    password: mrtk yrgb pxbc vqrl   #contraseña de correo electrónico
+    properties:
+      mail:
+        smtp:
+          auth: true           # Habilitar autenticación
+          starttls:
+            enable: true

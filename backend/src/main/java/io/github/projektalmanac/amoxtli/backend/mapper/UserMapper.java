@@ -10,6 +10,7 @@ import org.mapstruct.factory.Mappers;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
+    @Mapping(source = "id", target = "id")
     @Mapping(source = "correo", target = "email")
     @Mapping(source = "nombre", target = "name")
     @Mapping(source = "apellidos", target = "lastName")
