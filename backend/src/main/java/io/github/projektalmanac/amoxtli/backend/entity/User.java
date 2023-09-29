@@ -1,5 +1,6 @@
 package io.github.projektalmanac.amoxtli.backend.entity;
 
+import io.github.projektalmanac.amoxtli.backend.exception.EmptyResourceException;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     private String name;
     private String lastName;
     private String email;
@@ -31,6 +32,7 @@ public class User {
     public boolean addBook(Book book) {
 		
 		if(book == null) {
+            // TODO: Cambiar a excepción correcta
 			throw new EmptyResourceException();
 		}
 		

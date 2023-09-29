@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 
+import com.google.api.services.books.model.Volume.VolumeInfo;
 import io.github.projektalmanac.amoxtli.backend.entity.*;
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.exception.EmptyResourceException;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.mapper.BookMapper;
 import io.github.projektalmanac.amoxtli.backend.repository.*;
-import io.github.projektalmanac.amoxtli.backend.service.GoogleBookService; 
+import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class UserService {
 
         Optional <User> userOpt = userRepository.findById(id);
 
-        if(!userOpt.isPresent()){
+        if(userOpt.isEmpty()){
             throw new UserNotFoundException(id);
         }
 

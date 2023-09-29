@@ -1,13 +1,20 @@
 package io.github.projektalmanac.amoxtli.backend.mapper;
 
+import com.google.api.services.books.model.Volume.VolumeInfo;
 import io.github.projektalmanac.amoxtli.backend.entity.Book;
-import io.github.projektalmanac.amoxtli.backend.entity.User;
+import io.github.projektalmanac.amoxtli.backend.generated.model.DetallesLibroDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.LibroRegistradoConDetallesDto;
+import io.github.projektalmanac.amoxtli.backend.generated.model.LibroRegistradoDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.LibrosUsuarioDto;
+import jdk.jfr.Name;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.net.URI;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -18,7 +25,7 @@ public interface BookMapper {
     @Mapping(target = "isbn", source = "book.isbn")
     @Mapping(target = "titulo", source = "libroGoogleBooks.title")
     @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")
-    @Mapping(target = "urlPortada", expression = "java(libroGoogleBooks.getImageLinks() != null ? libroGoogleBooks.getImageLinks().getMedium() : null)")
+    @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks.medium")
     LibroRegistradoConDetallesDto toLibroRegistradoConDetallesDto(Book book, VolumeInfo libroGoogleBooks);
 
     default LibrosUsuarioDto toLibrosUsuarioDto(List<Book> books, List<VolumeInfo> librosGoogleBooks) {
@@ -35,20 +42,26 @@ public interface BookMapper {
     @Mapping(target = "isbn", source = "ISBN")
     @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")
     @Mapping(target = "titulo", source = "libroGoogleBooks.title")
-    @Mapping(target = "urlPortada", expression = "java(libroGoogleBooks.getImageLinks() != null ? libroGoogleBooks.getImageLinks().getMedium() : null)")
+    @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks.medium")
     @Mapping(target = "generos", source = "libroGoogleBooks.categories")
     @Mapping(target = "editorial", source = "libroGoogleBooks.publisher")
     @Mapping(target = "sinopsis", source = "libroGoogleBooks.description")
     @Mapping(target = "idioma", source = "libroGoogleBooks.language")
-    @Mapping(target = "fechaPublicacion", expression = "java(libroGoogleBooks.getPublishedDate() != null && !libroGoogleBooks.getPublishedDate().isEmpty() ? LocalDate.parse(libroGoogleBooks.getPublishedDate(), DateTimeFormatter.ofPattern(\"yyyy-MM-dd\")) : null)")
+    @Mapping(target = "fechaPublicacion", source = "libroGoogleBooks.publishedDate" )
     DetallesLibroDto toDetallesLibroDto(String ISBN, VolumeInfo libroGoogleBooks);
 
     @Mapping(target = "isbn", source = "libroRegistradoDto.isbn")
     @Mapping(target = "description", source = "libroRegistradoDto.descripcion")
     Book toBook(LibroRegistradoDto libroRegistradoDto);
 
-    @Mapping(target = "id", source = "book.id")
-    @Mapping(target = "isbn", source = "book.isbn")
-    @Mapping(target = "description", source = "book.descripcion")
+    @Mapping(target = "descripcion", source = "description")
     LibroRegistradoDto toLibroRegistradoDto(Book book);
+
+    default URI stringToUri(String string) {
+        return URI.create(string);
+    }
+
+    default LocalDate stringToDate(String string) {
+        return LocalDate.parse(string, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
 }

@@ -1,4 +1,4 @@
-package io.github.projektalmanac.amoxtli.backend.service;
+package io.github.projektalmanac.amoxtli.backend.service.consume;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -6,13 +6,17 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.books.Books;
 import com.google.api.services.books.BooksRequestInitializer;
 import com.google.api.services.books.model.Volume;
-import com.google.api.services.books.model.VolumeInfo;
+import com.google.api.services.books.model.Volume.VolumeInfo;
 import com.google.api.services.books.model.Volumes;
-import io.github.projektalmanac.amoxtli.backend.exception.RuntimeException;
 import io.github.projektalmanac.amoxtli.backend.entity.*;
+import io.github.projektalmanac.amoxtli.backend.exception.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class GoogleBookService {
     private final Books.Volumes volumesService;
 
@@ -48,7 +52,7 @@ public class GoogleBookService {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("Error al buscar volúmenes en Google Books");
+            throw new java.lang.RuntimeException("Error al buscar volúmenes en Google Books");
         }
 
         return volumeInfoList;

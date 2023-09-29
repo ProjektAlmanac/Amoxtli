@@ -22,21 +22,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<Void> handleEmptyResourceException(EmptyResourceException ex, WebRequest request) {
         return ResponseEntity.noContent().build();
     }
-
-    @ExceptionHandler(RuntimeException.class)
-    public final ResponseEntity<Void> handleRuntimeException(RuntimeException ex, WebRequest request) {
-        var error = new ErrorDto(ex.getMessage(), 1);
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-    }
+//
+//    @ExceptionHandler(RuntimeException.class)
+//    public final ResponseEntity<ErrorDto> handleRuntimeException(RuntimeException ex, WebRequest request) {
+//        var error = new ErrorDto(ex.getMessage(), 1);
+//        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+//    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public final ResponseEntity<Void> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+    public final ResponseEntity<ErrorDto> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
         var error = new ErrorDto(ex.getMessage(), 1);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BookAlreadyExistsException.class)
-    public final ResponseEntity<Void> handleBookAlreadyExistsException(BookAlreadyExistsException ex, WebRequest request) {
+    public final ResponseEntity<ErrorDto> handleBookAlreadyExistsException(BookAlreadyExistsException ex, WebRequest request) {
         var error = new ErrorDto(ex.getMessage(), 1);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
