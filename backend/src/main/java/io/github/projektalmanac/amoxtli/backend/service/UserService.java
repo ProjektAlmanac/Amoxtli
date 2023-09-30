@@ -5,6 +5,7 @@ import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.generated.model.CodigoVerificacionDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.UsuarioDto;
 import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,7 +16,7 @@ import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.util.Optional;
 import java.util.Random;
-
+@Slf4j
 @Service
 public class UserService {
 
@@ -50,11 +51,11 @@ public class UserService {
                 userRepository.save(usuario1);
                 //pasar de entidad a DTO,
                 UsuarioDto usuarioDto1 = new UsuarioDto();
-                usuarioDto1.setId(usuario1.getId());
+                usuarioDto1.setId(usuario1.getId()); //quitar id
                 usuarioDto1.setNombre(usuario1.getName());
                 usuarioDto1.setApellidos(usuario1.getLastName());
                 usuarioDto1.setCorreo(usuario1.getEmail());
-                usuarioDto1.setPassword(usuario1.getPasswordHash());
+                usuarioDto1.setPassword(usuario1.getPasswordHash());//hablar con ANDY para el password.
 
                 return usuarioDto1;
             } else {
@@ -68,7 +69,8 @@ public class UserService {
 
     public String obtenerCorreoPorId(long id) {
         Optional<User> userOpt = userRepository.findById(id);
-        return userOpt.map(User::getEmail).orElse(null);
+        return userOpt.get().getEmail();
+        //return userOpt.map(User::getEmail).orElse(null);
     }
 
 
@@ -110,6 +112,7 @@ public class UserService {
             usuario.setVerificationCode(codigoVerificacion);
             userRepository.save(usuario);
 
+            log.info("Código de verificación antes de almacenar: {}",codigoVerificacion);
             System.out.printf("Código de verificación antes de almacenar: %s\n", codigoVerificacion);
             System.out.printf("Código de verificación almacenado en la base de datos: %s\n", usuario.getVerificationCode());
         } else {
@@ -132,7 +135,7 @@ public class UserService {
             // Verifica si codigoAlmacenado es null antes de realizar la comparación
             if (codigoAlmacenado != null && codigoAlmacenado.equals(codigoIngresado)) {
                 // Código de verificación correcto
-                // Realiza otras acciones si es necesario
+                usuario1.setVerifiedEmail(true);
                 return true;
             }
 

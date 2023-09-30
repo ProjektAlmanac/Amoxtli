@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.List;
@@ -48,7 +49,7 @@ public class UserController implements UsuariosApi {
         UsuarioDto nuevoUsuario = userService.createuser(usuario);
 
         if (nuevoUsuario != null) {
-
+            // devolveer solamente ID
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
 
         } else {
@@ -96,7 +97,7 @@ public class UserController implements UsuariosApi {
 
         try {
             // Envia el correo de verificación
-            userService.enviarCorreoVerificacion(correoUsuario, codigoVerificacion);
+            userService.enviarCorreoVerificacion(correoUsuario, codigoVerificacion);//cambiar a variables de entorno
 
             // Almacena el código de verificación en la base de datos
             userService.guardarCodigoVerificacion(id, codigoVerificacion);
@@ -117,14 +118,14 @@ public class UserController implements UsuariosApi {
 
     @PostMapping(path = "/usuarios/{id}/verificarCorreo")
     @Override
-    public ResponseEntity<String> verificarCorreo(@PathVariable long id, @RequestBody @Valid CodigoVerificacionDto codigoVerificacionDto) {
+    public ResponseEntity<String> verificarCorreo(@PathVariable long id, @RequestBody @Valid CodigoVerificacionDto codigoVerificacionDto) { //no debe regresar nada y remodificar usuariosAPI
         // Verificar el código de verificación ingresado por el usuario
         boolean codigoCorrecto = userService.verificaCorreo(id, codigoVerificacionDto);
 
         if (codigoCorrecto == true) {
             return ResponseEntity.ok("Código de verificación correcto. Correo confirmado.");
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Código de verificación incorrecto.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Código de verificación incorrecto.");//modificar codigos de error en exception y advice.
         }
 
     }
