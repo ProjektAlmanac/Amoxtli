@@ -2,6 +2,8 @@ package io.github.projektalmanac.amoxtli.backend.controller;
 
 import io.github.projektalmanac.amoxtli.backend.generated.api.UsuariosApi;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
+import io.github.projektalmanac.amoxtli.backend.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,6 +11,14 @@ import java.util.List;
 
 @RestController
 public class UserController implements UsuariosApi {
+
+
+    private UserService userService;
+
+    @Autowired
+    UserController(UserService userService){
+        this.userService = userService;
+    }
     @Override
     public ResponseEntity<IntercambioDto> aceptarIntercambio(Integer idUsuario, Integer idIntercambio, AceptarIntercambioRequestDto aceptarIntercambioRequestDto) {
         return null;
@@ -16,6 +26,7 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<PerfilUsuarioDto> actualizarUsuario(Integer id, List<PatchRequestInnerDto> patchRequestInnerDto) {
+        this.userService.actualizaUsuario(id,patchRequestInnerDto);
         return null;
     }
 
@@ -56,7 +67,8 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<PerfilUsuarioDto> getUsuario(Integer id) {
-        return null;
+        PerfilUsuarioDto perfilUsuarioDto = this.userService.getUsuario(id);
+        return ResponseEntity.ok(perfilUsuarioDto);
     }
 
     @Override

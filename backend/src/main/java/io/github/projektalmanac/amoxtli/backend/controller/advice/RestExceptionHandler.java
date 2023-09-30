@@ -1,7 +1,9 @@
 package io.github.projektalmanac.amoxtli.backend.controller.advice;
 
+import io.github.projektalmanac.amoxtli.backend.exception.UnauthenticatedUserException;
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.generated.model.ErrorDto;
+import io.github.projektalmanac.amoxtli.backend.generated.model.PerfilUsuarioDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,5 +19,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         var error = new ErrorDto(ex.getMessage(), 1);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
-
+    @ExceptionHandler(UnauthenticatedUserException.class)
+    public final ResponseEntity<ErrorDto> handleUnauthenticatedUserException(UnauthenticatedUserException ex, WebRequest request){
+        var error = new ErrorDto(ex.getMessage(), 1);
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
 }
