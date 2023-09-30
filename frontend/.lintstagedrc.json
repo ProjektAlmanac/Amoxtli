@@ -1,5 +1,5 @@
 {
   "!(src/generated/**)*": "prettier --ignore-unknown --write",
-  "!(src/generated/**)*.{html,sass}": "eslint --fix --max-warnings 0",
+  "!(src/generated/**)*.{html}": "eslint --fix --max-warnings 0",
   "!(src/generated/**)!(*.d).ts": "eslint --fix --max-warnings 0"
 }

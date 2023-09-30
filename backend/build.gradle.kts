@@ -95,4 +95,5 @@ openApiGenerate {
 	additionalProperties.put("interfaceOnly", true)
 	additionalProperties.put("skipDefaultInterface", true)
 	additionalProperties.put("configPackage", "io.github.projektalmanac.amoxtli.backend.generated.config")
+	additionalProperties.put("hideGenerationTimestamp", true)
 }

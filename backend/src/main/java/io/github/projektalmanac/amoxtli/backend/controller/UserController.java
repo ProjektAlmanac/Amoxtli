@@ -4,6 +4,7 @@ import io.github.projektalmanac.amoxtli.backend.generated.api.UsuariosApi;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,9 +25,12 @@ public class UserController implements UsuariosApi {
         return null;
     }
 
+    public ResponseEntity<Void> actualizarFotoPerfil(String id, Resource body) {
+        return null;
+    }
+
     @Override
-    public ResponseEntity<PerfilUsuarioDto> actualizarUsuario(Integer id, List<PatchRequestInnerDto> patchRequestInnerDto) {
-        this.userService.actualizaUsuario(id,patchRequestInnerDto);
+    public ResponseEntity<PerfilUsuarioDto> actualizarUsuario(Integer id, PerfilUsuarioDto perfilUsuarioDto) {
         return null;
     }
 
