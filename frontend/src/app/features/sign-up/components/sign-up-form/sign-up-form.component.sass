@@ -1,0 +1,17 @@
+@import breakpoints
+
+.grid
+    width: 100%
+    height: 100%
+    display: grid
+    grid-template-columns: 1fr 1fr
+    grid-gap: 1rem
+
+.email, .password, .confirm-password, .submit
+    grid-column: 1 / 3
+
+.name, .surname
+    @include xs
+        grid-column: 1 / 3
+    @include sm
+        grid-column: unset
