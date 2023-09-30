@@ -1,6 +1,12 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
 	java
 	jacoco
+
+	kotlin("jvm") version "1.9.10"
+	kotlin("plugin.spring") version "1.9.10"
+
 	id("org.springframework.boot") version "3.1.3"
 	id("io.spring.dependency-management") version "1.1.3"
   	id("org.sonarqube") version "4.3.1.3277"
@@ -31,6 +37,12 @@ tasks.test {
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
+}
+
+tasks.withType<KotlinCompile>().configureEach{
+	kotlinOptions {
+		jvmTarget = "17"
+	}
 }
 
 configurations {
@@ -74,6 +86,8 @@ dependencies {
 //	implementation("com.fasterxml.jackson.core:jackson-databind")
 
 	implementation("org.hibernate.validator:hibernate-validator")
+
+	testImplementation(kotlin("test"))
 }
 
 tasks.withType<Test> {
