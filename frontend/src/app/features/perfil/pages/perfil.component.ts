@@ -25,7 +25,6 @@ export class PerfilComponent implements OnInit {
   //State variables to know if a field has been manipulated
   photoTouched = false
   describePhotoTouched = false
-  nameUserTouched = false
   nameTouched = false
   lastnameTouched = false
   emailTouched = false
@@ -39,7 +38,6 @@ export class PerfilComponent implements OnInit {
     this.form = this.fb.group({
       photo: [''],
       describePhoto: [''],
-      nameUser: ['', Validators.required],
       name: ['', Validators.required],
       lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -64,7 +62,6 @@ export class PerfilComponent implements OnInit {
       // Llena los campos del formulario con la información del perfilUsuario
       this.form.patchValue({
         describePhoto: usuario.descripcinFoto,
-        nameUser: usuario.nombre,
         name: usuario.nombre,
         lastname: usuario.apellidos,
         email: usuario.correo,
@@ -83,10 +80,10 @@ export class PerfilComponent implements OnInit {
     //eslint-disable-next-line no-console
     console.log('Datos actualizados')
     this.success('Datos actualizados')
-
     const actualizacionExitosa = true
     if (actualizacionExitosa) {
       this.showInputPhoto = false // Oculta el campo de foto después de una actualización exitosa
+      this.showButtons = false
     }
     this.form.reset()
   }
@@ -115,18 +112,15 @@ export class PerfilComponent implements OnInit {
         this.describePhotoTouched = true
         break
       case 3:
-        this.nameUserTouched = true
-        break
-      case 4:
         this.nameTouched = true
         break
-      case 5:
+      case 4:
         this.lastnameTouched = true
         break
-      case 6:
+      case 5:
         this.emailTouched = true
         break
-      case 7:
+      case 6:
         this.phoneNumberTouched = true
         break
       default:
@@ -138,7 +132,6 @@ export class PerfilComponent implements OnInit {
     if (
       this.photoTouched ||
       this.describePhotoTouched ||
-      this.nameUserTouched ||
       this.nameTouched ||
       this.lastnameTouched ||
       this.emailTouched ||
@@ -151,7 +144,6 @@ export class PerfilComponent implements OnInit {
   resetTouchedFields() {
     this.photoTouched = false
     this.describePhotoTouched = false
-    this.nameUserTouched = false
     this.nameTouched = false
     this.lastnameTouched = false
     this.emailTouched = false
