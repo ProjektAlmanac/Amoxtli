@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 
 @Schema(name = "CodigoIntercambio", description = "Contiene el código requerido para completar un intercambio")
 @JsonTypeName("CodigoIntercambio")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-20T16:35:03.036426542-06:00[America/Mexico_City]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class CodigoIntercambioDto {
 
   private UUID codigo;
