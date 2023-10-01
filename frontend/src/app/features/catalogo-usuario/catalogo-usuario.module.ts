@@ -42,4 +42,4 @@ import { TextFieldModule } from '@angular/cdk/text-field'
   ],
   exports: [HomePageComponent, MiCatalogoPageComponent, AgregarLibroComponent],
 })
-export class UserModule {}
+export class CatalogoUsuarioModule {}

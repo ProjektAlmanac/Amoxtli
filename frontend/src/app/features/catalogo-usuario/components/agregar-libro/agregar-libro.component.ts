@@ -8,6 +8,7 @@ import {
 } from '@angular/forms'
 import { CdkTextareaAutosize } from '@angular/cdk/text-field'
 import { DefaultService, DetallesLibro, LibroRegistrado } from 'src/generated/openapi'
+import { ServicioUsuario } from 'src/app/core/services/servicio-usuario.service'
 import { take } from 'rxjs'
 
 @Component({
@@ -20,11 +21,14 @@ export class AgregarLibroComponent {
   public mostrarCardLibro = false
   public mostrarSpinner = false
   public mostrarNotificacionExito = false
+  public mostrarNotificacionWarn = false
+  public mostrarNotificacionError = false
 
   constructor(
     private fb: FormBuilder,
     private apiService: DefaultService,
-    private _ngZone: NgZone
+    private _ngZone: NgZone,
+    private servicioUsuario: ServicioUsuario
   ) {}
 
   isbnInputForm = this.fb.group({
@@ -37,6 +41,9 @@ export class AgregarLibroComponent {
 
   onSubmit() {
     this.mostrarNotificacionExito = false
+    this.mostrarNotificacionWarn = false
+    this.mostrarNotificacionError = false
+    this.mostrarCardLibro = false
     this.mostrarSpinner = true
 
     if (!this.isbnInputForm.valid) {
@@ -44,7 +51,6 @@ export class AgregarLibroComponent {
       this.isbnInputForm.markAllAsTouched()
       return
     }
-    this.mostrarCardLibro = false
     this.descripcionForm.reset()
 
     const isbn = this.isbnInputForm.get('isbn')?.value
@@ -53,10 +59,16 @@ export class AgregarLibroComponent {
   }
 
   buscarLibro(isbn: string) {
-    this.apiService.getDetallesLibro(isbn).subscribe(libro => {
-      this.libro = libro
-      this.mostrarCardLibro = true
-      this.mostrarSpinner = false
+    this.apiService.getDetallesLibro(isbn).subscribe({
+      next: libro => {
+        this.libro = libro
+        this.mostrarCardLibro = true
+        this.mostrarSpinner = false
+      },
+      error: () => {
+        this.mostrarNotificacionWarn = true
+        this.mostrarSpinner = false
+      },
     })
   }
 
@@ -73,18 +85,29 @@ export class AgregarLibroComponent {
     const descripcion = this.descripcionForm.get('descripcion')?.value
 
     if (isbn !== null && isbn !== undefined && descripcion !== null && descripcion !== undefined) {
-      const libroAgregar: LibroRegistrado = {
+      const libro: LibroRegistrado = {
         id,
         isbn,
         descripcion,
       }
-      this.apiService.addLibro(id, libroAgregar).subscribe(() => {
+      this.agregarLibroCalotogoUsuario(libro)
+    }
+  }
+
+  agregarLibroCalotogoUsuario(libro: LibroRegistrado) {
+    const idUsuario = this.servicioUsuario.id.value
+    this.apiService.addLibro(idUsuario, libro).subscribe({
+      next: () => {
         this.mostrarCardLibro = false
         this.mostrarSpinner = false
         this.mostrarNotificacionExito = true
         this.isbnInputForm.reset()
-      })
-    }
+      },
+      error: () => {
+        this.mostrarNotificacionError = true
+        this.mostrarSpinner = false
+      },
+    })
   }
 
   cancelar() {

@@ -75,3 +75,11 @@
 <div *ngIf="mostrarNotificacionExito" class="alert alert-success notificacion" role="alert">
   ¡Se agregó el libro!
 </div>
+
+<div *ngIf="mostrarNotificacionWarn" class="alert alert-warning notificacion" role="alert">
+  No se encontró el libro con el ISBN proporcionado.
+</div>
+
+<div *ngIf="mostrarNotificacionError" class="alert alert-danger notificacion" role="alert">
+  No se pudo agregar el libro, reintenta de nuevo.
+</div>
