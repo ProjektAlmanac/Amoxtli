@@ -73,7 +73,7 @@
 </div>
 
 <div *ngIf="mostrarNotificacionExito" class="alert alert-success notificacion" role="alert">
-  ¡Se agregó el libro!
+  ¡Se agregó el libro! <a routerLink="/miCatalogo" class="alert-link">Ir a mi catálogo</a>.
 </div>
 
 <div *ngIf="mostrarNotificacionWarn" class="alert alert-warning notificacion" role="alert">
@@ -81,5 +81,5 @@
 </div>
 
 <div *ngIf="mostrarNotificacionError" class="alert alert-danger notificacion" role="alert">
-  No se pudo agregar el libro, reintenta de nuevo.
+  Hubo un error. {{ mensajeError }}
 </div>

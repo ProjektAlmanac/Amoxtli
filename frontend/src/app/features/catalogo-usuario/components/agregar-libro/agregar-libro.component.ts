@@ -7,7 +7,7 @@ import {
   ValidationErrors,
 } from '@angular/forms'
 import { CdkTextareaAutosize } from '@angular/cdk/text-field'
-import { DefaultService, DetallesLibro, LibroRegistrado } from 'src/generated/openapi'
+import { DefaultService, DetallesLibro, LibroRegistrado, ModelError } from 'src/generated/openapi'
 import { ServicioUsuario } from 'src/app/core/services/servicio-usuario.service'
 import { take } from 'rxjs'
 
@@ -18,6 +18,7 @@ import { take } from 'rxjs'
 })
 export class AgregarLibroComponent {
   public libro!: DetallesLibro
+  public mensajeError = ''
   public mostrarCardLibro = false
   public mostrarSpinner = false
   public mostrarNotificacionExito = false
@@ -73,6 +74,7 @@ export class AgregarLibroComponent {
   }
 
   agregarLibro() {
+    this.mostrarNotificacionError = false
     this.mostrarSpinner = true
     if (!this.descripcionForm.valid) {
       this.descripcionForm.markAllAsTouched()
@@ -81,10 +83,10 @@ export class AgregarLibroComponent {
     }
 
     const id = 0
-    const isbn = this.isbnInputForm.get('isbn')?.value
+    const isbn = this.libro.isbn
     const descripcion = this.descripcionForm.get('descripcion')?.value
 
-    if (isbn !== null && isbn !== undefined && descripcion !== null && descripcion !== undefined) {
+    if (descripcion !== null && descripcion !== undefined) {
       const libro: LibroRegistrado = {
         id,
         isbn,
@@ -102,8 +104,10 @@ export class AgregarLibroComponent {
         this.mostrarSpinner = false
         this.mostrarNotificacionExito = true
         this.isbnInputForm.reset()
+        this.isbnInputForm.controls.isbn.setErrors(null)
       },
-      error: () => {
+      error: (error: ModelError) => {
+        this.mensajeError = error.mensaje
         this.mostrarNotificacionError = true
         this.mostrarSpinner = false
       },
@@ -111,6 +115,7 @@ export class AgregarLibroComponent {
   }
 
   cancelar() {
+    this.mostrarNotificacionError = false
     this.mostrarCardLibro = false
     this.isbnInputForm.reset()
   }
@@ -125,6 +130,9 @@ export class AgregarLibroComponent {
 function isbnLengthValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const inputValue: string = control.value
+    if (inputValue === null || inputValue === undefined) {
+      return null
+    }
     if (inputValue.length === 10 || inputValue.length === 13) {
       return null
     } else {
