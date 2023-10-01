@@ -25,25 +25,29 @@
             style="display: block; margin: 0 auto" />
         </button>
       </div>
-      <mat-form-field
+      <!--<mat-form-field
         appearence="fill"
         class="mat-50"
         style="margin-left: 10px"
         *ngIf="showInputPhoto">
-        <mat-label><mat-icon> insert_photo</mat-icon></mat-label>
         <input
           matInput
           formControlName="photo"
           (ngModelChange)="onChange(1); checkTouchedFielsd()" />
-      </mat-form-field>
-      <mat-form-field appearence="fill" class="mat-50" style="margin-left: 10px">
-        <mat-label>Descripción de foto: </mat-label>
-        <input
-          matInput
-          formControlName="describePhoto"
-          placeholder="Ingrese una descripción sobre la foto"
-          (ngModelChange)="onChange(2); checkTouchedFielsd()" />
-      </mat-form-field>
+      </mat-form-field>-->
+      <div class="mat-50" position="inline-block">
+        <mat-form-field *ngIf="showInputPhoto" appearence="fill" style="margin-left: 10px">
+          <input type="file" (ngModelChange)="onChange(1); checkTouchedFielsd()" />
+        </mat-form-field>
+        <mat-form-field appearence="fill" style="margin-left: 10px">
+          <mat-label>Descripción de foto: </mat-label>
+          <input
+            matInput
+            formControlName="describePhoto"
+            placeholder="Ingrese una descripción sobre la foto"
+            (ngModelChange)="onChange(2); checkTouchedFielsd()" />
+        </mat-form-field>
+      </div>
     </div>
     <th></th>
     <mat-label>Ingrese los siguientes datos: </mat-label>
