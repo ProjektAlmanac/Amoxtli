@@ -14,7 +14,6 @@ import io.github.projektalmanac.amoxtli.backend.generated.model.GetIntercambios2
 import io.github.projektalmanac.amoxtli.backend.generated.model.IntercambioDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.LibroRegistradoDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.LibrosUsuarioDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.PatchRequestInnerDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.PerfilUsuarioDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.UsuarioDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.UsuarioIdDto;
@@ -35,7 +34,7 @@ import javax.validation.Valid;
 import java.util.List;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-20T16:35:03.036426542-06:00[America/Mexico_City]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Validated
 @Tag(name = "usuarios", description = "the usuarios API")
 public interface UsuariosApi {
@@ -92,11 +91,54 @@ public interface UsuariosApi {
 
 
     /**
-     * PATCH /usuarios/{id} : Actualizar usuario
+     * PUT /usuarios/{id}/fotoPerfil : Actualizar foto de perfil
+     * Actualiza la foto de perfil de un usuario
+     *
+     * @param id  (required)
+     * @param body  (optional)
+     * @return No Content (status code 204)
+     *         or Bad Request (status code 400)
+     *         or Unauthorized (status code 401)
+     *         or Forbidden (status code 403)
+     */
+    @Operation(
+        operationId = "actualizarFotoPerfil",
+        summary = "Actualizar foto de perfil",
+        description = "Actualiza la foto de perfil de un usuario",
+        responses = {
+            @ApiResponse(responseCode = "204", description = "No Content"),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class))
+            }),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class))
+            })
+        },
+        security = {
+            @SecurityRequirement(name = "Token")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.PUT,
+        value = "/usuarios/{id}/fotoPerfil",
+        produces = { "application/json" },
+        consumes = { "image/png", "image/jpg" }
+    )
+    ResponseEntity<Void> actualizarFotoPerfil(
+        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") String id,
+        @Parameter(name = "body", description = "") @Valid @RequestBody(required = false) org.springframework.core.io.Resource body
+    );
+
+
+    /**
+     * PUT /usuarios/{id} : Actualizar usuario
      * Actualiza los datos de un usuario
      *
      * @param id Id del usuario (required)
-     * @param patchRequestInnerDto  (optional)
+     * @param perfilUsuarioDto  (optional)
      * @return OK (status code 200)
      *         or Unauthorized (status code 401)
      *         or Forbidden (status code 403)
@@ -125,14 +167,14 @@ public interface UsuariosApi {
         }
     )
     @RequestMapping(
-        method = RequestMethod.PATCH,
+        method = RequestMethod.PUT,
         value = "/usuarios/{id}",
         produces = { "application/json" },
         consumes = { "application/json-patch+json" }
     )
     ResponseEntity<PerfilUsuarioDto> actualizarUsuario(
         @Parameter(name = "id", description = "Id del usuario", required = true, in = ParameterIn.PATH) @PathVariable("id") Integer id,
-        @Parameter(name = "PatchRequestInnerDto", description = "") @Valid @RequestBody(required = false) List<PatchRequestInnerDto> patchRequestInnerDto
+        @Parameter(name = "PerfilUsuarioDto", description = "") @Valid @RequestBody(required = false) PerfilUsuarioDto perfilUsuarioDto
     );
 
 
