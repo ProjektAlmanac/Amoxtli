@@ -13,7 +13,8 @@ export class PerfilComponent implements OnInit {
   public perfilUsuario!: PerfilUsuario
   public photoImg = ''
   private _snackBar = inject(MatSnackBar)
-
+  selectedFile: File | null = null
+  imageSrc: string | ArrayBuffer | null = null
   form: FormGroup
 
   //Variable to control the appearance of the buttons
@@ -55,7 +56,7 @@ export class PerfilComponent implements OnInit {
   recuperaUsuario() {
     this.serviceApi.getUsuario(1).subscribe(usuario => {
       this.perfilUsuario = usuario
-      this.photoImg = usuario.fotoPerfil ?? ''
+      this.imageSrc = usuario.fotoPerfil ?? ''
       // eslint-disable-next-line no-console
       console.log(typeof usuario.fotoPerfil)
 
@@ -75,6 +76,41 @@ export class PerfilComponent implements OnInit {
   public success(msg: string) {
     successNotification(msg, this._snackBar)
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onFileSelected(event: any) {
+    // eslint-disable-next-line no-console
+    console.log('captura archivo')
+    // eslint-disable-next-line no-console
+    console.log(event.target.files)
+    this.selectedFile = event.target.files[0]
+    // eslint-disable-next-line no-console
+    console.log(this.selectedFile)
+    //const file: File = event.target.files[0]
+
+    if (this.selectedFile) {
+      const reader = new FileReader()
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      reader.onload = (e: any) => {
+        this.imageSrc = e.target.result
+      }
+
+      reader.readAsDataURL(this.selectedFile)
+      // eslint-disable-next-line no-console
+      console.log(this.selectedFile)
+      // eslint-disable-next-line no-console
+      console.log(reader)
+    }
+  }
+
+  /*extraerBase64 = async ($event: any) => new Promise((resolve, reject) =>{
+    try {
+      const unsafeIng = window.URL.createObjectURL($event)
+      const image = this.santizer.bypassSecurityTrustUrl(unsafeImg)
+      conts reader = new FileReader()
+
+    }
+  })*/
 
   sendValues() {
     //eslint-disable-next-line no-console
