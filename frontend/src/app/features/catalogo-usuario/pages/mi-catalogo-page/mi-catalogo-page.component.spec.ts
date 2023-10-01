@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
 import { MiCatalogoPageComponent } from './mi-catalogo-page.component'
-import { UserModule } from '../../user.module'
+import { UserModule } from '../../catalogo-usuario.module'
 import { RouterTestingModule } from '@angular/router/testing'
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { HttpClientTestingModule } from '@angular/common/http/testing'

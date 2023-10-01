@@ -1,21 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { HomePageComponent } from './home-page.component'
-import { UserModule } from '../../user.module'
-import { NoopAnimationsModule } from '@angular/platform-browser/animations'
+import { AgregarLibroComponent } from './agregar-libro.component'
 import { RouterTestingModule } from '@angular/router/testing'
+import { NoopAnimationsModule } from '@angular/platform-browser/animations'
+import { UserModule } from '../../catalogo-usuario.module'
 import { HttpClientTestingModule } from '@angular/common/http/testing'
 
-describe('HomeComponent', () => {
-  let component: HomePageComponent
-  let fixture: ComponentFixture<HomePageComponent>
+describe('AgregarLibroComponent', () => {
+  let component: AgregarLibroComponent
+  let fixture: ComponentFixture<AgregarLibroComponent>
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HomePageComponent],
+      declarations: [AgregarLibroComponent],
       imports: [UserModule, NoopAnimationsModule, RouterTestingModule, HttpClientTestingModule],
     })
-    fixture = TestBed.createComponent(HomePageComponent)
+    fixture = TestBed.createComponent(AgregarLibroComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })

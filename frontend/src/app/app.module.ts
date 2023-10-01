@@ -18,7 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { SignUpModule } from './features/sign-up/sign-up.module'
 import { ServicioUsuario } from './core/services/servicio-usuario.service'
 import { SharedModule } from './shared/shared.module'
-import { UserModule } from './features/user/user.module'
+import { UserModule } from './features/catalogo-usuario/catalogo-usuario.module'
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {}

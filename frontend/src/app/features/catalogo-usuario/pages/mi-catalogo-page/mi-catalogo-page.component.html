@@ -14,9 +14,11 @@
     <mat-card-header>
       <mat-card-title-group>
         <mat-card-title>{{ libro.titulo }}</mat-card-title>
-        <img mat-card-md-image [src]="libro.urlPortada" alt="Image of a Shiba Inu" />
+        <mat-card-subtitle>{{ libro.autor }}</mat-card-subtitle>
+        <img mat-card-md-image [src]="libro.urlPortada" alt="Image of a Shiba Inu" width="150px" />
       </mat-card-title-group>
     </mat-card-header>
+
     <mat-card-actions>
       <button class="m-1" mat-button mat-stroked-button color="primary">Modificar</button>
       <button class="m-1" mat-button mat-stroked-button color="warn">Eliminar</button>
