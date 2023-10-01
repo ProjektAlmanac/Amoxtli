@@ -86,31 +86,37 @@ export class PerfilComponent implements OnInit {
     // eslint-disable-next-line no-console
     console.log(this.selectedFile)
     //const file: File = event.target.files[0]
+    // Obtener la extensión del archivo
+    const nombreArchivo = this.selectedFile?.name
+    const extension = nombreArchivo?.substring(nombreArchivo.lastIndexOf('.') + 1).toLowerCase()
 
-    if (this.selectedFile) {
-      const reader = new FileReader()
+    // Verificar si la extensión es JPEG o PNG
+    if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
+      // eslint-disable-next-line no-console
+      console.log('¡El archivo es de formato JPEG o PNG y ha sido seleccionado correctamente!')
+      if (this.selectedFile) {
+        const reader = new FileReader()
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      reader.onload = (e: any) => {
-        this.imageSrc = e.target.result
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        reader.onload = (e: any) => {
+          this.imageSrc = e.target.result
+        }
+
+        reader.readAsDataURL(this.selectedFile)
+        // eslint-disable-next-line no-console
+        console.log(this.selectedFile)
+        // eslint-disable-next-line no-console
+        console.log(reader)
       }
-
-      reader.readAsDataURL(this.selectedFile)
+    } else {
       // eslint-disable-next-line no-console
-      console.log(this.selectedFile)
+      this.success('Por favor, seleccione una imagen de formato JPEG o PNG.')
       // eslint-disable-next-line no-console
-      console.log(reader)
+      console.log('Por favor, seleccione una imagen de formato JPEG o PNG.')
+      // También puedes limpiar el campo de entrada para que el usuario seleccione nuevamente
+      event.target.value = '' // Esto elimina el archivo seleccionado
     }
   }
-
-  /*extraerBase64 = async ($event: any) => new Promise((resolve, reject) =>{
-    try {
-      const unsafeIng = window.URL.createObjectURL($event)
-      const image = this.santizer.bypassSecurityTrustUrl(unsafeImg)
-      conts reader = new FileReader()
-
-    }
-  })*/
 
   sendValues() {
     //eslint-disable-next-line no-console
