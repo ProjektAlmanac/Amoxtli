@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 
 @Schema(name = "LibroRegistradoConDetalles", description = "Un libro registrado como parte de la biblioteca de un usuario junto con algunos detalles del libro")
 @JsonTypeName("LibroRegistradoConDetalles")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-20T16:35:03.036426542-06:00[America/Mexico_City]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class LibroRegistradoConDetallesDto {
 
   private String isbn;
