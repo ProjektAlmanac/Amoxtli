@@ -44,13 +44,14 @@ public class UserController implements UsuariosApi {
 
     @PostMapping(path = "/usuarios")
     @Override
-    public ResponseEntity<UsuarioDto> crearUsuario(@RequestBody @Valid UsuarioDto usuario) {
+    public ResponseEntity<UsuarioIdDto> crearUsuario(@RequestBody @Valid UsuarioDto usuario) {
 
-        UsuarioDto nuevoUsuario = userService.createuser(usuario);
+        UsuarioIdDto nuevousuario = userService.createuser(usuario);
 
-        if (nuevoUsuario != null) {
+
+        if (nuevousuario != null) {
             // devolveer solamente ID
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevousuario);
 
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -122,7 +123,7 @@ public class UserController implements UsuariosApi {
         // Verificar el código de verificación ingresado por el usuario
         boolean codigoCorrecto = userService.verificaCorreo(id, codigoVerificacionDto);
 
-        if (codigoCorrecto == true) {
+        if (codigoCorrecto) {
             return ResponseEntity.ok("Código de verificación correcto. Correo confirmado.");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Código de verificación incorrecto.");//modificar codigos de error en exception y advice.

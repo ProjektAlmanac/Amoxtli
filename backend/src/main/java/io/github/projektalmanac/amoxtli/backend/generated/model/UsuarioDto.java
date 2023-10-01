@@ -17,7 +17,7 @@ import java.util.Objects;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-20T16:35:03.036426542-06:00[America/Mexico_City]")
 public class UsuarioDto {
 
-  private long id; //quitar id
+ //quitar id
 
   private String correo;
 
@@ -34,36 +34,12 @@ public class UsuarioDto {
   /**
    * Constructor with only required parameters
    */
-  public UsuarioDto(long id, String correo, String nombre, String apellildos, String password) {
-    this.id = id;
+  public UsuarioDto(String correo, String nombre, String apellildos, String password) {
     this.correo = correo;
     this.nombre = nombre;
     this.apellidos = apellildos;
     this.password = password;
   }
-
-  public UsuarioDto id(long id ) {
-    this.id = id;
-    return this;
-  }
-  /**
-   * id del usuario
-   * @return id
-   */
-
-  //@NotNull @javax.validation.constraints.Id
-  @Schema(name = "id", description = "id del usuario", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("id")
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-
-
 
   public UsuarioDto correo(String correo) {
     this.correo = correo;

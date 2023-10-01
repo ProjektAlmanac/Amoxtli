@@ -4,6 +4,7 @@ import io.github.projektalmanac.amoxtli.backend.entity.User;
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.generated.model.CodigoVerificacionDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.UsuarioDto;
+import io.github.projektalmanac.amoxtli.backend.generated.model.UsuarioIdDto;
 import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class UserService {
     private JavaMailSender javaMailSender;
 
 
-    public UsuarioDto createuser(UsuarioDto usuario) {
+    public UsuarioIdDto createuser(UsuarioDto usuario) {
 
         // Verifica que ningún campo esté vacío
         if (usuario.getNombre() != null && !usuario.getNombre().isEmpty() &&
@@ -49,15 +50,12 @@ public class UserService {
                 usuario1.setEmail(usuario.getCorreo());
                 usuario1.setPasswordHash(usuario.getPassword());
                 userRepository.save(usuario1);
-                //pasar de entidad a DTO,
-                UsuarioDto usuarioDto1 = new UsuarioDto();
-                usuarioDto1.setId(usuario1.getId()); //quitar id
-                usuarioDto1.setNombre(usuario1.getName());
-                usuarioDto1.setApellidos(usuario1.getLastName());
-                usuarioDto1.setCorreo(usuario1.getEmail());
-                usuarioDto1.setPassword(usuario1.getPasswordHash());//hablar con ANDY para el password.
 
-                return usuarioDto1;
+                UsuarioIdDto usuarioidDto1 = new UsuarioIdDto();
+                usuarioidDto1.setId((int) usuario1.getId());
+
+                return usuarioidDto1;
+
             } else {
                 return null;
             }
@@ -70,7 +68,6 @@ public class UserService {
     public String obtenerCorreoPorId(long id) {
         Optional<User> userOpt = userRepository.findById(id);
         return userOpt.get().getEmail();
-        //return userOpt.map(User::getEmail).orElse(null);
     }
 
 
@@ -113,8 +110,8 @@ public class UserService {
             userRepository.save(usuario);
 
             log.info("Código de verificación antes de almacenar: {}",codigoVerificacion);
-            System.out.printf("Código de verificación antes de almacenar: %s\n", codigoVerificacion);
-            System.out.printf("Código de verificación almacenado en la base de datos: %s\n", usuario.getVerificationCode());
+            log.info(" Código de verificación almacenado en la base de datos:: {}",usuario.getVerificationCode());;
+
         } else {
             throw new UserNotFoundException("Usuario con ID " + id + " no encontrado");
         }

@@ -250,7 +250,7 @@ public interface UsuariosApi {
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    ResponseEntity<UsuarioDto> crearUsuario(
+    ResponseEntity<UsuarioIdDto> crearUsuario(
         @Parameter(name = "UsuarioDto", description = "") @Valid @RequestBody(required = false) UsuarioDto usuarioDto
     );
 
