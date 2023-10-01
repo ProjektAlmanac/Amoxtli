@@ -8,16 +8,19 @@ import { DefaultService, LibrosUsuario } from 'src/generated/openapi'
 })
 export class MiCatalogoPageComponent implements OnInit {
   public librosUsuario!: LibrosUsuario
+  public mostrarSpinner = false
 
   constructor(private serviceApi: DefaultService) {}
 
   ngOnInit(): void {
+    this.mostrarSpinner = true
     this.recuperaLibrosUsuario()
   }
 
   recuperaLibrosUsuario() {
     this.serviceApi.getLibrosUsuario(1).subscribe(libros => {
       this.librosUsuario = libros
+      this.mostrarSpinner = false
     })
   }
 }
