@@ -87,6 +87,11 @@ export class AgregarLibroComponent {
     }
   }
 
+  cancelar() {
+    this.mostrarCardLibro = false
+    this.isbnInputForm.reset()
+  }
+
   @ViewChild('autosize') autosize!: CdkTextareaAutosize
 
   triggerResize() {
