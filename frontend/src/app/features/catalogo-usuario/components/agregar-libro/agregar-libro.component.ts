@@ -20,7 +20,6 @@ export class AgregarLibroComponent {
   public mostrarCardLibro = false
   public mostrarSpinner = false
   public mostrarNotificacionExito = false
-  public mostrarNotificacionError = false
 
   constructor(
     private fb: FormBuilder,
@@ -37,6 +36,7 @@ export class AgregarLibroComponent {
   })
 
   onSubmit() {
+    this.mostrarNotificacionExito = false
     this.mostrarSpinner = true
 
     if (!this.isbnInputForm.valid) {
@@ -96,8 +96,8 @@ export class AgregarLibroComponent {
 
 function isbnLengthValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const inputValue = control.value
-    if (inputValue && (inputValue.length === 10 || inputValue.length === 13)) {
+    const inputValue: string = control.value
+    if (inputValue.length === 10 || inputValue.length === 13) {
       return null
     } else {
       return { isbnLength: true }
