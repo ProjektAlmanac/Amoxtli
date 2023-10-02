@@ -27,7 +27,7 @@ import javax.annotation.Generated;
 
 @Schema(name = "Intercambio", description = "Información relacionada con un intercambio de libros que realizará un par de usuarios")
 @JsonTypeName("Intercambio")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-20T16:35:03.036426542-06:00[America/Mexico_City]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class IntercambioDto {
 
   private Integer id;

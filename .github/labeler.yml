@@ -3,3 +3,7 @@ frontend:
 
 backend:
 - 'backend/**'
+
+cambia-codigo-autogenerado:
+- 'frontend/src/generated/**'
+- 'backend/src/main/java/io/github/projektalmanac/amoxtli/backend/generated/**'

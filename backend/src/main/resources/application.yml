@@ -10,3 +10,7 @@ spring:
           auth: true           # Habilitar autenticación
           starttls:
             enable: true
+
+  datasource:
+    url: jdbc:h2:mem:amoxtlidb
+    driver-class-name: org.h2.Driver
