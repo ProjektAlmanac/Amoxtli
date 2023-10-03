@@ -28,18 +28,8 @@
             style="display: block; margin: 0 auto" />
         </button>
       </div>
-      <!--<mat-form-field
-        appearence="fill"
-        class="mat-50"
-        style="margin-left: 10px"
-        *ngIf="showInputPhoto">
-        <input
-          matInput
-          formControlName="photo"
-          (ngModelChange)="onChange(1); checkTouchedFielsd()" />
-      </mat-form-field>-->
       <div class="mat-50" position="inline-block">
-        <div style="margin-left: 10px">
+        <div style="margin-left: 10px" *ngIf="showInputPhoto">
           <input
             type="file"
             (change)="onFileSelected($event)"
