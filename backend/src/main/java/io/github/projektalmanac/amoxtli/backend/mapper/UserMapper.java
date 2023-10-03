@@ -6,7 +6,7 @@ import io.github.projektalmanac.amoxtli.backend.generated.model.UsuarioDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import org.openapitools.jackson.nullable.*;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.net.URI;
 import java.util.Base64;
@@ -15,11 +15,15 @@ import java.util.Base64;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    /*@Mapping(source = "id", target = "id")
+    @Mapping(source = "id", target = "id")
     @Mapping(source = "nombre", target = "name")
-    @Mapping(source = "apellildos", target = "lastName")
-    User usuarioDtoToUser(UsuarioDto user);*/
-
+    @Mapping(source = "apellidos", target = "lastName")
+    @Mapping(source = "correo", target = "email")
+    @Mapping(source = "teléfono",target = "phone")
+    @Mapping(target = "photoDescription",expression = "java(mapJsonToString(userDto.getDescripciónFoto()))")
+    @Mapping(target = "interests", expression = "java(mapJsonToString(userDto.getIntereses()))")
+    @Mapping(source = "correoVerificado", target = "verificationCode")
+    User usuarioDtoToUser(PerfilUsuarioDto userDto);
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "nombre")
     @Mapping(source = "lastName", target = "apellidos")
@@ -30,14 +34,34 @@ public interface UserMapper {
     @Mapping(target = "fotoPerfil",expression = "java(mapBytetoUri(user.getPhoto()))")
     @Mapping(source = "verifiedEmail", target = "correoVerificado")
     PerfilUsuarioDto userToUserDto(User user);
-    default JsonNullable<URI> mapBytetoUri(byte[] photo){
-        try{
-            String datos = Base64.getEncoder().encodeToString(photo);
-            URI photoUri = new URI(datos);
-            return JsonNullable.of(photoUri);
+    default JsonNullable<URI> mapBytetoUri(byte[] photo) {
+        try {
+            if (photo.length != 0){
+                if (photo.length >= 2 && photo[0] == (byte) 0xFF && photo[1] == (byte) 0xD8) {
+                    String jpegBase64 = Base64.getEncoder().encodeToString(photo);
+                    URI jpegUri = new URI("data:image/jpeg;base64," + jpegBase64);
+                    return JsonNullable.of(jpegUri);
+                } else {
+                    String pngBase64 = Base64.getEncoder().encodeToString(photo);
+                    URI pngUri = new URI("data:image/png;base64," + pngBase64);
+                    return JsonNullable.of(pngUri);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return JsonNullable.undefined();
+    }
+
+    default String mapJsonToString(JsonNullable<String> campoDto){
+        String campo = null;
+        try {
+            campo = campoDto.orElse(null);
+            return campo;
         }catch (Exception e){
             e.printStackTrace();
         }
-        return JsonNullable.undefined();
+        return campo;
     }
 }

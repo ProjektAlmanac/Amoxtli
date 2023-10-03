@@ -8,7 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.io.IOException;
 
 @RestController
 public class UserController implements UsuariosApi {
@@ -25,13 +25,15 @@ public class UserController implements UsuariosApi {
         return null;
     }
 
-    public ResponseEntity<Void> actualizarFotoPerfil(String id, Resource body) {
-        return null;
+    public ResponseEntity<Void> actualizarFotoPerfil(String id, Resource body) throws IOException {
+        this.userService.actualizaFoto(id,body);
+        return (ResponseEntity<Void>) ResponseEntity.accepted();
     }
 
     @Override
     public ResponseEntity<PerfilUsuarioDto> actualizarUsuario(Integer id, PerfilUsuarioDto perfilUsuarioDto) {
-        return null;
+        this.userService.actualizaUsuario(id,perfilUsuarioDto);
+        return ResponseEntity.ok(perfilUsuarioDto);
     }
 
     @Override

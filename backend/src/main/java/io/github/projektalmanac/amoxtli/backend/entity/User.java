@@ -19,6 +19,7 @@ public class User {
     private String passwordHash;
     private String passwordSalt;
     private String phone;
+    @Lob
     private byte[] photo;
     private String photoDescription;
     private String interests;
