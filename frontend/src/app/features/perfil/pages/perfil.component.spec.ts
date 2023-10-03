@@ -8,6 +8,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MatCardModule } from '@angular/material/card'
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { MatButtonModule } from '@angular/material/button'
+import { MatInputModule } from '@angular/material/input'
 
 describe('PerfilComponent', () => {
   let component: PerfilComponent
@@ -24,7 +26,9 @@ describe('PerfilComponent', () => {
         NoopAnimationsModule,
         ReactiveFormsModule,
         RouterTestingModule,
+        MatButtonModule,
         HttpClientTestingModule,
+        MatInputModule,
       ],
     })
     fixture = TestBed.createComponent(PerfilComponent)
