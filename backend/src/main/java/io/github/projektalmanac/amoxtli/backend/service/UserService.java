@@ -44,7 +44,7 @@ public class UserService {
     }
 
     public PerfilUsuarioDto actualizaUsuario(Integer id, PerfilUsuarioDto perfilUsuarioDto){
-        LOGGER.info(">>actualizaUsuario {}", id);
+        LOGGER.info(">>ActualizaUsuario {}", id);
         if(!id.equals(perfilUsuarioDto.getId())){
             throw new BadRequestException(id);
         }
@@ -72,12 +72,12 @@ public class UserService {
         if (resultChange == null){
             throw new IllegalArgumentException("Error, el mapeo no fue exitoso");
         }
-        LOGGER.info("<<actualizaUsuario {}", id);
+        LOGGER.info("<<ActualizaUsuario {}", id);
         return resultChange;
     }
 
     public void actualizaFoto(String id, Resource body) throws IOException {
-        LOGGER.info(">>actualizaFoto {}",id);
+        LOGGER.info(">>ActualizaFoto {}",id);
         Integer idUser = null;
         try {
             idUser = Integer.parseInt(id);
@@ -101,7 +101,7 @@ public class UserService {
         if (user == null){
             throw new UserNotFoundException(idUser);
         }
-        LOGGER.info("<<actualizaFoto {}",id);
+        LOGGER.info("<<ActualizaFoto {}",id);
     }
 
 
