@@ -193,15 +193,17 @@ export class PerfilComponent implements OnInit {
         this.showInputPhoto = false // Oculta el campo de foto después de una actualización exitosa
         this.showButtons = false
         this.resetTouchedFields()
-      },
-      error: () => {
-        this.success('No se actualizó correctamente en el servidor')
-      },
-    })
-    const id = idUsuario.toString()
-    this.serviceApi.actualizarFotoPerfil(id).subscribe({
-      next: () => {
-        this.success('Se actualizó correctamente la foto')
+
+        const id = idUsuario.toString()
+        const file = new File([foto], 'archivo.png', { type: 'image/png' })
+        this.serviceApi.actualizarFotoPerfil(id, file).subscribe({
+          next: () => {
+            this.success('Se actualizó correctamente la foto')
+          },
+          error: () => {
+            this.success('No se actualizó correctamente la foto')
+          },
+        })
       },
       error: () => {
         this.success('No se actualizó correctamente en el servidor')
