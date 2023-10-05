@@ -1,5 +1,8 @@
 package io.github.projektalmanac.amoxtli.backend.controller.advice;
 
+import io.github.projektalmanac.amoxtli.backend.exception.BadRequestException;
+import io.github.projektalmanac.amoxtli.backend.exception.IdUserNotWorkException;
+import io.github.projektalmanac.amoxtli.backend.exception.UnauthenticatedUserException;
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.generated.model.ErrorDto;
 import org.springframework.http.HttpStatus;
@@ -14,8 +17,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public final ResponseEntity<ErrorDto> handleUserNotFoundException(UserNotFoundException ex, WebRequest request){
-        var error = new ErrorDto(ex.getMessage(), 1);
+        var error = new ErrorDto(ex.getMessage(), 404);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(UnauthenticatedUserException.class)
+    public final ResponseEntity<ErrorDto> handleUnauthenticatedUserException(UnauthenticatedUserException ex, WebRequest request){
+        var error = new ErrorDto(ex.getMessage(), 401);
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
 
+    @ExceptionHandler(BadRequestException.class)
+    public final ResponseEntity<ErrorDto> handleBadRequestException(BadRequestException ex, WebRequest request){
+        var error = new ErrorDto(ex.getMessage(),400);
+        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(IdUserNotWorkException.class)
+    public final ResponseEntity<ErrorDto> handleIdUserNotWorkException(BadRequestException ex, WebRequest request){
+        var error = new ErrorDto(ex.getMessage(),404);
+        return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
+    }
 }
