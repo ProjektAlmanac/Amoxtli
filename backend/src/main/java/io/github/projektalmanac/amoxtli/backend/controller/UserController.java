@@ -2,38 +2,27 @@ package io.github.projektalmanac.amoxtli.backend.controller;
 
 import io.github.projektalmanac.amoxtli.backend.generated.api.UsuariosApi;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
-import io.github.projektalmanac.amoxtli.backend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class UserController implements UsuariosApi {
-
-
-    private UserService userService;
-
-    @Autowired
-    UserController(UserService userService){
-        this.userService = userService;
-    }
     @Override
     public ResponseEntity<IntercambioDto> aceptarIntercambio(Integer idUsuario, Integer idIntercambio, AceptarIntercambioRequestDto aceptarIntercambioRequestDto) {
         return null;
     }
 
-    public ResponseEntity<Void> actualizarFotoPerfil(String id, Resource body) throws IOException {
-        this.userService.actualizaFoto(id,body);
-        return ResponseEntity.noContent().build();
+    @Override
+    public ResponseEntity<Void> actualizarFotoPerfil(String id, Resource body) {
+        return null;
     }
 
     @Override
     public ResponseEntity<PerfilUsuarioDto> actualizarUsuario(Integer id, PerfilUsuarioDto perfilUsuarioDto) {
-        this.userService.actualizaUsuario(id,perfilUsuarioDto);
-        return ResponseEntity.ok(perfilUsuarioDto);
+        return null;
     }
 
     @Override
@@ -73,8 +62,7 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<PerfilUsuarioDto> getUsuario(Integer id) {
-        PerfilUsuarioDto perfilUsuarioDto = this.userService.getUsuario(id);
-        return ResponseEntity.ok(perfilUsuarioDto);
+        return null;
     }
 
     @Override
