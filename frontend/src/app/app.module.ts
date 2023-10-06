@@ -33,6 +33,7 @@ import { ServicioUsuario } from './core/services/servicio-usuario.service'
 import { SharedModule } from './shared/shared.module'
 import { SharedComponent } from './shared/shared.component'
 import { UserModule } from './features/user/user.module'
+import { librosModule } from './features/libros/libros.module'
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {}
@@ -64,6 +65,7 @@ export function apiConfigFactory(): Configuration {
     MatCardModule,
     MatSnackBarModule,
     UserModule,
+    librosModule,
   ],
   providers: [{ provide: BASE_PATH, useValue: environment.apiBasePath }, ServicioUsuario],
   bootstrap: [AppComponent],

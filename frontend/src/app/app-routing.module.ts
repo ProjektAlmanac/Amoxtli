@@ -9,6 +9,7 @@ import { WelcomePageComponent } from './features/sign-up/pages/welcome-page/welc
 import { AgregarLibroComponent } from './features/user/components/agregar-libro/agregar-libro.component'
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component'
 import { PerfilComponent } from './features/perfil/pages/perfil.component'
+import { MostrarLibrosComponent } from './features/libros/pages/mostrar-libros/mostrar-libros.component'
 
 const routes: Routes = [
   {
@@ -41,6 +42,7 @@ const routes: Routes = [
         component: AgregarLibroComponent,
       },
       { path: 'perfil', component: PerfilComponent },
+      { path: 'libros', component: MostrarLibrosComponent },
     ],
   },
 ]
