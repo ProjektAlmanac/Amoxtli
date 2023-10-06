@@ -3,19 +3,17 @@ package io.github.projektalmanac.amoxtli.backend.controller;
 import io.github.projektalmanac.amoxtli.backend.generated.api.UsuariosApi;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.service.UserService;
+import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-
-import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 public class UserController implements UsuariosApi {
@@ -61,7 +59,10 @@ public class UserController implements UsuariosApi {
 
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
         }
+
+
     }
 
     @Override
@@ -90,30 +91,21 @@ public class UserController implements UsuariosApi {
     }
 
 
+    @SneakyThrows
     @PostMapping(path = "/usuarios/{id}/mandarCorreoConfirmacion")
     @Override
-    public ResponseEntity<String> mandarCorreoConfirmacion(@PathVariable long id) {
-        // Obtén el correo del usuario usando el ID
-        String correoUsuario = userService.obtenerCorreoPorId(id);
-
-        if (correoUsuario == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado.");
-        }
+    public ResponseEntity<Void> mandarCorreoConfirmacion(@PathVariable Integer id) {
 
         String codigoVerificacion = userService.generarCodigoVerificacion();
+        userService.guardarCodigoVerificacion(id, codigoVerificacion);
 
-        try {
-            // Envia el correo de verificación
-            userService.enviarCorreoVerificacion(correoUsuario, codigoVerificacion);//cambiar a variables de entorno
+        // Envia el correo de verificación
+        userService.enviarCorreoVerificacion(id, codigoVerificacion);//cambiar a variables de entorno
 
-            // Almacena el código de verificación en la base de datos
-            userService.guardarCodigoVerificacion(id, codigoVerificacion);
+        // Almacena el código de verificación en la base de datos
 
-            return ResponseEntity.ok("Correo de verificación enviado con éxito.");
-        } catch (MessagingException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al enviar el correo de verificación.");
-        }
+
+       return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 
@@ -125,15 +117,16 @@ public class UserController implements UsuariosApi {
 
     @PostMapping(path = "/usuarios/{id}/verificarCorreo")
     @Override
-    public ResponseEntity<String> verificarCorreo(@PathVariable long id, @RequestBody @Valid CodigoVerificacionDto codigoVerificacionDto) { //no debe regresar nada y remodificar usuariosAPI
+    public ResponseEntity<Void> verificarCorreo(@PathVariable Integer id, @RequestBody @Valid CodigoVerificacionDto codigoVerificacionDto) {
         // Verificar el código de verificación ingresado por el usuario
         boolean codigoCorrecto = userService.verificaCorreo(id, codigoVerificacionDto);
 
         if (codigoCorrecto) {
-            return ResponseEntity.ok("Código de verificación correcto. Correo confirmado.");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Código de verificación incorrecto.");//modificar codigos de error en exception y advice.
-        }
+            return ResponseEntity.status(HttpStatus.OK).body(null);
 
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
+
 }

@@ -17,8 +17,6 @@ import java.util.Objects;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class UsuarioDto {
 
- //quitar id
-
   private String correo;
 
   private String nombre;
@@ -50,7 +48,7 @@ public class UsuarioDto {
    * Correo electrónico del usuario
    * @return correo
   */
-  @NotNull @javax.validation.constraints.Email
+  @NotNull //@javax.validation.constraints.Email
   @Schema(name = "correo", description = "Correo electrónico del usuario", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("correo")
   public String getCorreo() {

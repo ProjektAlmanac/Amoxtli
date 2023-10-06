@@ -2,8 +2,8 @@ spring:
   mail:
     host: smtp.gmail.com   # Dirección del servidor de correo saliente (SMTP)
     port: 587                # Puerto del servidor de correo saliente (587 para TLS, 465 para SSL)
-    username: example@gmail.com # dirección de correo electrónico
-    password: contraseña de aplicacion   #contraseña de correo electrónico
+    username: ${USERNAME_VAR} # dirección de correo electrónico
+    password: ${PASSWORD_VAR}
     properties:
       mail:
         smtp:

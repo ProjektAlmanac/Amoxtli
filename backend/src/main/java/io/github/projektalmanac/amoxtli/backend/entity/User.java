@@ -22,9 +22,9 @@ public class User {
     private byte[] photo;
     private String photoDescription;
     private String interests;
-    private boolean  verifiedEmail;
+    private boolean verifiedEmail;
     private String verificationCode;
-    @OneToMany(targetEntity = Book.class,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_book")
     private List<Book> books = new ArrayList<>();
 

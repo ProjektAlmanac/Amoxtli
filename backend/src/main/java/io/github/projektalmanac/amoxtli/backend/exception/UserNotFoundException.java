@@ -6,8 +6,9 @@ public class UserNotFoundException extends RuntimeException {
         super("No se encontró ningún usuario con id " + userId + ".");
     }
 
-    public UserNotFoundException(String s) {
-    }
+
+
+
 }
 
 
