@@ -27,7 +27,7 @@ public class UserController implements UsuariosApi {
     }
 
     @Override
-    public ResponseEntity<Void> actualizarFotoPerfil(String id, Resource body) {
+    public ResponseEntity<Void> actualizarFotoPerfil(Integer id, Resource body) {
         return null;
     }
 
