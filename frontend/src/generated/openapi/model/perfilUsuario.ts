@@ -34,11 +34,11 @@ export interface PerfilUsuario {
     /**
      * Numero telefónico del usuario
      */
-    telfono: string;
+    telefono: string;
     /**
      * Descripción de la foto de perfil del usuario
      */
-    descripcinFoto: string | null;
+    descripcionFoto: string | null;
     /**
      * Descripción de los intereses del usuario
      */
