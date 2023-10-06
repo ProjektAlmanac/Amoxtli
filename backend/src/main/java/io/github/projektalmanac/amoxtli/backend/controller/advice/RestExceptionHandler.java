@@ -1,7 +1,7 @@
 package io.github.projektalmanac.amoxtli.backend.controller.advice;
 
 import io.github.projektalmanac.amoxtli.backend.exception.BadRequestException;
-import io.github.projektalmanac.amoxtli.backend.exception.IdUserNotWorkException;
+import io.github.projektalmanac.amoxtli.backend.exception.InvalidIdException;
 import io.github.projektalmanac.amoxtli.backend.exception.UnauthenticatedUserException;
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.generated.model.ErrorDto;
@@ -17,23 +17,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public final ResponseEntity<ErrorDto> handleUserNotFoundException(UserNotFoundException ex, WebRequest request){
-        var error = new ErrorDto(ex.getMessage(), 404);
+        var error = new ErrorDto(ex.getMessage(), 1);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(UnauthenticatedUserException.class)
     public final ResponseEntity<ErrorDto> handleUnauthenticatedUserException(UnauthenticatedUserException ex, WebRequest request){
-        var error = new ErrorDto(ex.getMessage(), 401);
+        var error = new ErrorDto(ex.getMessage(), 2);
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(BadRequestException.class)
     public final ResponseEntity<ErrorDto> handleBadRequestException(BadRequestException ex, WebRequest request){
-        var error = new ErrorDto(ex.getMessage(),400);
+        var error = new ErrorDto(ex.getMessage(),3);
         return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(IdUserNotWorkException.class)
+    @ExceptionHandler(InvalidIdException.class)
     public final ResponseEntity<ErrorDto> handleIdUserNotWorkException(BadRequestException ex, WebRequest request){
-        var error = new ErrorDto(ex.getMessage(),404);
+        var error = new ErrorDto(ex.getMessage(),4);
         return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
     }
 }

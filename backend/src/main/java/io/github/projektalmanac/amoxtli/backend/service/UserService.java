@@ -76,15 +76,9 @@ public class UserService {
         return resultChange;
     }
 
-    public void actualizaFoto(String id, Resource body) throws IOException {
-        LOGGER.info(">>ActualizaFoto {}",id);
-        Integer idUser = null;
-        try {
-            idUser = Integer.parseInt(id);
-        }catch (Exception e) {
-            LOGGER.info("Error al parsear el id {}",id);
-            throw new IdUserNotWorkException();
-        }
+    public void actualizaFoto(Integer idUser, Resource body) throws IOException {
+        LOGGER.info(">>ActualizaFoto {}",idUser);
+
         User user = this.userRepository.getUserById(idUser);
         if (user == null){
             throw new UserNotFoundException(idUser);
@@ -101,7 +95,7 @@ public class UserService {
         if (user == null){
             throw new UserNotFoundException(idUser);
         }
-        LOGGER.info("<<ActualizaFoto {}",id);
+        LOGGER.info("<<ActualizaFoto {}",idUser);
     }
 
 

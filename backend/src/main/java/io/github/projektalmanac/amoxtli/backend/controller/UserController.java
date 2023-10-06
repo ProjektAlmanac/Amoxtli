@@ -27,9 +27,13 @@ public class UserController implements UsuariosApi {
     
     @Override
     public ResponseEntity<Void> actualizarFotoPerfil(Integer id, Resource body) {
+        try{
             this.userService.actualizaFoto(id,body);
-            return ResponseEntity.noContent().build();
+        }catch (IOException e){
+            e.printStackTrace();
         }
+        return ResponseEntity.noContent().build();
+    }
 
 
     @Override

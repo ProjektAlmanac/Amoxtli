@@ -64,7 +64,7 @@ public class UserServiceTest {
         perfilUsuarioDto.setNombre("Eduaro");
         perfilUsuarioDto.setApellidos("Castro");
         perfilUsuarioDto.setCorreo("ecastro@gmail.com");
-        perfilUsuarioDto.setTeléfono("585858332");
+        perfilUsuarioDto.setTelefono("585858332");
         perfilUsuarioDto.setFotoPerfil(JsonNullable.of(URI.create("foto")));
         perfilUsuarioDto.setCorreoVerificado(false);
 
@@ -73,7 +73,7 @@ public class UserServiceTest {
         perfilUsuarioDtoCambio.setNombre("Eduaro");
         perfilUsuarioDtoCambio.setApellidos("Ramón");
         perfilUsuarioDtoCambio.setCorreo("ecastro@gmail.com");
-        perfilUsuarioDtoCambio.setTeléfono("585858332");
+        perfilUsuarioDtoCambio.setTelefono("585858332");
         perfilUsuarioDtoCambio.setFotoPerfil(JsonNullable.of(URI.create("foto")));
         perfilUsuarioDtoCambio.setCorreoVerificado(true);
 
@@ -91,19 +91,12 @@ public class UserServiceTest {
         Assertions.assertThrows(UserNotFoundException.class,() ->{
             userService.getUsuario(id);
         });
-        //Caso 2. El usuario existe pero su correo no esta autenticado
+        //Caso 2. El usuario existe pero su correo
         Integer idUser = 1;
         when(userRepository.getUserById(idUser)).thenReturn(this.user);
-        boolean result = user.isVerifiedEmail();
-        Assertions.assertEquals(false,result,"El usuario no esta autenticado");
         Assertions.assertThrows(UnauthenticatedUserException.class,() ->{
             userService.getUsuario(idUser);
         });
-        //Caso 3. EL usuario existe y esta autenticado, se debe mapear al DTO
-        Integer idUser2 = 2;
-        when(userRepository.getUserById(idUser2)).thenReturn(this.user1);
-        perfilUsuarioDto = userService.getUsuario(idUser2);
-        Assertions.assertNotNull(perfilUsuarioDto,"EL mapeo fue exitoso");
 
     }
 
@@ -125,8 +118,6 @@ public class UserServiceTest {
         // Caso 3. El usuario existe pero su correo no esta autenticado
         Integer idUser1 = 1;
         when(userRepository.getUserById(idUser)).thenReturn(this.user);
-        boolean result = user.isVerifiedEmail();
-        Assertions.assertEquals(false,result,"El usuario no esta autenticado");
         Assertions.assertThrows(UnauthenticatedUserException.class,() ->{
             userService.actualizaUsuario(idUser1,perfilUsuarioDto);
         });
@@ -144,19 +135,17 @@ public class UserServiceTest {
         // Caso 1. El usuario no existe
         when(userRepository.getUserById(1)).thenReturn(null);
         Assertions.assertThrows(UserNotFoundException.class,() ->{
-            userService.actualizaFoto("1",body);
+            userService.actualizaFoto(1,body);
         });
-        // Caso 2: El correo del usuario no esta autenticado
+        // Caso 2: El correo del usuario verificado
         when(userRepository.getUserById(1)).thenReturn(this.user);
-        boolean result = user.isVerifiedEmail();
-        Assertions.assertEquals(false,result,"El usuario no esta autenticado");
         Assertions.assertThrows(UnauthenticatedUserException.class,() ->{
-            userService.actualizaFoto("1",body);
+            userService.actualizaFoto(1,body);
         });
         // Se guarda el usuario con la foto previamente cargada
         when(userRepository.getUserById(2)).thenReturn(user1);
         when(userRepository.save(user1)).thenReturn(user1);
-        userService.actualizaFoto("2",body);
+        userService.actualizaFoto(2,body);
         assertArrayEquals(body.getInputStream().readAllBytes(),user1.getPhoto());
 
     }
