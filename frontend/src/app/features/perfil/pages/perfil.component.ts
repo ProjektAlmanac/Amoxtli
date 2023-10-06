@@ -50,6 +50,9 @@ export class PerfilComponent implements OnInit {
   }
   //actualizar los datos en el momento
   ngOnInit(): void {
+    this.showInputPhoto = false // Oculta el campo de foto después de una actualización exitosa
+    this.showButtons = false
+    this.resetTouchedFields()
     this.recuperaUsuario()
     //meter una variable que obtenga el ID para pasarselo
   }
@@ -77,6 +80,7 @@ export class PerfilComponent implements OnInit {
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onFileSelected(event: any) {
+    this.photoTouched = true
     this.selectedFile = event.target.files[0]
 
     // Obtener la extensión del archivo
@@ -85,6 +89,7 @@ export class PerfilComponent implements OnInit {
 
     // Verificar si la extensión es JPEG o PNG
     if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
+      this.checkTouchedFielsd()
       if (this.selectedFile) {
         const reader = new FileReader()
 
@@ -147,10 +152,10 @@ export class PerfilComponent implements OnInit {
         const file = new File([foto], 'archivo.png', { type: 'image/png' })
         this.serviceApi.actualizarFotoPerfil(id, file).subscribe({
           next: () => {
-            this.success('Se actualizó correctamente la foto')
+            this.success('Se actualizaron correctamente los campos')
           },
           error: () => {
-            this.success('No se actualizó correctamente la foto')
+            this.success('No se actualizó correctamente los campos')
           },
         })
       },
@@ -161,8 +166,6 @@ export class PerfilComponent implements OnInit {
   }
 
   cancel() {
-    // eslint-disable-next-line no-console
-    console.log('Se canceló')
     this.form.reset()
     this.recuperaUsuario()
     this.showButtons = false
@@ -211,6 +214,8 @@ export class PerfilComponent implements OnInit {
       this.interestsTouched
     ) {
       this.showButtons = true
+    } else {
+      this.showButtons = false
     }
   }
   resetTouchedFields() {
