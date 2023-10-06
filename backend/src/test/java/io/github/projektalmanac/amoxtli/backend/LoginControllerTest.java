@@ -64,8 +64,8 @@ public class LoginControllerTest {
                 .thenReturn(null);
 
         // Llamar al método iniciarSesion del controlador
-        ResponseEntity<SessionTokenDto> response = loginController.iniciarSesion(credencialesDto);
-
+        var response = loginController.iniciarSesion(credencialesDto);
+        System.out.println("Response -> "+response);
         // Verificar que la respuesta sea BAD REQUEST y el cuerpo sea nulo
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(response.getBody()).isNull();

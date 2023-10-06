@@ -74,6 +74,8 @@ dependencies {
 //	implementation("com.fasterxml.jackson.core:jackson-databind")
 
 	implementation("org.hibernate.validator:hibernate-validator")
+
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
 }
 
 tasks.withType<Test> {

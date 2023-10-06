@@ -21,7 +21,7 @@ public class LoginController implements IniciarSesionApi {
 
     @Autowired
     private UserService userService;
-    @PostMapping
+    @PostMapping(path = "/iniciarSesion")
     @Override
     public ResponseEntity<SessionTokenDto> iniciarSesion(@RequestBody @Valid CredencialesDto credencialesDto){
 

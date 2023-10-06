@@ -1,12 +1,16 @@
 package io.github.projektalmanac.amoxtli.backend.exception;
 
-public  class InvalidUserSessionException  extends  RuntimeException{
-    public InvalidUserSessionException(){
-        super("Credenciales incorrectas");
-    }
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-    public InvalidUserSessionException(String email){
-        super("No se encontró ningún usuario con email " + email + ".");
+
+public  class InvalidUserSessionException  extends  RuntimeException{
+    /*public InvalidUserSessionException(){
+        super("Verifique que sus credenciales sean correctas, e intente nuevamente.");
+    }*/
+
+    public  InvalidUserSessionException(String mensaje){
+        super(mensaje);
     }
 
 }

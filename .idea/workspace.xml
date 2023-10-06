@@ -5,23 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dd4dcae7-65f3-4e73-809d-1fc7daa9650b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/Amoxtli.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/AmoxtliBackend.test.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/test/java/io/github/projektalmanac/amoxtli/backend/LoginControllerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/test/java/io/github/projektalmanac/amoxtli/backend/UserServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/test/java/io/github/projektalmanac/amoxtli/backend/UserTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/AmoxtliBackend.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/AmoxtliBackend.test.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/generated/model/SessionTokenDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/generated/model/SessionTokenDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/controller/advice/RestExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/controller/advice/RestExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/exception/InvalidUserSessionException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/exception/InvalidUserSessionException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/io/github/projektalmanac/amoxtli/backend/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/test/java/io/github/projektalmanac/amoxtli/backend/UserRepositoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/io/github/projektalmanac/amoxtli/backend/LoginControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/io/github/projektalmanac/amoxtli/backend/LoginControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/io/github/projektalmanac/amoxtli/backend/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/io/github/projektalmanac/amoxtli/backend/UserServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +90,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "pnpm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -148,7 +144,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="UserRepositoryTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="LoginControllerTest.iniciarSesion_UsuarioInvalido" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
@@ -161,31 +157,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;io.github.projektalmanac.amoxtli.backend.UserRepositoryTest&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="UserRepositoryTest.findByEmailAndPasswordHash" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.projektalmanac.amoxtli.backend.UserRepositoryTest.findByEmailAndPasswordHash&quot;" />
+            <option value="&quot;io.github.projektalmanac.amoxtli.backend.LoginControllerTest.iniciarSesion_UsuarioInvalido&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -210,6 +182,30 @@
             <option value=":test" />
             <option value="--tests" />
             <option value="&quot;io.github.projektalmanac.amoxtli.backend.UserServiceTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="UserServiceTest.generadorToken" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;io.github.projektalmanac.amoxtli.backend.UserServiceTest.generadorToken&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -257,8 +253,8 @@
         <item itemvalue="Gradle.LoginControllerTest" />
         <item itemvalue="Gradle.UserServiceTest" />
         <item itemvalue="Gradle.UserServiceTest.iniciarSesion" />
-        <item itemvalue="Gradle.UserRepositoryTest" />
-        <item itemvalue="Gradle.UserRepositoryTest.findByEmailAndPasswordHash" />
+        <item itemvalue="Gradle.LoginControllerTest.iniciarSesion_UsuarioInvalido" />
+        <item itemvalue="Gradle.UserServiceTest.generadorToken" />
       </list>
     </recent_temporary>
   </component>
@@ -277,6 +273,10 @@
       <workItem from="1695945658001" duration="1389000" />
       <workItem from="1695954652485" duration="199000" />
       <workItem from="1695954968616" duration="12075000" />
+      <workItem from="1696288598056" duration="1352000" />
+      <workItem from="1696535601002" duration="1558000" />
+      <workItem from="1696540777689" duration="12839000" />
+      <workItem from="1696601618262" duration="9104000" />
     </task>
     <servers />
   </component>

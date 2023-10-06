@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Amoxtli.iml" filepath="$PROJECT_DIR$/.idea/Amoxtli.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AmoxtliBackend.test.iml" filepath="$PROJECT_DIR$/.idea/modules/AmoxtliBackend.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AmoxtliBackend.main.iml" filepath="$PROJECT_DIR$/.idea/modules/AmoxtliBackend.main.iml" />
     </modules>
   </component>
 </project>
