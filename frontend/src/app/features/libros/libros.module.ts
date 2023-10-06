@@ -6,7 +6,7 @@ import { DetallesLibroComponent } from './components/detalles-libro/detalles-lib
 
 @NgModule({
   declarations: [MostrarLibrosComponent, DetallesLibroComponent],
-  imports: [CommonModule, RouterModule, MostrarLibrosComponent, DetallesLibroComponent],
+  imports: [CommonModule, RouterModule],
   exports: [MostrarLibrosComponent, DetallesLibroComponent],
 })
 export class librosModule {}
