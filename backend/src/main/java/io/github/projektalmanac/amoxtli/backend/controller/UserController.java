@@ -24,11 +24,13 @@ public class UserController implements UsuariosApi {
     public ResponseEntity<IntercambioDto> aceptarIntercambio(Integer idUsuario, Integer idIntercambio, AceptarIntercambioRequestDto aceptarIntercambioRequestDto) {
         return null;
     }
+    
+    @Override
+    public ResponseEntity<Void> actualizarFotoPerfil(Integer id, Resource body) {
+            this.userService.actualizaFoto(id,body);
+            return ResponseEntity.noContent().build();
+        }
 
-    public ResponseEntity<Void> actualizarFotoPerfil(String id, Resource body) throws IOException {
-        this.userService.actualizaFoto(id,body);
-        return ResponseEntity.noContent().build();
-    }
 
     @Override
     public ResponseEntity<PerfilUsuarioDto> actualizarUsuario(Integer id, PerfilUsuarioDto perfilUsuarioDto) {

@@ -139,7 +139,7 @@ public interface UsuariosApi {
         consumes = { "image/png", "image/jpg" }
     )
     ResponseEntity<Void> actualizarFotoPerfil(
-        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") String id,
+        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Integer id,
         @Parameter(name = "body", description = "") @Valid @RequestBody(required = false) org.springframework.core.io.Resource body
     ) throws IOException;
 
