@@ -44,7 +44,7 @@ export class PerfilComponent implements OnInit {
       name: ['', Validators.required],
       lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      phoneNumber: ['', [Validators.required, Validators.minLength(10)]],
       interests: [''],
     })
   }
@@ -52,26 +52,21 @@ export class PerfilComponent implements OnInit {
   ngOnInit(): void {
     this.recuperaUsuario()
     //meter una variable que obtenga el ID para pasarselo
-    // eslint-disable-next-line no-console
   }
 
   recuperaUsuario() {
     this.serviceApi.getUsuario(1).subscribe(usuario => {
       this.perfilUsuario = usuario
-      // Hacer una copia de los datos originales
-      this.originalUserData = { ...usuario }
       this.imageSrc = usuario.fotoPerfil ?? ''
-      // eslint-disable-next-line no-console
-      console.log(typeof usuario.fotoPerfil)
 
       // Llena los campos del formulario con la información del perfilUsuario
       this.form.patchValue({
         photo: this.imageSrc,
-        describePhoto: usuario.descripcinFoto,
+        describePhoto: usuario.descripcionFoto,
         name: usuario.nombre,
         lastname: usuario.apellidos,
         email: usuario.correo,
-        phoneNumber: usuario.telfono,
+        phoneNumber: usuario.telefono,
         interests: usuario.intereses,
       })
     })
@@ -82,22 +77,14 @@ export class PerfilComponent implements OnInit {
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onFileSelected(event: any) {
-    // eslint-disable-next-line no-console
-    console.log('captura archivo')
-    // eslint-disable-next-line no-console
-    console.log(event.target.files)
     this.selectedFile = event.target.files[0]
-    // eslint-disable-next-line no-console
-    console.log(this.selectedFile)
-    //const file: File = event.target.files[0]
+
     // Obtener la extensión del archivo
     const nombreArchivo = this.selectedFile?.name
     const extension = nombreArchivo?.substring(nombreArchivo.lastIndexOf('.') + 1).toLowerCase()
 
     // Verificar si la extensión es JPEG o PNG
     if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
-      // eslint-disable-next-line no-console
-      console.log('¡El archivo es de formato JPEG o PNG y ha sido seleccionado correctamente!')
       if (this.selectedFile) {
         const reader = new FileReader()
 
@@ -105,52 +92,32 @@ export class PerfilComponent implements OnInit {
         reader.onload = (e: any) => {
           this.imageSrc = e.target.result
         }
-
         reader.readAsDataURL(this.selectedFile)
-        // eslint-disable-next-line no-console
-        console.log(this.selectedFile)
-        // eslint-disable-next-line no-console
-        console.log(reader)
       }
     } else {
-      // eslint-disable-next-line no-console
       this.success('Por favor, seleccione una imagen de formato JPEG o PNG.')
-      // eslint-disable-next-line no-console
-      console.log('Por favor, seleccione una imagen de formato JPEG o PNG.')
-      // También puedes limpiar el campo de entrada para que el usuario seleccione nuevamente
       event.target.value = '' // Esto elimina el archivo seleccionado
     }
   }
 
-  /*sendValues() {
-    //eslint-disable-next-line no-console
-    console.log('Datos actualizados')
-    this.success('Datos actualizados')
-    if (!this.form.valid) {
-      this.showInputPhoto = false // Oculta el campo de foto después de una actualización exitosa
-      this.showButtons = false
-      return
-    }
-    this.form.reset()
-  }*/
   sendValues() {
     const id = this.perfilUsuario.id
     const nombre = this.form.get('name')?.value
     const apellidos = this.form.get('lastname')?.value
     const correo = this.form.get('email')?.value
-    const telfono = this.form.get('phoneNumber')?.value
-    let descripcinFoto = this.form.get('describePhoto')?.value
+    const telefono = this.form.get('phoneNumber')?.value
+    let descripcionFoto = this.form.get('describePhoto')?.value
     let intereses = this.form.get('interest')?.value
     const fotoPerfil = this.form.get('photo')?.value
     const correoVerificado = this.perfilUsuario.correoVerificado
     if (
-      descripcinFoto == null ||
-      descripcinFoto == undefined ||
+      descripcionFoto == null ||
+      descripcionFoto == undefined ||
       intereses == null ||
       intereses == undefined
     ) {
       intereses = ''
-      descripcinFoto = ''
+      descripcionFoto = ''
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const updateUser: PerfilUsuario = {
@@ -158,31 +125,13 @@ export class PerfilComponent implements OnInit {
       nombre,
       apellidos,
       correo,
-      telfono,
-      descripcinFoto,
+      telefono,
+      descripcionFoto,
       intereses,
       fotoPerfil,
       correoVerificado,
     }
     this.actualizaUsuario(updateUser, fotoPerfil)
-    // eslint-disable-next-line no-console
-    console.log(typeof id)
-    // eslint-disable-next-line no-console
-    console.log(typeof nombre)
-    // eslint-disable-next-line no-console
-    console.log(typeof apellidos)
-    // eslint-disable-next-line no-console
-    console.log(typeof correo)
-    // eslint-disable-next-line no-console
-    console.log(typeof telfono)
-    // eslint-disable-next-line no-console
-    console.log(typeof descripcinFoto)
-    // eslint-disable-next-line no-console
-    console.log(typeof intereses)
-    // eslint-disable-next-line no-console
-    console.log(typeof fotoPerfil)
-    // eslint-disable-next-line no-console
-    console.log(typeof correoVerificado)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -194,7 +143,7 @@ export class PerfilComponent implements OnInit {
         this.showButtons = false
         this.resetTouchedFields()
 
-        const id = idUsuario.toString()
+        const id = idUsuario
         const file = new File([foto], 'archivo.png', { type: 'image/png' })
         this.serviceApi.actualizarFotoPerfil(id, file).subscribe({
           next: () => {
