@@ -46,19 +46,10 @@ public class UserService {
             throw new EmailUserNotVerificationException(idUser);
         }
         User userAux = UserMapper.INSTANCE.usuarioDtoToUser(perfilUsuarioDto);
-
-        user.setId(idUser);
-        user.setName(userAux.getName());
-        user.setLastName(userAux.getLastName());
-        user.setEmail(userAux.getEmail());
-        user.setPhone(userAux.getPhone());
-        user.setPhotoDescription(userAux.getPhotoDescription());
-        user.setInterests(userAux.getInterests());
-        user.setEmail(userAux.getEmail());
-        user.setVerifiedEmail(userAux.isVerifiedEmail());
-        user = this.userRepository.save(user);
-
-        PerfilUsuarioDto resultChange = UserMapper.INSTANCE.userToUserDto(user);
+        userAux.setId(idUser);
+        userAux.setPhoto(user.getPhoto());
+        user = this.userRepository.save(userAux);
+        PerfilUsuarioDto resultChange = UserMapper.INSTANCE.userToUserDtoWithoutPhoto(user);
 
         return resultChange;
     }

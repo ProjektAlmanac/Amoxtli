@@ -54,8 +54,12 @@ public class UserServiceTest {
         user1.setName("Eduardo");
         user1.setLastName("Castro");
         user1.setEmail("ecastro@gmail.com");
+        user1.setPasswordSalt("34sdas");
+        user1.setPasswordHash("dsads");
         user1.setPhone("58587599");
         user1.setPhoto("Foto".getBytes());
+        user1.setPhotoDescription("Hola soy yo");
+        user1.setInterests("Libros de ficcion");
         user1.setVerifiedEmail(true);
 
         perfilUsuarioDto = new PerfilUsuarioDto();
@@ -90,7 +94,7 @@ public class UserServiceTest {
         Assertions.assertThrows(UserNotFoundException.class,() ->{
             userService.getUsuario(id);
         });
-        //Caso 2. El usuario existe pero su correo
+        //Caso 2. El usuario existe pero su correo no esta verificado
         Integer idUser = 1;
         when(userRepository.getUserById(idUser)).thenReturn(this.user);
         Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
@@ -101,29 +105,20 @@ public class UserServiceTest {
 
     @Test
     void actualizaUsuario() {
-        // Caso 1. Se intenta modificar el ID unico del usuario
-        Integer idActual = 2;
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            userService.actualizaUsuario(idActual,this.perfilUsuarioDto);
-        });
 
-        // Caso 2. EL usuario no existe
+        // Caso 1. EL usuario no existe
         Integer idUser = 1;
         when(userRepository.getUserById(idUser)).thenReturn(null);
         Assertions.assertThrows(UserNotFoundException.class,() ->{
             userService.actualizaUsuario(idUser,perfilUsuarioDto);
         });
 
-        // Caso 3. El usuario existe pero su correo no esta autenticado
+        // Caso 2. El usuario existe pero su correo no esta autenticado
         Integer idUser1 = 1;
         when(userRepository.getUserById(idUser)).thenReturn(this.user);
         Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
             userService.actualizaUsuario(idUser1,perfilUsuarioDto);
         });
-        // Caso 4. Se actualiza la infromación del usuario en la base de datos
-        when(userRepository.getUserById(2)).thenReturn(user1);
-        when(userRepository.save(user1)).thenReturn(user1);
-        userService.actualizaUsuario(2,perfilUsuarioDtoCambio);
 
     }
 

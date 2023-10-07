@@ -29,10 +29,12 @@ public class UserController implements UsuariosApi {
     public ResponseEntity<Void> actualizarFotoPerfil(Integer id, Resource body) {
         try{
             this.userService.actualizaFoto(id,body);
+            return ResponseEntity.noContent().build();
         }catch (IOException e){
             e.printStackTrace();
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.noContent().build();
+
     }
 
 

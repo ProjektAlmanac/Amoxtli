@@ -24,6 +24,27 @@ public interface UserMapper {
     @Mapping(target = "interests", expression = "java(mapJsonToString(userDto.getIntereses()))")
     @Mapping(source = "correoVerificado", target = "verifiedEmail")
     User usuarioDtoToUser(PerfilUsuarioDto userDto);
+    // Método para obtener el valor de JsonNulleable
+    default String mapJsonToString(JsonNullable<String> campoDto){
+        String campo = null;
+        try {
+            campo = campoDto.orElse(null);
+            return campo;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return campo;
+    }
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "nombre")
+    @Mapping(source = "lastName", target = "apellidos")
+    @Mapping(source = "email", target = "correo")
+    @Mapping(source = "phone", target = "telefono")
+    @Mapping(target = "descripcionFoto", expression = "java(org.openapitools.jackson.nullable.JsonNullable.of(user.getPhotoDescription()))")
+    @Mapping(target = "intereses",expression = "java(org.openapitools.jackson.nullable.JsonNullable.of(user.getInterests()))")
+    @Mapping(source = "verifiedEmail", target = "correoVerificado")
+    PerfilUsuarioDto userToUserDtoWithoutPhoto(User user);
+
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "nombre")
     @Mapping(source = "lastName", target = "apellidos")
@@ -34,6 +55,7 @@ public interface UserMapper {
     @Mapping(target = "fotoPerfil",expression = "java(mapBytetoUri(user.getPhoto()))")
     @Mapping(source = "verifiedEmail", target = "correoVerificado")
     PerfilUsuarioDto userToUserDto(User user);
+    // Método para parsear unn byte Array en un URI, usando Base64
     default JsonNullable<URI> mapBytetoUri(byte[] photo) {
         try {
             if (photo.length != 0){
@@ -54,14 +76,4 @@ public interface UserMapper {
         return JsonNullable.undefined();
     }
 
-    default String mapJsonToString(JsonNullable<String> campoDto){
-        String campo = null;
-        try {
-            campo = campoDto.orElse(null);
-            return campo;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return campo;
-    }
 }
