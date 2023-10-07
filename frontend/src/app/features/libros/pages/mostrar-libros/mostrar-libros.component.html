@@ -5,31 +5,31 @@
 <div class="box text-center">
   <mat-form-field class="buscar">
     <mat-label>Ingresa el ISBN</mat-label>
-    <!-- <input matInput type="text" [(ngModel)]="isbn" /> -->
     <input matInput type="text" />
-    <!-- <button *ngIf="isbn" matSuffix mat-icon-button aria-label="Clear" (click)="isbn = ''">-->
-    <button matSuffix mat-icon-button aria-label="Clear">
-      <mat-icon>close</mat-icon>
-    </button>
   </mat-form-field>
   <button mat-raised-button color="primary">Buscar</button>
 </div>
 <hr />
-<div class="card">
-  <mat-card class="baseCard">
-    
-  </mat-card>
-</div>
-<!--
-<div class="card" *ngIf="librosUsuario?.libros?.length; else sinLibros">
-  <mat-card class="example-card" *ngFor="let libro of librosUsuario.libros">
-    <mat-card-header>
-      <mat-card-title-group>
-        <mat-card-title>{{ libro.titulo }}</mat-card-title>
-        <img mat-card-md-image [src]="libro.urlPortada" alt="Img Libro" />
-      </mat-card-title-group>
-    </mat-card-header>
+<div class="card" *ngIf="libros?.libros?.length; else nohayLibros">
+  <mat-card class="baseCard" *ngFor="let libro of libros.libros">
+    <mat-card-actions>
+      <button mat-raised-button class="btnLibro" color="primary" (click)="sendValues(libro.isbn)">
+        <mat-card-title-group>
+          <mat-card-title>{{ libro.titulo }}</mat-card-title>
+          <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
+          <img mat-card-md-image [src]="libro.urlPortada" alt="Img Libro" />
+        </mat-card-title-group>
+      </button>
+    </mat-card-actions>
   </mat-card>
 </div>
 
--->
+<ng-template #nohayLibros>
+  <div style="text-align: center">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title> Todavía no hay libros registrados </mat-card-title>
+      </mat-card-header>
+    </mat-card>
+  </div>
+</ng-template>
