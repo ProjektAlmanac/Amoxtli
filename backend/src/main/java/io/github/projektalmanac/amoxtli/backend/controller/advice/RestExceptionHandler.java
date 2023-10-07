@@ -20,27 +20,22 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidUserException.class)
     public final ResponseEntity<ErrorDto> handleInvalidUserException(InvalidUserException ex, WebRequest request) {
-        var error = new ErrorDto(ex.getMessage(), 400); // Código 400 para Bad Request
+        var error = new ErrorDto(ex.getMessage(), 5); // Código 400 para Bad Request  //acmbiar el codigo en forma de id
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public final ResponseEntity<ErrorDto> handleEmailAlreadyExistsException(EmailAlreadyExistsException ex, WebRequest request) {
-        var error = new ErrorDto(ex.getMessage(), 409); // Código 400 para Bad Request
+        var error = new ErrorDto(ex.getMessage(), 6);
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(InvalidEmailFormatException.class)
     public final ResponseEntity<ErrorDto> handleInvalidEmailFormatException(InvalidEmailFormatException ex, WebRequest request) {
-        var error = new ErrorDto(ex.getMessage(), 400); // Código 400 para Bad Request
+        var error = new ErrorDto(ex.getMessage(), 7);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(UserNotFoundException1.class)
-    public final ResponseEntity<ErrorDto> handleUserNotFoundException1(UserNotFoundException1 ex, WebRequest request) {
-        var error = new ErrorDto(ex.getMessage(), 404);
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-    }
 
 
 }

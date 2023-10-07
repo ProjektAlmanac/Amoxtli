@@ -96,13 +96,13 @@ public class UserController implements UsuariosApi {
     @Override
     public ResponseEntity<Void> mandarCorreoConfirmacion(@PathVariable Integer id) {
 
-        String codigoVerificacion = userService.generarCodigoVerificacion();
-        userService.guardarCodigoVerificacion(id, codigoVerificacion);
+      /*  String codigoVerificacion = userService.generarCodigoVerificacion();
+        userService.guardarCodigoVerificacion(id, codigoVerificacion);*/
 
         // Envia el correo de verificación
-        userService.enviarCorreoVerificacion(id, codigoVerificacion);//cambiar a variables de entorno
+        userService.enviarCorreoVerificacion(id);
 
-        // Almacena el código de verificación en la base de datos
+
 
 
        return ResponseEntity.status(HttpStatus.OK).body(null);
