@@ -15,7 +15,7 @@ import java.util.Base64;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(source = "id", target = "id")
+
     @Mapping(source = "nombre", target = "name")
     @Mapping(source = "apellidos", target = "lastName")
     @Mapping(source = "correo", target = "email")
@@ -35,7 +35,7 @@ public interface UserMapper {
         }
         return campo;
     }
-    @Mapping(source = "id", target = "id")
+
     @Mapping(source = "name", target = "nombre")
     @Mapping(source = "lastName", target = "apellidos")
     @Mapping(source = "email", target = "correo")
@@ -45,7 +45,7 @@ public interface UserMapper {
     @Mapping(source = "verifiedEmail", target = "correoVerificado")
     PerfilUsuarioDto userToUserDtoWithoutPhoto(User user);
 
-    @Mapping(source = "id", target = "id")
+
     @Mapping(source = "name", target = "nombre")
     @Mapping(source = "lastName", target = "apellidos")
     @Mapping(source = "email", target = "correo")

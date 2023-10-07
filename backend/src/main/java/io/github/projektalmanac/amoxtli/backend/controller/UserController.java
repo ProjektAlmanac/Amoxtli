@@ -1,5 +1,6 @@
 package io.github.projektalmanac.amoxtli.backend.controller;
 
+import io.github.projektalmanac.amoxtli.backend.exception.InvalidPhotoException;
 import io.github.projektalmanac.amoxtli.backend.generated.api.UsuariosApi;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.service.UserService;
@@ -30,9 +31,8 @@ public class UserController implements UsuariosApi {
         try{
             this.userService.actualizaFoto(id,body);
             return ResponseEntity.noContent().build();
-        }catch (IOException e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
+        }catch (IOException e) {
+            throw new InvalidPhotoException();
         }
 
     }

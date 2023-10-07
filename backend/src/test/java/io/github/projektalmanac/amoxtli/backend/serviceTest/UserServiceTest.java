@@ -21,6 +21,7 @@ import org.springframework.core.io.Resource;
 import java.io.IOException;
 import java.net.URI;
 
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -120,6 +121,14 @@ public class UserServiceTest {
             userService.actualizaUsuario(idUser1,perfilUsuarioDto);
         });
 
+        // Caso 3. Se actualizan los cambios correctamente
+        Integer id = 2;
+        when(userRepository.getUserById(id)).thenReturn(this.user1);
+        when(userRepository.save(any(User.class))).then(returnsFirstArg());
+        PerfilUsuarioDto perfil = userService.actualizaUsuario(id,perfilUsuarioDtoCambio);
+        Assertions.assertEquals(perfilUsuarioDtoCambio.getApellidos(),perfil.getApellidos());
+        Assertions.assertEquals(perfilUsuarioDtoCambio.getTelefono(),perfil.getTelefono());
+
     }
 
     @Test
@@ -137,6 +146,11 @@ public class UserServiceTest {
             userService.actualizaFoto(1,body);
         });
 
+        // Caso 3. Se guarda la foto correctamente
+        when(userRepository.getUserById(2)).thenReturn(this.user1);
+        when(userRepository.save(this.user1)).thenReturn(this.user1);
+        userService.actualizaFoto(2,body);
+        Assertions.assertArrayEquals(body.getInputStream().readAllBytes(),this.user1.getPhoto());
 
     }
 }

@@ -31,27 +31,27 @@ public class UserService {
         if (!user.isVerifiedEmail()) {
             throw new EmailUserNotVerificationException(id);
         }
-        PerfilUsuarioDto perfilUsuarioDto = UserMapper.INSTANCE.userToUserDto(user);
 
-        return perfilUsuarioDto;
+        return UserMapper.INSTANCE.userToUserDto(user);
     }
 
     public PerfilUsuarioDto actualizaUsuario(Integer idUser, PerfilUsuarioDto perfilUsuarioDto){
 
         User user = this.userRepository.getUserById(idUser);
+
         if(user == null) {
             throw new UserNotFoundException(idUser);
         }
         if(!user.isVerifiedEmail()) {
             throw new EmailUserNotVerificationException(idUser);
         }
+
         User userAux = UserMapper.INSTANCE.usuarioDtoToUser(perfilUsuarioDto);
         userAux.setId(idUser);
         userAux.setPhoto(user.getPhoto());
         user = this.userRepository.save(userAux);
-        PerfilUsuarioDto resultChange = UserMapper.INSTANCE.userToUserDtoWithoutPhoto(user);
 
-        return resultChange;
+        return UserMapper.INSTANCE.userToUserDtoWithoutPhoto(user);
     }
 
     public void actualizaFoto(Integer idUser, Resource body) throws IOException {
@@ -67,9 +67,8 @@ public class UserService {
         byte[] imagen = body.getInputStream().readAllBytes();
 
         user.setPhoto(imagen);
-        user = this.userRepository.save(user);
 
-
+        this.userRepository.save(user);
     }
 
 
