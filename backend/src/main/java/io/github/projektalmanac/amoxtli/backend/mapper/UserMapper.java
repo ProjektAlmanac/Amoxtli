@@ -22,7 +22,7 @@ public interface UserMapper {
     @Mapping(source = "telefono",target = "phone")
     @Mapping(target = "photoDescription",expression = "java(mapJsonToString(userDto.getDescripcionFoto()))")
     @Mapping(target = "interests", expression = "java(mapJsonToString(userDto.getIntereses()))")
-    @Mapping(source = "correoVerificado", target = "verificationCode")
+    @Mapping(source = "correoVerificado", target = "verifiedEmail")
     User usuarioDtoToUser(PerfilUsuarioDto userDto);
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "nombre")

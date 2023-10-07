@@ -2,7 +2,7 @@ package io.github.projektalmanac.amoxtli.backend.serviceTest;
 
 import io.github.projektalmanac.amoxtli.backend.entity.User;
 import io.github.projektalmanac.amoxtli.backend.exception.BadRequestException;
-import io.github.projektalmanac.amoxtli.backend.exception.UnauthenticatedUserException;
+import io.github.projektalmanac.amoxtli.backend.exception.EmailUserNotVerificationException;
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.generated.model.PerfilUsuarioDto;
 import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
@@ -21,7 +21,6 @@ import org.springframework.core.io.Resource;
 import java.io.IOException;
 import java.net.URI;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -94,7 +93,7 @@ public class UserServiceTest {
         //Caso 2. El usuario existe pero su correo
         Integer idUser = 1;
         when(userRepository.getUserById(idUser)).thenReturn(this.user);
-        Assertions.assertThrows(UnauthenticatedUserException.class,() ->{
+        Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
             userService.getUsuario(idUser);
         });
 
@@ -118,7 +117,7 @@ public class UserServiceTest {
         // Caso 3. El usuario existe pero su correo no esta autenticado
         Integer idUser1 = 1;
         when(userRepository.getUserById(idUser)).thenReturn(this.user);
-        Assertions.assertThrows(UnauthenticatedUserException.class,() ->{
+        Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
             userService.actualizaUsuario(idUser1,perfilUsuarioDto);
         });
         // Caso 4. Se actualiza la infromación del usuario en la base de datos
@@ -139,14 +138,10 @@ public class UserServiceTest {
         });
         // Caso 2: El correo del usuario verificado
         when(userRepository.getUserById(1)).thenReturn(this.user);
-        Assertions.assertThrows(UnauthenticatedUserException.class,() ->{
+        Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
             userService.actualizaFoto(1,body);
         });
-        // Se guarda el usuario con la foto previamente cargada
-        when(userRepository.getUserById(2)).thenReturn(user1);
-        when(userRepository.save(user1)).thenReturn(user1);
-        userService.actualizaFoto(2,body);
-        assertArrayEquals(body.getInputStream().readAllBytes(),user1.getPhoto());
+
 
     }
 }

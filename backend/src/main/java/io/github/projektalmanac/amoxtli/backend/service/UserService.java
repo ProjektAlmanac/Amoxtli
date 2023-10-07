@@ -15,7 +15,6 @@ import java.io.IOException;
 
 @Service
 public class UserService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private UserRepository userRepository;
 
@@ -25,66 +24,53 @@ public class UserService {
     }
     public PerfilUsuarioDto getUsuario(Integer id) {
 
-        LOGGER.info(">>PerfilUsuarioDto {}", id);
         User user = this.userRepository.getUserById(id);
         if (user == null) {
             throw new UserNotFoundException(id);
         }
         if (!user.isVerifiedEmail()) {
-            throw new UnauthenticatedUserException(id);
+            throw new EmailUserNotVerificationException(id);
         }
         PerfilUsuarioDto perfilUsuarioDto = UserMapper.INSTANCE.userToUserDto(user);
 
-        if (perfilUsuarioDto == null) {
-            throw new IllegalArgumentException("Error, el mapeo no fue exitoso");
-        }
-
-        LOGGER.info(">>PerfilUsuarioDto {}", id);
         return perfilUsuarioDto;
     }
 
-    public PerfilUsuarioDto actualizaUsuario(Integer id, PerfilUsuarioDto perfilUsuarioDto){
-        LOGGER.info(">>ActualizaUsuario {}", id);
-        if(!id.equals(perfilUsuarioDto.getId())){
-            throw new BadRequestException(id);
-        }
-        User user = this.userRepository.getUserById(id);
+    public PerfilUsuarioDto actualizaUsuario(Integer idUser, PerfilUsuarioDto perfilUsuarioDto){
+
+        User user = this.userRepository.getUserById(idUser);
         if(user == null) {
-            throw new UserNotFoundException(id);
+            throw new UserNotFoundException(idUser);
         }
         if(!user.isVerifiedEmail()) {
-            throw new UnauthenticatedUserException(id);
+            throw new EmailUserNotVerificationException(idUser);
         }
         User userAux = UserMapper.INSTANCE.usuarioDtoToUser(perfilUsuarioDto);
-        if(!user.getEmail().equals(userAux.getEmail())){
-            user.setVerifiedEmail(false);
-        }
+
+        user.setId(idUser);
         user.setName(userAux.getName());
         user.setLastName(userAux.getLastName());
         user.setEmail(userAux.getEmail());
         user.setPhone(userAux.getPhone());
         user.setPhotoDescription(userAux.getPhotoDescription());
         user.setInterests(userAux.getInterests());
+        user.setEmail(userAux.getEmail());
+        user.setVerifiedEmail(userAux.isVerifiedEmail());
         user = this.userRepository.save(user);
 
         PerfilUsuarioDto resultChange = UserMapper.INSTANCE.userToUserDto(user);
 
-        if (resultChange == null){
-            throw new IllegalArgumentException("Error, el mapeo no fue exitoso");
-        }
-        LOGGER.info("<<ActualizaUsuario {}", id);
         return resultChange;
     }
 
     public void actualizaFoto(Integer idUser, Resource body) throws IOException {
-        LOGGER.info(">>ActualizaFoto {}",idUser);
 
         User user = this.userRepository.getUserById(idUser);
         if (user == null){
             throw new UserNotFoundException(idUser);
         }
         if (!user.isVerifiedEmail()) {
-            throw new UnauthenticatedUserException(idUser);
+            throw new EmailUserNotVerificationException(idUser);
         }
 
         byte[] imagen = body.getInputStream().readAllBytes();
@@ -92,10 +78,7 @@ public class UserService {
         user.setPhoto(imagen);
         user = this.userRepository.save(user);
 
-        if (user == null){
-            throw new UserNotFoundException(idUser);
-        }
-        LOGGER.info("<<ActualizaFoto {}",idUser);
+
     }
 
 
