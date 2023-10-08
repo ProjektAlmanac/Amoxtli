@@ -96,16 +96,10 @@ public class UserController implements UsuariosApi {
     @Override
     public ResponseEntity<Void> mandarCorreoConfirmacion(@PathVariable Integer id) {
 
-      /*  String codigoVerificacion = userService.generarCodigoVerificacion();
-        userService.guardarCodigoVerificacion(id, codigoVerificacion);*/
 
-        // Envia el correo de verificación
         userService.enviarCorreoVerificacion(id);
 
-
-
-
-       return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 
@@ -118,7 +112,7 @@ public class UserController implements UsuariosApi {
     @PostMapping(path = "/usuarios/{id}/verificarCorreo")
     @Override
     public ResponseEntity<Void> verificarCorreo(@PathVariable Integer id, @RequestBody @Valid CodigoVerificacionDto codigoVerificacionDto) {
-        // Verificar el código de verificación ingresado por el usuario
+
         boolean codigoCorrecto = userService.verificaCorreo(id, codigoVerificacionDto);
 
         if (codigoCorrecto) {

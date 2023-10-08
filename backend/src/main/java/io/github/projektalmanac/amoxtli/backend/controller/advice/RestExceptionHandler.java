@@ -20,7 +20,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidUserException.class)
     public final ResponseEntity<ErrorDto> handleInvalidUserException(InvalidUserException ex, WebRequest request) {
-        var error = new ErrorDto(ex.getMessage(), 5); // Código 400 para Bad Request  //acmbiar el codigo en forma de id
+        var error = new ErrorDto(ex.getMessage(), 5);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 

@@ -84,10 +84,6 @@ class UserServiceTest {
 
     }
 
-    /*@Test
-    void generarCodigoVerificacion() {
-    }*/
-
     @Test
     void enviarCorreoVerificacion() throws MessagingException {
 
@@ -121,9 +117,6 @@ class UserServiceTest {
 
     }
 
-    /*@Test
-    void guardarCodigoVerificacion() {
-    }*/
 
     @Test
     void verificaCorreo() {
