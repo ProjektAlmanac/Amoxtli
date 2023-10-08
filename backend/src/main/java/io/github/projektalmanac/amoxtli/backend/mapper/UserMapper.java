@@ -16,13 +16,20 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
 
+    @Mapping(source = "correo", target = "email")
+
     @Mapping(source = "nombre", target = "name")
+    @Mapping(source = "apellildos", target = "lastName")
+    @Mapping(source = "password", target = "passwordHash")
+
+    User usuarioDtoToUser(UsuarioDto user);
     @Mapping(source = "apellidos", target = "lastName")
     @Mapping(source = "correo", target = "email")
     @Mapping(source = "telefono",target = "phone")
     @Mapping(target = "photoDescription",expression = "java(mapJsonToString(userDto.getDescripcionFoto()))")
     @Mapping(target = "interests", expression = "java(mapJsonToString(userDto.getIntereses()))")
     @Mapping(source = "correoVerificado", target = "verifiedEmail")
+
     User usuarioDtoToUser(PerfilUsuarioDto userDto);
     // Método para obtener el valor de JsonNulleable
     default String mapJsonToString(JsonNullable<String> campoDto){
