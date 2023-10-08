@@ -10,6 +10,7 @@ import { AgregarLibroComponent } from './features/user/components/agregar-libro/
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component'
 import { PerfilComponent } from './features/perfil/pages/perfil.component'
 import { MostrarLibrosComponent } from './features/libros/pages/mostrar-libros/mostrar-libros.component'
+import { DetallesLibroComponent } from './features/libros/components/detalles-libro/detalles-libro.component'
 
 const routes: Routes = [
   {
@@ -43,6 +44,7 @@ const routes: Routes = [
       },
       { path: 'perfil', component: PerfilComponent },
       { path: 'libros', component: MostrarLibrosComponent },
+      { path: 'detallesLibro', component: DetallesLibroComponent },
     ],
   },
 ]

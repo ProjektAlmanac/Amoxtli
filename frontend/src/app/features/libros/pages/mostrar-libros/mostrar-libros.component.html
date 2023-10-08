@@ -13,13 +13,15 @@
 <div class="card" *ngIf="libros?.libros?.length; else nohayLibros">
   <mat-card class="baseCard" *ngFor="let libro of libros.libros">
     <mat-card-actions>
-      <button mat-raised-button class="btnLibro" color="primary" (click)="sendValues(libro.isbn)">
-        <mat-card-title-group>
-          <mat-card-title>{{ libro.titulo }}</mat-card-title>
-          <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
-          <img mat-card-md-image [src]="libro.urlPortada" alt="Img Libro" />
-        </mat-card-title-group>
-      </button>
+      <a [routerLink]="['/detallesLibro']">
+        <button mat-raised-button class="btnLibro" color="primary" (click)="sendValues(libro.isbn)">
+          <mat-card-title-group>
+            <mat-card-title>{{ libro.titulo }}</mat-card-title>
+            <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
+            <img mat-card-md-image [src]="libro.urlPortada" alt="Img Libro" />
+          </mat-card-title-group>
+        </button>
+      </a>
     </mat-card-actions>
   </mat-card>
 </div>
