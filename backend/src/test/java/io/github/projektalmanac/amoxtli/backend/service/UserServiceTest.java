@@ -22,6 +22,7 @@ import java.util.Optional;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -45,12 +46,12 @@ class UserServiceTest {
         //crea usuario exitosamente://////////////
         UsuarioDto usuarioDto = new UsuarioDto();
         usuarioDto.setNombre("Yael");
-        usuarioDto.setApellidos("Ortega");
+        usuarioDto.setApellildos("Ortega");
         usuarioDto.setCorreo("prueba1@example.com");
         usuarioDto.setPassword("password");
 
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-        when(userRepository.save(any(User.class))).thenReturn(new User());
+        when(userRepository.save(any(User.class))).then(returnsFirstArg());
 
         UsuarioIdDto result = userService.createuser(usuarioDto);
 
@@ -59,7 +60,7 @@ class UserServiceTest {
         //////ingresa un correo que ya existe./////////////
         UsuarioDto usuarioDto1 = new UsuarioDto();
         usuarioDto1.setNombre("Axel");
-        usuarioDto1.setApellidos("Guzman");
+        usuarioDto1.setApellildos("Guzman");
         usuarioDto1.setCorreo("prueba1@example.com");
         usuarioDto1.setPassword("12345");
 
@@ -73,7 +74,7 @@ class UserServiceTest {
         //////ingresa un correo con la sintaxis erronea:///////////////
         UsuarioDto usuarioDto2 = new UsuarioDto();
         usuarioDto2.setNombre("Miguel");
-        usuarioDto2.setApellidos("Ortega");
+        usuarioDto2.setApellildos("Ortega");
         usuarioDto2.setCorreo("holaamigo.com");
         usuarioDto2.setPassword("12345");
 

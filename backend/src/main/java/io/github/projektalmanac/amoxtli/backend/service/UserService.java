@@ -15,12 +15,26 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.google.api.services.books.model.Volume.VolumeInfo;
+import io.github.projektalmanac.amoxtli.backend.entity.*;
+import io.github.projektalmanac.amoxtli.backend.generated.model.*;
+import io.github.projektalmanac.amoxtli.backend.mapper.BookMapper;
+import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
 import org.springframework.stereotype.Service;
+
+import io.github.projektalmanac.amoxtli.backend.exception.*;
+import io.github.projektalmanac.amoxtli.backend.mapper.UserMapper;
+import org.springframework.core.io.Resource;
+
+import java.io.IOException;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
-import java.util.Optional;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,16 +42,44 @@ import java.util.regex.Pattern;
 @Slf4j
 @Service
 public class UserService {
-
-    @Autowired
     private UserRepository userRepository;
-
-
-    @Autowired
+    private GoogleBookService googleBookService;
     private JavaMailSender javaMailSender;
 
     private String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     private Pattern pattern = Pattern.compile(emailRegex);
+
+    @Autowired
+    public UserService(UserRepository userRepository, GoogleBookService googleBookService, JavaMailSender javaMailSender) {
+        this.userRepository = userRepository;
+        this.googleBookService = googleBookService;
+        this.javaMailSender = javaMailSender;
+    }
+
+    public LibrosUsuarioDto getLibrosUsuario(Integer id) {
+
+        Optional<User> userOpt = userRepository.findById(id);
+
+        if (userOpt.isEmpty()) {
+            throw new UserNotFoundException(id);
+        }
+
+        User user = userOpt.get();
+        List<Book> books = user.getBooks();
+
+        if (books.isEmpty()) {
+            throw new EmptyResourceException();
+        }
+
+        GoogleBookService googleBookService = new GoogleBookService();
+
+        List<VolumeInfo> librosGoogleBooks = googleBookService.searchVolumeInfo(books);
+
+        LibrosUsuarioDto booksDto = BookMapper.INSTANCE.toLibrosUsuarioDto(books, librosGoogleBooks);
+
+        return booksDto;
+
+    }
 
     public UsuarioIdDto createuser(UsuarioDto usuario) {
 
@@ -74,7 +116,7 @@ public class UserService {
             userRepository.save(usuario1);
 
             UsuarioIdDto usuarioidDto1 = new UsuarioIdDto();
-            usuarioidDto1.setId((int) usuario1.getId());
+            usuarioidDto1.setId(usuario1.getId());
 
             return usuarioidDto1;
 
@@ -89,16 +131,15 @@ public class UserService {
 
         Optional<User> userOpt = userRepository.findById(idusuario);
 
-        if (!userOpt.isPresent()) {
+        if (userOpt.isEmpty()) {
 
-            throw new UserNotFoundException((int) idusuario);
+            throw new UserNotFoundException(idusuario);
 
         }
         //genera codigo
         int longitud = 6; // tamaño del código de verificación
         StringBuilder codigo = new StringBuilder();
-
-        // Caracteres  en el código de verificación
+        // Caracteres en el código de verificación
         String caracteresPermitidos = "0123456789";
 
         // Generar el código de verificación
@@ -122,8 +163,55 @@ public class UserService {
         helper.setText("Su código de verificación es: " + codigo);
 
         javaMailSender.send(message);
+    }
 
+    public PerfilUsuarioDto getUsuario(Integer id) {
 
+        User user = this.userRepository.getUserById(id);
+        if (user == null) {
+            throw new UserNotFoundException(id);
+        }
+        if (!user.isVerifiedEmail()) {
+            throw new EmailUserNotVerificationException(id);
+        }
+
+        return UserMapper.INSTANCE.userToUserDto(user);
+    }
+
+    public PerfilUsuarioDto actualizaUsuario(Integer idUser, PerfilUsuarioDto perfilUsuarioDto) {
+
+        User user = this.userRepository.getUserById(idUser);
+
+        if (user == null) {
+            throw new UserNotFoundException(idUser);
+        }
+        if (!user.isVerifiedEmail()) {
+            throw new EmailUserNotVerificationException(idUser);
+        }
+
+        User userAux = UserMapper.INSTANCE.usuarioDtoToUser(perfilUsuarioDto);
+        userAux.setId(idUser);
+        userAux.setPhoto(user.getPhoto());
+        user = this.userRepository.save(userAux);
+
+        return UserMapper.INSTANCE.userToUserDtoWithoutPhoto(user);
+    }
+
+    public void actualizaFoto(Integer idUser, Resource body) throws IOException {
+
+        User user = this.userRepository.getUserById(idUser);
+        if (user == null) {
+            throw new UserNotFoundException(idUser);
+        }
+        if (!user.isVerifiedEmail()) {
+            throw new EmailUserNotVerificationException(idUser);
+        }
+
+        byte[] imagen = body.getInputStream().readAllBytes();
+
+        user.setPhoto(imagen);
+
+        this.userRepository.save(user);
     }
 
     public boolean verificaCorreo(long id, @Valid CodigoVerificacionDto codigoVerificacionDto) {

@@ -91,6 +91,9 @@ dependencies {
 
 
 	testImplementation(kotlin("test"))
+
+	implementation("com.google.apis:google-api-services-books:v1-rev20201021-1.30.10")
+
 }
 
 tasks.withType<Test> {
