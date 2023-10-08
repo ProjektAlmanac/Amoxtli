@@ -1,12 +1,19 @@
 package io.github.projektalmanac.amoxtli.backend.generated.model;
 
+import java.net.URI;
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+
+import java.util.*;
 import javax.annotation.Generated;
-import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
 /**
  * Datos para la creación de un usuario
@@ -21,7 +28,7 @@ public class UsuarioDto {
 
   private String nombre;
 
-  private String apellidos;
+  private String apellildos;
 
   private String password;
 
@@ -35,7 +42,7 @@ public class UsuarioDto {
   public UsuarioDto(String correo, String nombre, String apellildos, String password) {
     this.correo = correo;
     this.nombre = nombre;
-    this.apellidos = apellildos;
+    this.apellildos = apellildos;
     this.password = password;
   }
 
@@ -48,7 +55,7 @@ public class UsuarioDto {
    * Correo electrónico del usuario
    * @return correo
   */
-  @NotNull //@javax.validation.constraints.Email
+  @NotNull @javax.validation.constraints.Email
   @Schema(name = "correo", description = "Correo electrónico del usuario", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("correo")
   public String getCorreo() {
@@ -79,8 +86,8 @@ public class UsuarioDto {
     this.nombre = nombre;
   }
 
-  public UsuarioDto apellidos(String apellidos) {
-    this.apellidos = apellidos;
+  public UsuarioDto apellildos(String apellildos) {
+    this.apellildos = apellildos;
     return this;
   }
 
@@ -89,14 +96,14 @@ public class UsuarioDto {
    * @return apellildos
   */
   @NotNull 
-  @Schema(name = "apellidos", description = "Apellido o apellidos del usuario", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("apellidos")
-  public String getApellidos() {
-    return apellidos;
+  @Schema(name = "apellildos", description = "Apellido o apellidos del usuario", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("apellildos")
+  public String getApellildos() {
+    return apellildos;
   }
 
-  public void setApellidos(String apellidos) {
-    this.apellidos = apellidos;
+  public void setApellildos(String apellildos) {
+    this.apellildos = apellildos;
   }
 
   public UsuarioDto password(String password) {
@@ -130,13 +137,13 @@ public class UsuarioDto {
     UsuarioDto usuario = (UsuarioDto) o;
     return Objects.equals(this.correo, usuario.correo) &&
         Objects.equals(this.nombre, usuario.nombre) &&
-        Objects.equals(this.apellidos, usuario.apellidos) &&
+        Objects.equals(this.apellildos, usuario.apellildos) &&
         Objects.equals(this.password, usuario.password);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(correo, nombre, apellidos, password);
+    return Objects.hash(correo, nombre, apellildos, password);
   }
 
   @Override
@@ -145,7 +152,7 @@ public class UsuarioDto {
     sb.append("class UsuarioDto {\n");
     sb.append("    correo: ").append(toIndentedString(correo)).append("\n");
     sb.append("    nombre: ").append(toIndentedString(nombre)).append("\n");
-    sb.append("    apellidos: ").append(toIndentedString(apellidos)).append("\n");
+    sb.append("    apellildos: ").append(toIndentedString(apellildos)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("}");
     return sb.toString();

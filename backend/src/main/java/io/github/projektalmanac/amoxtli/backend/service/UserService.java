@@ -42,8 +42,8 @@ public class UserService {
     public UsuarioIdDto createuser(UsuarioDto usuario) {
 
         // Verifica que ningún campo esté vacío
-        if (usuario.getNombre() != null && !usuario.getNombre().isEmpty() && usuario.getApellidos() != null &&
-                !usuario.getApellidos().isEmpty() && usuario.getCorreo() != null && !usuario.getCorreo().isEmpty()
+        if (usuario.getNombre() != null && !usuario.getNombre().isEmpty() && usuario.getApellildos() != null &&
+                !usuario.getApellildos().isEmpty() && usuario.getCorreo() != null && !usuario.getCorreo().isEmpty()
                 && usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
 
             Matcher matcher = pattern.matcher(usuario.getCorreo());
@@ -67,7 +67,7 @@ public class UserService {
             //pasar de DTO a entidad,
             User usuario1 = new User();
             usuario1.setName(usuario.getNombre());
-            usuario1.setLastName(usuario.getApellidos());
+            usuario1.setLastName(usuario.getApellildos());
             usuario1.setEmail(usuario.getCorreo());
             usuario1.setPasswordHash(hashedPassword);
             usuario1.setPasswordSalt(salt);
