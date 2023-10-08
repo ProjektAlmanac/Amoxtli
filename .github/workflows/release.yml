@@ -1,0 +1,38 @@
+name: Compila y libera el proyecto
+
+on:
+    workflow_dispatch:
+
+jobs:
+  compilar:
+    name: Compilar y liberar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout proyecto
+        uses: actions/checkout@v3
+
+      - name: Instalar Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: "adopt"
+          java-version: "17"
+          cache: gradle
+
+      - name: Setup frontend
+        uses: ./.github/actions/setup-frontend
+        with:
+          node-version: 19
+          pnpm-version: 8
+
+      - name: Compilar frontend
+        run: pnpm build
+        working-directory: ./frontend
+
+      - name: copiar archivos de frontend a backend
+        run: |
+          mkdir -p backend/src/main/resources/public
+          cp -r ./frontend/dist/frontend/* backend/src/main/resources/public
+
+      - name: Compilar backend
+        run: ./gradlew bootJar
+        working-directory: ./backend
