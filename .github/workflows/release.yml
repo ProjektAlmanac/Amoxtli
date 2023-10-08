@@ -1,12 +1,15 @@
 name: Compila y libera el proyecto
 
 on:
+    release:
+        types: [created]
     workflow_dispatch:
 
 jobs:
   compilar:
     name: Compilar y liberar
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - name: Checkout proyecto
         uses: actions/checkout@v3
@@ -33,6 +36,17 @@ jobs:
           mkdir -p backend/src/main/resources/public
           cp -r ./frontend/dist/frontend/* backend/src/main/resources/public
 
+      - run: |
+          VERSION=$(./gradlew properties -q | awk '/^version:/ {print $2}')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo Version is $VERSION
+        working-directory: ./backend
+
       - name: Compilar backend
         run: ./gradlew bootJar
         working-directory: ./backend
+
+      - name: Subir archivo JAR
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/libs/AmoxtliBackend-$VERSION.jar
