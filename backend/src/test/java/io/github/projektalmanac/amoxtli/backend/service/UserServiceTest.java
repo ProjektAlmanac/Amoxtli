@@ -121,7 +121,7 @@ class UserServiceTest {
 
     @Test
     void verificaCorreo() {
-        long userId = 1;
+        var userId = 1;
 
         ////////Codigo valido.///////
         CodigoVerificacionDto codigoVerificacionDto = new CodigoVerificacionDto();

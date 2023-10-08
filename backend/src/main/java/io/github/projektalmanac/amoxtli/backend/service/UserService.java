@@ -214,7 +214,7 @@ public class UserService {
         this.userRepository.save(user);
     }
 
-    public boolean verificaCorreo(long id, @Valid CodigoVerificacionDto codigoVerificacionDto) {
+    public boolean verificaCorreo(Integer id, @Valid CodigoVerificacionDto codigoVerificacionDto) {
 
         Optional<User> usuarioOpt = userRepository.findById(id);
         if (!usuarioOpt.isPresent()) {
