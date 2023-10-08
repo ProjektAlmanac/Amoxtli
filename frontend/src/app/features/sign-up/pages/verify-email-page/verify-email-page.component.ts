@@ -37,7 +37,7 @@ export class VerifyEmailPageComponent implements OnInit {
     })
   }
 
-  resendCode() {
+  sendVerificationCode() {
     this.servicioApi.mandarCorreoConfirmacion(this.idUsuario).subscribe({
       next: () => {
         this.snackbar.open('Correo enviado', 'Aceptar')
@@ -56,5 +56,7 @@ export class VerifyEmailPageComponent implements OnInit {
     this.servicioUsuario.id.subscribe(id => {
       this.idUsuario = id
     })
+
+    this.sendVerificationCode()
   }
 }
