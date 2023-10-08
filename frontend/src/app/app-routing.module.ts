@@ -7,6 +7,7 @@ import { VerifyEmailPageComponent } from './features/sign-up/pages/verify-email-
 import { WelcomePageComponent } from './features/sign-up/pages/welcome-page/welcome-page.component'
 import { AgregarLibroComponent } from './features/catalogo-usuario/components/agregar-libro/agregar-libro.component'
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component'
+import { NotFoundComponent } from './core/pages/not-found/not-found.component'
 
 const routes: Routes = [
   {
@@ -38,6 +39,12 @@ const routes: Routes = [
         component: AgregarLibroComponent,
       },
     ],
+  },
+  // Página no encontrada
+  {
+    path: '**',
+    pathMatch: 'full',
+    component: NotFoundComponent,
   },
 ]
 
