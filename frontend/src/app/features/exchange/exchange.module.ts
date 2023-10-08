@@ -7,9 +7,26 @@ import { MatCardModule } from '@angular/material/card'
 import { MatButtonModule } from '@angular/material/button'
 import { MatDividerModule } from '@angular/material/divider'
 import { MatIconModule } from '@angular/material/icon'
+import { MatDialogModule } from '@angular/material/dialog'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { BookListComponent } from './components/book-list/book-list.component'
+import { BookListDialogComponent } from './components/book-list/book-list-dialog/book-list-dialog.component'
 
 @NgModule({
-  declarations: [ExchangesPageComponent, ExchangeCardComponent],
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatDividerModule, MatIconModule],
+  declarations: [
+    ExchangesPageComponent,
+    ExchangeCardComponent,
+    BookListComponent,
+    BookListDialogComponent,
+  ],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatIconModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
+  ],
 })
 export class ExchangeModule {}

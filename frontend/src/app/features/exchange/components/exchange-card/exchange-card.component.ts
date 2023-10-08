@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { EstadoIntercambio } from 'src/generated/openapi'
 
 @Component({
@@ -24,4 +24,10 @@ export class ExchangeCardComponent {
 
   @Input({ required: true })
   name!: string
+
+  @Output()
+  accept = new EventEmitter<void>()
+
+  @Output()
+  cancel = new EventEmitter<void>()
 }

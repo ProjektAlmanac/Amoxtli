@@ -29,8 +29,14 @@
         <span class="exchange-name">Intercambio con </span><b>{{ name }}</b>
       </div>
       <div class="buttons">
-        <button mat-button color="warn">Cancelar</button>
-        <button mat-button color="primary">Finalizar intercambio</button>
+        <ng-container *ngIf="state === 'Aceptado' || state === 'Pendiente'">
+          <button mat-button color="warn" (click)="cancel.emit()">
+            {{ state === 'Pendiente' ? 'Rechazar' : 'Cancelar' }}
+          </button>
+          <button mat-button color="primary" (click)="accept.emit()">
+            {{ state === 'Pendiente' ? 'Ver libros' : 'Finalizar' }}
+          </button>
+        </ng-container>
       </div>
     </div>
   </mat-card-actions>
