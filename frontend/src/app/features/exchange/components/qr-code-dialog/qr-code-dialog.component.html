@@ -1,0 +1,10 @@
+<mat-card [ngStyle]="{ display: loading() ? 'none' : 'block' }">
+  <mat-card-content>
+    <canvas #qr></canvas>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button color="warn" (click)="closeDialog()">Cancelar</button>
+  </mat-card-actions>
+</mat-card>
+
+<mat-spinner *ngIf="loading()"> </mat-spinner>

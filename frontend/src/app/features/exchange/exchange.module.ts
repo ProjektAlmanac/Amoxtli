@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { BookListComponent } from './components/book-list/book-list.component'
 import { BookListDialogComponent } from './components/book-list/book-list-dialog/book-list-dialog.component'
+import { QrCodeDialogComponent } from './components/qr-code-dialog/qr-code-dialog.component'
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { BookListDialogComponent } from './components/book-list/book-list-dialog
     ExchangeCardComponent,
     BookListComponent,
     BookListDialogComponent,
+    QrCodeDialogComponent,
   ],
   imports: [
     CommonModule,

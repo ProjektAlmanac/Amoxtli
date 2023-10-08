@@ -21,5 +21,6 @@
     this.userId() === exchange.offeringUser.id
       ? exchange.acceptingUser.nombre + ' ' + exchange.acceptingUser.apellidos
       : exchange.offeringUser.nombre + ' ' + exchange.offeringUser.apellidos
-  ">
+  "
+  (accept)="acceptExchange(exchange)">
 </app-exchange-card>
