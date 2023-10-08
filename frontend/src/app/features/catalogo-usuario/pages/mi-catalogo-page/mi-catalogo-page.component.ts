@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { ServicioUsuario } from 'src/app/core/services/servicio-usuario.service'
 import { DefaultService, LibrosUsuario } from 'src/generated/openapi'
 
 @Component({
@@ -8,16 +9,23 @@ import { DefaultService, LibrosUsuario } from 'src/generated/openapi'
 })
 export class MiCatalogoPageComponent implements OnInit {
   public librosUsuario!: LibrosUsuario
+  public mostrarSpinner = false
 
-  constructor(private serviceApi: DefaultService) {}
+  constructor(
+    private serviceApi: DefaultService,
+    private serviceUsuario: ServicioUsuario
+  ) {}
 
   ngOnInit(): void {
+    this.mostrarSpinner = true
     this.recuperaLibrosUsuario()
   }
 
   recuperaLibrosUsuario() {
-    this.serviceApi.getLibrosUsuario(1).subscribe(libros => {
+    const idUsuario = this.serviceUsuario.id.value
+    this.serviceApi.getLibrosUsuario(idUsuario).subscribe(libros => {
       this.librosUsuario = libros
+      this.mostrarSpinner = false
     })
   }
 }
