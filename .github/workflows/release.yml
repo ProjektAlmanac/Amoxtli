@@ -49,4 +49,4 @@ jobs:
       - name: Subir archivo JAR
         uses: softprops/action-gh-release@v1
         with:
-          files: build/libs/AmoxtliBackend-${{ env.VERSION }}.jar
+          files: backend/build/libs/AmoxtliBackend-${{ env.VERSION }}.jar
