@@ -19,6 +19,8 @@ import { SignUpModule } from './features/sign-up/sign-up.module'
 import { ExchangeModule } from './features/exchange/exchange.module'
 import { ServicioUsuario } from './core/services/servicio-usuario.service'
 import { SharedModule } from './shared/shared.module'
+import { CatalogoUsuarioModule } from './features/catalogo-usuario/catalogo-usuario.module'
+import { NotFoundComponent } from './core/pages/not-found/not-found.component'
 
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {}
@@ -26,7 +28,7 @@ export function apiConfigFactory(): Configuration {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -36,6 +38,7 @@ export function apiConfigFactory(): Configuration {
     SignUpModule,
     ExchangeModule,
     SharedModule,
+    CatalogoUsuarioModule,
   ],
   providers: [{ provide: BASE_PATH, useValue: environment.apiBasePath }, ServicioUsuario],
   bootstrap: [AppComponent],
