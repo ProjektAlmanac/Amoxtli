@@ -42,7 +42,6 @@ public class UserService {
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     private final Pattern pattern = Pattern.compile(EMAIL_REGEX);
 
-    @Autowired
     public UserService(
             UserRepository userRepository,
             GoogleBookService googleBookService,

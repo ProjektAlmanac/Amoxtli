@@ -58,12 +58,11 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
         seguridad = new SecurityConfig();
         email = "test@example.com";
         password = "passwordHash";
-        salt = seguridad.saltHash();
-        passwordHash = seguridad.hashContrasena(password + salt);
+        salt = SecurityConfig.saltHash();
+        passwordHash = SecurityConfig.hashContrasena(password + salt);
         // System.out.println("Password hash -> "+passwordHash);
 
         // credencialdto

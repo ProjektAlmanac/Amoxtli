@@ -84,7 +84,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         var error = new ErrorDto(ex.getMessage(), 9);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(InvalidUserSessionException.class)
+    @ExceptionHandler(InvalidVerificationCodeException.class)
     public final ResponseEntity<ErrorDto> handleInvalidVerificationCodeException(InvalidVerificationCodeException ex, WebRequest request) {
         var error = new ErrorDto(ex.getMessage(), 10);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);

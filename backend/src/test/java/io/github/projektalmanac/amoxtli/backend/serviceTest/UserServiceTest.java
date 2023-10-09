@@ -20,6 +20,7 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Optional;
 
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.*;
@@ -91,13 +92,13 @@ public class UserServiceTest {
 
         //Caso 1. El usuario no existe en la base de datos
         Integer id = 0;
-        when(userRepository.getUserById(id)).thenReturn(null);
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
         Assertions.assertThrows(UserNotFoundException.class,() ->{
             userService.getUsuario(id);
         });
-        //Caso 2. El usuario existe pero su correo no esta verificado
+        //Caso 2. El usuario existe pero su correo no está verificado
         Integer idUser = 1;
-        when(userRepository.getUserById(idUser)).thenReturn(this.user);
+        when(userRepository.findById(idUser)).thenReturn(Optional.of(this.user));
         Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
             userService.getUsuario(idUser);
         });
@@ -109,21 +110,21 @@ public class UserServiceTest {
 
         // Caso 1. EL usuario no existe
         Integer idUser = 1;
-        when(userRepository.getUserById(idUser)).thenReturn(null);
+        when(userRepository.findById(idUser)).thenReturn(Optional.empty());
         Assertions.assertThrows(UserNotFoundException.class,() ->{
             userService.actualizaUsuario(idUser,perfilUsuarioDto);
         });
 
         // Caso 2. El usuario existe pero su correo no esta autenticado
         Integer idUser1 = 1;
-        when(userRepository.getUserById(idUser)).thenReturn(this.user);
+        when(userRepository.findById(idUser)).thenReturn(Optional.of(this.user));
         Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
             userService.actualizaUsuario(idUser1,perfilUsuarioDto);
         });
 
         // Caso 3. Se actualizan los cambios correctamente
         Integer id = 2;
-        when(userRepository.getUserById(id)).thenReturn(this.user1);
+        when(userRepository.findById(id)).thenReturn(Optional.of(this.user1));
         when(userRepository.save(any(User.class))).then(returnsFirstArg());
         PerfilUsuarioDto perfil = userService.actualizaUsuario(id,perfilUsuarioDtoCambio);
         Assertions.assertEquals(perfilUsuarioDtoCambio.getApellidos(),perfil.getApellidos());
@@ -136,18 +137,18 @@ public class UserServiceTest {
         // Representación de una imagen.
         Resource body = new ByteArrayResource(new byte[]{1, 2, 3});
         // Caso 1. El usuario no existe
-        when(userRepository.getUserById(1)).thenReturn(null);
+        when(userRepository.findById(1)).thenReturn(Optional.empty());
         Assertions.assertThrows(UserNotFoundException.class,() ->{
             userService.actualizaFoto(1,body);
         });
         // Caso 2: El correo del usuario verificado
-        when(userRepository.getUserById(1)).thenReturn(this.user);
+        when(userRepository.findById(1)).thenReturn(Optional.of(this.user));
         Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
             userService.actualizaFoto(1,body);
         });
 
         // Caso 3. Se guarda la foto correctamente
-        when(userRepository.getUserById(2)).thenReturn(this.user1);
+        when(userRepository.findById(2)).thenReturn(Optional.of(this.user1));
         when(userRepository.save(this.user1)).thenReturn(this.user1);
         userService.actualizaFoto(2,body);
         Assertions.assertArrayEquals(body.getInputStream().readAllBytes(),this.user1.getPhoto());
