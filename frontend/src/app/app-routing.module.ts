@@ -9,6 +9,7 @@ import { ExchangesPageComponent } from './features/exchange/pages/exchanges-page
 import { AgregarLibroComponent } from './features/catalogo-usuario/components/agregar-libro/agregar-libro.component'
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component'
 import { NotFoundComponent } from './core/pages/not-found/not-found.component'
+import { PerfilComponent } from './features/perfil/pages/perfil.component'
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
     path: 'welcome',
     component: WelcomePageComponent,
   },
+
   {
     path: '',
     component: NavBarComponent,
@@ -42,6 +44,10 @@ const routes: Routes = [
       {
         path: 'exchanges',
         component: ExchangesPageComponent,
+      },
+      {
+        path: 'perfil',
+        component: PerfilComponent,
       },
     ],
   },
