@@ -22,7 +22,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidUserSessionException.class)
     public final ResponseEntity<ErrorDto> handleInvalidUserSesionException(InvalidUserSessionException ex, WebRequest request) {
-        var error = new ErrorDto(ex.getMessage(), 400); // Código 400 para Bad Request
+        var error = new ErrorDto(ex.getMessage(), 3); // Código 3 par que es la historia de usuario que se trato
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 

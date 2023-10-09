@@ -1,4 +1,4 @@
-package io.github.projektalmanac.amoxtli.backend;
+package io.github.projektalmanac.amoxtli.backend.repository;
 
 import io.github.projektalmanac.amoxtli.backend.entity.User;
 import org.junit.jupiter.api.Test;

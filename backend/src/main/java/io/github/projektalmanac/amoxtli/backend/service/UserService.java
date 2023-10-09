@@ -9,8 +9,6 @@ import io.github.projektalmanac.amoxtli.backend.config.SecurityConfig;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -23,13 +21,13 @@ public class UserService {
     @Autowired
     private SecurityConfig seguridad;
 
-    public String generadorToken(long idUsuario, String clave)
+    public String generadorToken(long idUsuario)
     {
-        return seguridad.generadorToken(String.valueOf(idUsuario),clave);
+        return seguridad.generadorToken(String.valueOf(idUsuario));
     }
 
-    public String infoSesion(String token, String clave){
-        return seguridad.decodificarToken(token,clave).getSubject();
+    public String infoSesion(String token){
+        return seguridad.decodificarToken(token).getSubject();
     }
 
     /**
@@ -72,13 +70,13 @@ public class UserService {
             //regla de negocio 2
             //System.out.println("Repositorio: "+usuario.get().getPasswordHash());
             //System.out.println("DTO: "+credencialPass);
-            if (seguridad.matchContrasena(credenciales.getContrasena(),usuario.get().getPasswordHash())){
+            if (seguridad.matchContrasena(credenciales.getContrasena()+usuario.get().getPasswordSalt(),usuario.get().getPasswordHash())){
                 //creamos el Dto de SessionTokenDto con el dato de id usuario y generamos un token
                 /*SessionTokenDto sessionTokenDto = new SessionTokenDto();
                 sessionTokenDto.setIdUsuario(usuario.get().getId());
                 sessionTokenDto.setToken(generadorToken());*/
                 long id = usuario.get().getId();
-                return new SessionTokenDto(id, generadorToken(id,usuario.get().getEmail()));
+                return new SessionTokenDto(id, generadorToken(id));
             }else{
                 throw new InvalidUserSessionException("Contrasenia incorrecta.");
             }

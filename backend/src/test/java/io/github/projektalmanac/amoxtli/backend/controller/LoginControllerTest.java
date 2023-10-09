@@ -1,6 +1,7 @@
-package io.github.projektalmanac.amoxtli.backend;
+package io.github.projektalmanac.amoxtli.backend.controller;
 
 import io.github.projektalmanac.amoxtli.backend.controller.LoginController;
+import io.github.projektalmanac.amoxtli.backend.exception.InvalidUserSessionException;
 import io.github.projektalmanac.amoxtli.backend.generated.model.CredencialesDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.SessionTokenDto;
 import io.github.projektalmanac.amoxtli.backend.service.UserService;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -54,20 +57,22 @@ public class LoginControllerTest {
 
     @Test
     void iniciarSesion_UsuarioInvalido() {
+        //Indicacion del test que se ejecuta
+        System.out.println("Test:: Sesion rechazada");
+
         // Configurar un usuario inválido
-        CredencialesDto credencialesDto = new CredencialesDto();
-        credencialesDto.setEmail("test@example.com");
-        credencialesDto.setContrasena("password");
+        CredencialesDto credencialesDto = null;
 
-        // Simular el comportamiento del servicio para un usuario inválido
-        when(userService.iniciarSesion(any(CredencialesDto.class)))
-                .thenReturn(null);
+        //Indicacion del test que se ejecuta
+        System.out.println("Test:: iniciarSesion");
 
-        // Llamar al método iniciarSesion del controlador
-        var response = loginController.iniciarSesion(credencialesDto);
-        System.out.println("Response -> "+response);
-        // Verificar que la respuesta sea BAD REQUEST y el cuerpo sea nulo
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(response.getBody()).isNull();
+        //1.- cuando el usuario no tiene una cuenta es decir su correo no existe en el sistema o ingresa mal sus credenciales
+        Exception exception = assertThrows(InvalidUserSessionException.class, () -> {
+            loginController.iniciarSesion(credencialesDto);
+        });
+        String mensajeEsperado = "Sesion rechazada, intente mas tarde.";
+        String mensajeEncontrado = exception.getMessage();
+
+        assertEquals(mensajeEsperado,mensajeEncontrado);
     }
 }
