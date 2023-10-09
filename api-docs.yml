@@ -66,8 +66,8 @@ paths:
                     nombre: Juan
                     apellidos: Pérez Morales
                     correo: usuario@example.com
-                    teléfono: "9999999"
-                    descripciónFoto: ""
+                    telefono: "9999999"
+                    descripcionFoto: ""
                     intereses: ""
                     fotoPerfil: "https://amoxtli.io/usuarios/1/perfil.png"
                     correoVerificado: true
@@ -77,8 +77,8 @@ paths:
                     nombre: María
                     apellidos: López
                     correo: user2@example.com
-                    teléfono: "0000000000"
-                    descripciónFoto: Descripción de mi foto de perfil
+                    telefono: "0000000000"
+                    descripcionFoto: Descripción de mi foto de perfil
                     intereses: Descripción de mis intereses
                     fotoPerfil: "https://amoxtli.io/usuarios/2/perfil.png"
                     correoVerificado: false
@@ -104,7 +104,7 @@ paths:
       x-stoplight:
         id: ng4epkhi8vqk2
       description: Recupera un usuario mediante su ID
-    patch:
+    put:
       summary: Actualizar usuario
       operationId: actualizarUsuario
       responses:
@@ -139,7 +139,7 @@ paths:
         content:
           application/json-patch+json:
             schema:
-              $ref: "#/components/schemas/PatchRequest"
+              $ref: "#/components/schemas/PerfilUsuario"
   "/usuarios/{id}/libros":
     parameters:
       - schema:
@@ -691,6 +691,50 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/Credenciales"
+  "/usuarios/{id}/fotoPerfil":
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    put:
+      summary: Actualizar foto de perfil
+      operationId: actualizarFotoPerfil
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      x-stoplight:
+        id: m8k42x5nrf180
+      description: Actualiza la foto de perfil de un usuario
+      requestBody:
+        content:
+          image/png:
+            schema:
+              type: string
+              format: binary
+          image/jpg:
+            schema:
+              type: string
+              format: binary
 components:
   schemas:
     Usuario:
@@ -782,13 +826,13 @@ components:
           format: email
           description: Correo electrónico del usuario
           x-faker: internet.email
-        teléfono:
+        telefono:
           type: string
           x-stoplight:
             id: skofkbpvlpybv
           description: Numero telefónico del usuario
           x-faker: phone.phoneNumber
-        descripciónFoto:
+        descripcionFoto:
           type: string
           description: Descripción de la foto de perfil del usuario
           x-faker: lorem.sentence
@@ -814,8 +858,8 @@ components:
         - nombre
         - apellidos
         - correo
-        - teléfono
-        - descripciónFoto
+        - telefono
+        - descripcionFoto
         - intereses
         - fotoPerfil
         - correoVerificado
@@ -907,7 +951,8 @@ components:
           format: uri
           description: URL de la portada del libro
           x-faker:
-            fake: ["http://loremflickr.com/480/640/abstract"]
+            fake:
+              - "http://loremflickr.com/480/640/abstract"
       required:
         - isbn
         - autor

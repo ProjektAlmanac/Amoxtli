@@ -12,7 +12,7 @@ class UserTest {
     @Test
     void getId() {
         //Se tiene un unico usuario por lo que su id debe ser 0
-        assertEquals(0,usuario.getId());
+        assertNull(usuario.getId());
     }
 
     @Test

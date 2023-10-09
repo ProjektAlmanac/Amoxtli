@@ -1,0 +1,27 @@
+<div class="verify-page">
+  <div class="title">
+    <h1>Verifica tu correo electrónico</h1>
+  </div>
+  <div class="verify-form">
+    <mat-card>
+      <mat-card-content>
+        <p>¡Casi terminas!</p>
+        <p>
+          Hemos enviado un código de verificación a <span class="email">{{ email }}</span>
+        </p>
+        <app-verify-email-form (formSubmit)="onSubmit($event)" />
+        <mat-error *ngIf="mensajeError">{{ mensajeError }}</mat-error>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="resend">
+    <mat-card>
+      <mat-card-content>
+        <p>
+          ¿No recibiste nuestro correo electrónico?
+          <button mat-button color="primary" (click)="resendCode()">Reenviar el código</button>
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

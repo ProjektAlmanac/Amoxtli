@@ -22,7 +22,7 @@ import javax.annotation.Generated;
 
 @Schema(name = "PerfilUsuario", description = "Datos del perfil de un usuario")
 @JsonTypeName("PerfilUsuario")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-20T16:35:03.036426542-06:00[America/Mexico_City]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class PerfilUsuarioDto {
 
   private Integer id;
@@ -33,9 +33,9 @@ public class PerfilUsuarioDto {
 
   private String correo;
 
-  private String teléfono;
+  private String telefono;
 
-  private JsonNullable<String> descripciónFoto = JsonNullable.<String>undefined();
+  private JsonNullable<String> descripcionFoto = JsonNullable.<String>undefined();
 
   private JsonNullable<String> intereses = JsonNullable.<String>undefined();
 
@@ -50,13 +50,13 @@ public class PerfilUsuarioDto {
   /**
    * Constructor with only required parameters
    */
-  public PerfilUsuarioDto(Integer id, String nombre, String apellidos, String correo, String teléfono, String descripciónFoto, String intereses, URI fotoPerfil, Boolean correoVerificado) {
+  public PerfilUsuarioDto(Integer id, String nombre, String apellidos, String correo, String telefono, String descripcionFoto, String intereses, URI fotoPerfil, Boolean correoVerificado) {
     this.id = id;
     this.nombre = nombre;
     this.apellidos = apellidos;
     this.correo = correo;
-    this.teléfono = teléfono;
-    this.descripciónFoto = JsonNullable.of(descripciónFoto);
+    this.telefono = telefono;
+    this.descripcionFoto = JsonNullable.of(descripcionFoto);
     this.intereses = JsonNullable.of(intereses);
     this.fotoPerfil = JsonNullable.of(fotoPerfil);
     this.correoVerificado = correoVerificado;
@@ -142,44 +142,44 @@ public class PerfilUsuarioDto {
     this.correo = correo;
   }
 
-  public PerfilUsuarioDto teléfono(String teléfono) {
-    this.teléfono = teléfono;
+  public PerfilUsuarioDto telefono(String telefono) {
+    this.telefono = telefono;
     return this;
   }
 
   /**
    * Numero telefónico del usuario
-   * @return teléfono
+   * @return telefono
   */
   @NotNull 
-  @Schema(name = "teléfono", description = "Numero telefónico del usuario", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("teléfono")
-  public String getTeléfono() {
-    return teléfono;
+  @Schema(name = "telefono", description = "Numero telefónico del usuario", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("telefono")
+  public String getTelefono() {
+    return telefono;
   }
 
-  public void setTeléfono(String teléfono) {
-    this.teléfono = teléfono;
+  public void setTelefono(String telefono) {
+    this.telefono = telefono;
   }
 
-  public PerfilUsuarioDto descripciónFoto(String descripciónFoto) {
-    this.descripciónFoto = JsonNullable.of(descripciónFoto);
+  public PerfilUsuarioDto descripcionFoto(String descripcionFoto) {
+    this.descripcionFoto = JsonNullable.of(descripcionFoto);
     return this;
   }
 
   /**
    * Descripción de la foto de perfil del usuario
-   * @return descripciónFoto
+   * @return descripcionFoto
   */
   @NotNull 
-  @Schema(name = "descripciónFoto", description = "Descripción de la foto de perfil del usuario", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("descripciónFoto")
-  public JsonNullable<String> getDescripciónFoto() {
-    return descripciónFoto;
+  @Schema(name = "descripcionFoto", description = "Descripción de la foto de perfil del usuario", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("descripcionFoto")
+  public JsonNullable<String> getDescripcionFoto() {
+    return descripcionFoto;
   }
 
-  public void setDescripciónFoto(JsonNullable<String> descripciónFoto) {
-    this.descripciónFoto = descripciónFoto;
+  public void setDescripcionFoto(JsonNullable<String> descripcionFoto) {
+    this.descripcionFoto = descripcionFoto;
   }
 
   public PerfilUsuarioDto intereses(String intereses) {
@@ -255,8 +255,8 @@ public class PerfilUsuarioDto {
         Objects.equals(this.nombre, perfilUsuario.nombre) &&
         Objects.equals(this.apellidos, perfilUsuario.apellidos) &&
         Objects.equals(this.correo, perfilUsuario.correo) &&
-        Objects.equals(this.teléfono, perfilUsuario.teléfono) &&
-        Objects.equals(this.descripciónFoto, perfilUsuario.descripciónFoto) &&
+        Objects.equals(this.telefono, perfilUsuario.telefono) &&
+        Objects.equals(this.descripcionFoto, perfilUsuario.descripcionFoto) &&
         Objects.equals(this.intereses, perfilUsuario.intereses) &&
         Objects.equals(this.fotoPerfil, perfilUsuario.fotoPerfil) &&
         Objects.equals(this.correoVerificado, perfilUsuario.correoVerificado);
@@ -264,7 +264,7 @@ public class PerfilUsuarioDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, nombre, apellidos, correo, teléfono, descripciónFoto, intereses, fotoPerfil, correoVerificado);
+    return Objects.hash(id, nombre, apellidos, correo, telefono, descripcionFoto, intereses, fotoPerfil, correoVerificado);
   }
 
   @Override
@@ -275,8 +275,8 @@ public class PerfilUsuarioDto {
     sb.append("    nombre: ").append(toIndentedString(nombre)).append("\n");
     sb.append("    apellidos: ").append(toIndentedString(apellidos)).append("\n");
     sb.append("    correo: ").append(toIndentedString(correo)).append("\n");
-    sb.append("    teléfono: ").append(toIndentedString(teléfono)).append("\n");
-    sb.append("    descripciónFoto: ").append(toIndentedString(descripciónFoto)).append("\n");
+    sb.append("    telefono: ").append(toIndentedString(telefono)).append("\n");
+    sb.append("    descripcionFoto: ").append(toIndentedString(descripcionFoto)).append("\n");
     sb.append("    intereses: ").append(toIndentedString(intereses)).append("\n");
     sb.append("    fotoPerfil: ").append(toIndentedString(fotoPerfil)).append("\n");
     sb.append("    correoVerificado: ").append(toIndentedString(correoVerificado)).append("\n");
