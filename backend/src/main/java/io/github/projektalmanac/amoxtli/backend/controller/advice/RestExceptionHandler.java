@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -76,6 +77,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidEmailFormatException.class)
     public final ResponseEntity<ErrorDto> handleInvalidEmailFormatException(InvalidEmailFormatException ex, WebRequest request) {
         var error = new ErrorDto(ex.getMessage(), 7);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(InvalidUserSessionException.class)
+    public final ResponseEntity<ErrorDto> handleInvalidUserSesionException(InvalidUserSessionException ex, WebRequest request) {
+        var error = new ErrorDto(ex.getMessage(), 9); // Código 3 par que es la historia de usuario que se trato
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }

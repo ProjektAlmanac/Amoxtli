@@ -1,59 +1,59 @@
 package io.github.projektalmanac.amoxtli.backend.service;
 
-import io.github.projektalmanac.amoxtli.backend.entity.User;
-import io.github.projektalmanac.amoxtli.backend.exception.EmailAlreadyExistsException;
-import io.github.projektalmanac.amoxtli.backend.exception.InvalidEmailFormatException;
-import io.github.projektalmanac.amoxtli.backend.exception.InvalidUserException;
-import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
-import io.github.projektalmanac.amoxtli.backend.generated.model.CodigoVerificacionDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.UsuarioDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.UsuarioIdDto;
-import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.core.io.Resource;
 
-import java.util.List;
-import java.util.Optional;
 
 import com.google.api.services.books.model.Volume.VolumeInfo;
-import io.github.projektalmanac.amoxtli.backend.entity.*;
-import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.mapper.BookMapper;
-import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
-import org.springframework.stereotype.Service;
-
-import io.github.projektalmanac.amoxtli.backend.exception.*;
 import io.github.projektalmanac.amoxtli.backend.mapper.UserMapper;
-import org.springframework.core.io.Resource;
+import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
+import io.github.projektalmanac.amoxtli.backend.entity.*;
+import io.github.projektalmanac.amoxtli.backend.exception.*;
+import io.github.projektalmanac.amoxtli.backend.generated.model.*;
+import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
+import io.github.projektalmanac.amoxtli.backend.config.SecurityConfig;
 
 import java.io.IOException;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
+
 @Service
 public class UserService {
     private UserRepository userRepository;
     private GoogleBookService googleBookService;
     private JavaMailSender javaMailSender;
+    private SecurityConfig seguridad;
 
     private String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     private Pattern pattern = Pattern.compile(emailRegex);
 
     @Autowired
-    public UserService(UserRepository userRepository, GoogleBookService googleBookService, JavaMailSender javaMailSender) {
+    public UserService(
+            UserRepository userRepository,
+            GoogleBookService googleBookService,
+            JavaMailSender javaMailSender,
+            SecurityConfig securityConfig
+            ) {
         this.userRepository = userRepository;
         this.googleBookService = googleBookService;
         this.javaMailSender = javaMailSender;
+        this.seguridad = securityConfig;
     }
 
     public LibrosUsuarioDto getLibrosUsuario(Integer id) {
@@ -78,8 +78,17 @@ public class UserService {
         LibrosUsuarioDto booksDto = BookMapper.INSTANCE.toLibrosUsuarioDto(books, librosGoogleBooks);
 
         return booksDto;
-
     }
+
+    public String generadorToken(long idUsuario)
+    {
+        return seguridad.generadorToken(String.valueOf(idUsuario));
+    }
+
+    public String infoSesion(String token){
+        return seguridad.decodificarToken(token).getSubject();
+    }
+
 
     public UsuarioIdDto createuser(UsuarioDto usuario) {
 
@@ -239,4 +248,63 @@ public class UserService {
         }
     }
 
+    /**
+     *  Metodo encargado de validar un inicio de sesion con las credenciales
+     *  asociadas al usuario capturado en el frontend,
+     *  realiza el proceso se autenticacion
+     * @param credenciales: Es el dto de las credenciales, contiene Usuario y Password
+     * @return sessionTokenDto or null
+     */
+    public SessionTokenDto iniciarSesion(CredencialesDto credenciales){ //hash password
+        /*
+         * Pre proceso: Se debe antes que nada, realizar un hash sobre
+         * la contraseña contenida en el DTO de credenciales,
+         * para lo cual se tiene una variable local:
+         * credencialPass, es de tipo String por que el mecanismo de hasheo hashContrasen(String),
+         * planteado en seguridad es de tipo String.
+         */
+        //String credencialPass = seguridad.hashContrasena(credenciales.getContrasena());
+
+        //System.out.println("Constrasena -> "+credenciales.getContrasena()+"\n"+credencialPass);
+
+        /*
+         * Reglas de negocio:
+         * 1- Usuario previamente registrado
+         *  Para ello usamos el email del usuario y mediante una consulta al repositorio con findByEmail
+         *  Si hay cooincidencia pasamos a la segunda regla de validacion
+         *  Si no, se retorna un null
+         * 2- Autenticacion de usuario
+         *  Se valida que la contrasena sea la correcta, para lo cual se hace un Match con la hash de la
+         *  contrasena, guarda durante el proceso de registro de usuario, para lo que usamos el mecanismo de
+         *  matchContrasena(String,String), que se planteo en seguridad y que nos retorna
+         *  true o false, si hay coincidencia.
+         * Cuando no hay coincidencia se retona un null, pero en caso contrario se retorna el DTO de sesionToken que
+         * contiene el id y token asociados al usuario autenticado.
+         */
+
+        //regla de negocio 1
+        Optional<User> usuario = userRepository.findByEmail(credenciales.getEmail());
+        if (usuario.isPresent()){
+            //regla de negocio 2
+            //System.out.println("Repositorio: "+usuario.get().getPasswordHash());
+            //System.out.println("DTO: "+credencialPass);
+            if (seguridad.matchContrasena(credenciales.getContrasena()+usuario.get().getPasswordSalt(),usuario.get().getPasswordHash())){
+                //creamos el Dto de SessionTokenDto con el dato de id usuario y generamos un token
+                /*SessionTokenDto sessionTokenDto = new SessionTokenDto();
+                sessionTokenDto.setIdUsuario(usuario.get().getId());
+                sessionTokenDto.setToken(generadorToken());*/
+                int id = usuario.get().getId();
+                return new SessionTokenDto(id, generadorToken(id));
+            }else{
+                throw new InvalidUserSessionException("Contrasenia incorrecta.");
+            }
+
+        }else{
+            throw new InvalidUserSessionException("Este correo no esta asociado a ninguna cuenta, intente registrarse.");
+        }
+
+
+    }
+
 }
+
