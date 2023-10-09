@@ -25,6 +25,7 @@ public class Application {
 		user.setName("Juan");
 		user.setLastName("Pérez");
 		user.setId(1);
+		user.setVerifiedEmail(true);
 
 		userRepository.save(user);
 	}
