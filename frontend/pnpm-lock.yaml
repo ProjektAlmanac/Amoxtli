@@ -35,6 +35,9 @@ dependencies:
   '@angular/router':
     specifier: ^16.1.0
     version: 16.1.0(@angular/common@16.1.0)(@angular/core@16.1.0)(@angular/platform-browser@16.1.0)(rxjs@7.8.0)
+  html5-qrcode:
+    specifier: ^2.3.8
+    version: 2.3.8
   qrious:
     specifier: ^4.0.2
     version: 4.0.2
@@ -7986,6 +7989,13 @@ packages:
         integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==,
       }
     dev: true
+
+  /html5-qrcode@2.3.8:
+    resolution:
+      {
+        integrity: sha512-jsr4vafJhwoLVEDW3n1KvPnCCXWaQfRng0/EEYk1vNcQGcG/htAdhJX0be8YyqMoSz7+hZvOZSTAepsabiuhiQ==,
+      }
+    dev: false
 
   /htmlparser2@8.0.2:
     resolution:

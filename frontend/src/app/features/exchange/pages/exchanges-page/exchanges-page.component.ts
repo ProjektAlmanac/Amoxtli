@@ -11,6 +11,7 @@ import {
 import { BookListDialogComponent } from '../../components/book-list/book-list-dialog/book-list-dialog.component'
 import { lastValueFrom } from 'rxjs'
 import { QrCodeDialogComponent } from '../../components/qr-code-dialog/qr-code-dialog.component'
+import { QrCodeScannerDialogComponent } from '../../components/qr-code-scanner-dialog/qr-code-scanner-dialog.component'
 
 @Component({
   selector: 'app-exchanges-page',
@@ -83,6 +84,10 @@ export class ExchangesPageComponent implements OnInit {
     this.dialog.open(QrCodeDialogComponent, {
       data: { exchangeId: exchange.id, userId: this.userId() },
     })
+  }
+
+  openQrCodeScanner() {
+    this.dialog.open(QrCodeScannerDialogComponent)
   }
 }
 

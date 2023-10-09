@@ -12,6 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { BookListComponent } from './components/book-list/book-list.component'
 import { BookListDialogComponent } from './components/book-list/book-list-dialog/book-list-dialog.component'
 import { QrCodeDialogComponent } from './components/qr-code-dialog/qr-code-dialog.component'
+import { QrCodeScannerDialogComponent } from './components/qr-code-scanner-dialog/qr-code-scanner-dialog.component'
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { QrCodeDialogComponent } from './components/qr-code-dialog/qr-code-dialo
     BookListComponent,
     BookListDialogComponent,
     QrCodeDialogComponent,
+    QrCodeScannerDialogComponent,
   ],
   imports: [
     CommonModule,
