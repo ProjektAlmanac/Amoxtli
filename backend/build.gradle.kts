@@ -86,8 +86,14 @@ dependencies {
 //	implementation("com.fasterxml.jackson.core:jackson-databind")
 
 	implementation("org.hibernate.validator:hibernate-validator")
+	implementation("org.springframework.boot:spring-boot-starter-mail")
+	implementation ("javax.mail:javax.mail-api:1.6.2")
+
 
 	testImplementation(kotlin("test"))
+
+	implementation("com.google.apis:google-api-services-books:v1-rev20201021-1.30.10")
+
 }
 
 tasks.withType<Test> {
