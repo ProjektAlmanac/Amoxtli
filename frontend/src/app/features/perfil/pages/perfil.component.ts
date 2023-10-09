@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar'
 import { successNotification } from '../../../shared/config/LibreryConfig'
 import { DefaultService, PerfilUsuario } from 'src/generated/openapi'
 import { ServicioUsuario } from 'src/app/core/services/servicio-usuario.service'
+import { Observable, zip } from 'rxjs'
 
 @Component({
   selector: 'app-perfil',
@@ -58,7 +59,7 @@ export class PerfilComponent implements OnInit {
   }
 
   recuperaUsuario() {
-    this.serviceApi.getUsuario(1).subscribe(usuario => {
+    this.serviceApi.getUsuario(this.servicioUsuario.id.value).subscribe(usuario => {
       this.perfilUsuario = usuario
       this.imageSrc = usuario.fotoPerfil ?? ''
 
@@ -79,9 +80,10 @@ export class PerfilComponent implements OnInit {
     successNotification(msg, this._snackBar)
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onFileSelected(event: any) {
+  onFileSelected(event: Event) {
+    const target = event.target as HTMLInputElement
     this.photoTouched = true
-    this.selectedFile = event.target.files[0]
+    this.selectedFile = target.files?.[0] ?? null
 
     // Obtener la extensión del archivo
     const nombreArchivo = this.selectedFile?.name
@@ -101,7 +103,7 @@ export class PerfilComponent implements OnInit {
       }
     } else {
       this.success('Por favor, seleccione una imagen de formato JPEG o PNG.')
-      event.target.value = '' // Esto elimina el archivo seleccionado
+      target.value = '' // Esto elimina el archivo seleccionado
     }
   }
 
@@ -124,7 +126,6 @@ export class PerfilComponent implements OnInit {
       intereses = ''
       descripcionFoto = ''
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const updateUser: PerfilUsuario = {
       id,
       nombre,
@@ -136,28 +137,28 @@ export class PerfilComponent implements OnInit {
       fotoPerfil,
       correoVerificado,
     }
-    this.actualizaUsuario(updateUser, fotoPerfil)
+    this.actualizaUsuario(updateUser, this.selectedFile)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  actualizaUsuario(updateUser: PerfilUsuario, foto: string) {
+  actualizaUsuario(updateUser: PerfilUsuario, foto: File | null) {
     const idUsuario = this.servicioUsuario.id.value
-    this.serviceApi.actualizarUsuario(idUsuario, updateUser).subscribe({
+
+    let actualizacionDatos = this.serviceApi.actualizarUsuario(
+      idUsuario,
+      updateUser
+    ) as Observable<unknown>
+
+    if (foto !== null && this.photoTouched) {
+      const actuailzacionFoto = this.serviceApi.actualizarFotoPerfil(idUsuario, foto)
+      actualizacionDatos = zip(actualizacionDatos, actuailzacionFoto)
+    }
+
+    actualizacionDatos.subscribe({
       next: () => {
         this.showInputPhoto = false // Oculta el campo de foto después de una actualización exitosa
         this.showButtons = false
         this.resetTouchedFields()
-
-        const id = idUsuario
-        const file = new File([foto], 'archivo.png', { type: 'image/png' })
-        this.serviceApi.actualizarFotoPerfil(id, file).subscribe({
-          next: () => {
-            this.success('Se actualizaron correctamente los campos')
-          },
-          error: () => {
-            this.success('No se actualizó correctamente los campos')
-          },
-        })
+        this.success('Se actualizaron correctamente los campos')
       },
       error: () => {
         this.success('No se actualizó correctamente en el servidor')
