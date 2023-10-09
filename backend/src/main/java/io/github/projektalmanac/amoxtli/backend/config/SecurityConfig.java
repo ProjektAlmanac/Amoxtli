@@ -15,7 +15,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final int NIVEL_HASH = 12;
     protected  static BCryptPasswordEncoder hash = new BCryptPasswordEncoder(NIVEL_HASH);
     //Clave para el token
-    private static final String CLAVE_SECRETA = "cc471927e7a0a3d3d56cdab65312ca4d311b65dd518af5e4b8007f1ef3908465";//System.getenv("JWT_SECRET_KEY"); // Cargar desde una variable de entorno
+    private static final String CLAVE_SECRETA = "CLAVE_OPENSSL";//System.getenv("JWT_SECRET_KEY"); // Cargar desde una variable de entorno
 
     /**
      * Metodo que realiza un hash sobre la contraseña del ususario
