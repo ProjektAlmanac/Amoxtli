@@ -8,6 +8,7 @@ import { WelcomePageComponent } from './features/sign-up/pages/welcome-page/welc
 import { AgregarLibroComponent } from './features/catalogo-usuario/components/agregar-libro/agregar-libro.component'
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component'
 import { NotFoundComponent } from './core/pages/not-found/not-found.component'
+import { PerfilComponent } from './features/perfil/pages/perfil.component'
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     path: 'welcome',
     component: WelcomePageComponent,
   },
+
   {
     path: '',
     component: NavBarComponent,
@@ -38,6 +40,7 @@ const routes: Routes = [
         path: 'agregarLibro',
         component: AgregarLibroComponent,
       },
+      { path: 'perfil', component: PerfilComponent },
     ],
   },
   // Página no encontrada
