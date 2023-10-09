@@ -17,12 +17,12 @@ public interface UserMapper {
 
 
     @Mapping(source = "correo", target = "email")
-
     @Mapping(source = "nombre", target = "name")
     @Mapping(source = "apellildos", target = "lastName")
     @Mapping(source = "password", target = "passwordHash")
-
     User usuarioDtoToUser(UsuarioDto user);
+
+    @Mapping(source = "nombre", target = "name")
     @Mapping(source = "apellidos", target = "lastName")
     @Mapping(source = "correo", target = "email")
     @Mapping(source = "telefono",target = "phone")
