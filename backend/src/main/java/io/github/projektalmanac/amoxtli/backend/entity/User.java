@@ -30,6 +30,13 @@ public class User {
     @JoinColumn(name = "id_book")
     private List<Book> books = new ArrayList<>();
 
+    @OneToMany(mappedBy = "userAccepting")
+    @JoinColumn(name = "user_accepting")
+    private List<Exchange> exchangesAccepting =  new ArrayList<>();
+
+    @OneToMany(mappedBy = "userOfferor")
+    @JoinColumn(name = "user_offeror")
+    private List<Exchange> exchangesOfferor =  new ArrayList<>();
     public boolean addBook(Book book) {
 
         if (book == null) {
