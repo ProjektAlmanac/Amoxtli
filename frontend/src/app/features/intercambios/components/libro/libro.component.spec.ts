@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { NavListComponent } from './nav-list.component'
+import { LibroComponent } from './libro.component'
 
-describe('NavListComponent', () => {
-  let component: NavListComponent
-  let fixture: ComponentFixture<NavListComponent>
+describe('LibroComponent', () => {
+  let component: LibroComponent
+  let fixture: ComponentFixture<LibroComponent>
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [NavListComponent],
+      declarations: [LibroComponent],
     })
-    fixture = TestBed.createComponent(NavListComponent)
+    fixture = TestBed.createComponent(LibroComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })

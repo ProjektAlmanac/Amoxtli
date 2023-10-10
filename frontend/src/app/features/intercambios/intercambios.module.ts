@@ -16,13 +16,12 @@ import { MatInputModule } from '@angular/material/input'
 import { MatListModule } from '@angular/material/list'
 import { MatSidenavModule } from '@angular/material/sidenav'
 import { MatToolbarModule } from '@angular/material/toolbar'
-import { NavListComponent } from './components/nav-list/nav-list.component'
-import { TarjetaComponent } from './components/tarjeta/tarjeta.component'
-
 import { IntercambioPageComponent } from './pages/intercambio-page/intercambio-page.component'
+import { DuenosComponent } from './components/duenos/duenos.component'
+import { LibroComponent } from './components/libro/libro.component'
 
 @NgModule({
-  declarations: [IntercambioPageComponent, NavListComponent, TarjetaComponent],
+  declarations: [IntercambioPageComponent, DuenosComponent, LibroComponent],
   imports: [
     CommonModule,
     FormsModule,
