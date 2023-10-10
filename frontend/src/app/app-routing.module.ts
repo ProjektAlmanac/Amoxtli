@@ -9,6 +9,7 @@ import { AgregarLibroComponent } from './features/catalogo-usuario/components/ag
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component'
 import { NotFoundComponent } from './core/pages/not-found/not-found.component'
 import { PerfilComponent } from './features/perfil/pages/perfil.component'
+import { IntercambioPageComponent } from './features/intercambios/pages/intercambio-page/intercambio-page.component'
 
 const routes: Routes = [
   {
@@ -28,19 +29,11 @@ const routes: Routes = [
     path: '',
     component: NavBarComponent,
     children: [
-      {
-        path: 'home',
-        component: HomePageComponent,
-      },
-      {
-        path: 'miCatalogo',
-        component: MiCatalogoPageComponent,
-      },
-      {
-        path: 'agregarLibro',
-        component: AgregarLibroComponent,
-      },
+      { path: 'home', component: HomePageComponent },
+      { path: 'miCatalogo', component: MiCatalogoPageComponent },
+      { path: 'agregarLibro', component: AgregarLibroComponent },
       { path: 'perfil', component: PerfilComponent },
+      { path: 'intercambio', component: IntercambioPageComponent },
     ],
   },
   // Página no encontrada
