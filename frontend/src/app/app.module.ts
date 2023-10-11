@@ -37,7 +37,9 @@ import { PerfilComponent } from './features/perfil/pages/perfil.component'
 import { IntercambiosModule } from './features/intercambios/intercambios.module'
 
 export function apiConfigFactory(): Configuration {
-  const params: ConfigurationParameters = {}
+  const params: ConfigurationParameters = {
+    credentials: { Token: '123' },
+  }
   return new Configuration(params)
 }
 
