@@ -21,9 +21,10 @@ import { MatChipsModule } from '@angular/material/chips'
 import { IntercambioPageComponent } from './pages/intercambio-page/intercambio-page.component'
 import { DuenosComponent } from './components/duenos/duenos.component'
 import { LibroComponent } from './components/libro/libro.component'
+import { InvolucradosComponent } from './components/involucrados/involucrados.component'
 
 @NgModule({
-  declarations: [IntercambioPageComponent, DuenosComponent, LibroComponent],
+  declarations: [IntercambioPageComponent, DuenosComponent, LibroComponent, InvolucradosComponent],
   imports: [
     CommonModule,
     FormsModule,

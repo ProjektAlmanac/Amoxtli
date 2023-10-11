@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core'
+import { MatSelectionListChange } from '@angular/material/list'
 import { Dueno } from 'src/generated/openapi'
 
 @Component({
@@ -9,4 +10,10 @@ import { Dueno } from 'src/generated/openapi'
 export class DuenosComponent {
   @Input()
   public duenos!: Dueno[]
+
+  public duenoSeleccionado!: Dueno
+
+  actualizarDuenoSeleccionado(event: MatSelectionListChange) {
+    this.duenoSeleccionado = event.options[0].value
+  }
 }

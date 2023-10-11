@@ -1,11 +1,27 @@
-<div class="container">
-  <h2>Usuarios disponibles</h2>
-  <div class="listaDuenos">
-    <mat-selection-list #idDueno [multiple]="false">
-      <mat-list-option *ngFor="let dueno of duenos" [value]="dueno.id" style="height: 100px">
-        <img class="imagenDueno" [src]="dueno.foto" alt="Imagen de dueno" width="80" height="80" />
-        <span>{{ dueno.nombre + ' ' + dueno.apellido }}</span>
-      </mat-list-option>
-    </mat-selection-list>
+<div
+  [ngClass]="{
+    division: duenoSeleccionado !== undefined,
+    sinSeleccionar: duenoSeleccionado === undefined
+  }">
+  <div class="container">
+    <h2>Usuarios disponibles</h2>
+    <div class="listaDuenos">
+      <mat-selection-list
+        (selectionChange)="actualizarDuenoSeleccionado($event)"
+        [multiple]="false">
+        <mat-list-option *ngFor="let dueno of duenos" [value]="dueno" style="height: 100px">
+          <img
+            class="imagenDueno"
+            [src]="dueno.foto"
+            alt="Imagen de dueno"
+            width="80"
+            height="80" />
+          <span>{{ dueno.nombre + ' ' + dueno.apellido }}</span>
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+  </div>
+  <div class="involucrados">
+    <app-involucrados [aceptante]="duenoSeleccionado"></app-involucrados>
   </div>
 </div>
