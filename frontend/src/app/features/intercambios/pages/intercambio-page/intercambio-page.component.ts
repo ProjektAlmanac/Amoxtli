@@ -1,5 +1,16 @@
-import { Component, Input } from '@angular/core'
-import { DetallesLibro, LibroConDuenos } from 'src/generated/openapi'
+import { Component, Input, inject } from '@angular/core'
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { ServicioUsuario } from 'src/app/core/services/servicio-usuario.service'
+import { successNotification } from 'src/app/shared/config/LibreryConfig'
+import {
+  CreacionIntercambio,
+  DefaultService,
+  DetallesLibro,
+  Dueno,
+  LibroConDuenos,
+  ModelError,
+  ValidaPuedeIntercambiar200Response,
+} from 'src/generated/openapi'
 
 @Component({
   selector: 'app-intercambio-page',
@@ -80,5 +91,57 @@ export class IntercambioPageComponent {
     sinopsis: this.libroConDuenos.sinopsis,
     idioma: this.libroConDuenos.idioma,
     fechaPublicacion: this.libroConDuenos.fechaPublicacion,
+  }
+
+  // Si es true, está deshabilitado
+  public desactivarBotonIntercambiar = true
+
+  public readonly idUsuario!: number
+
+  private snackBar = inject(MatSnackBar)
+
+  constructor(
+    private servicioAPI: DefaultService,
+    private servicioUsuario: ServicioUsuario
+  ) {
+    this.idUsuario = this.servicioUsuario.id.value
+  }
+
+  validaPuedeIntercambiar() {
+    this.desactivarBotonIntercambiar = true
+    this.servicioAPI.validaPuedeIntercambiar(this.idUsuario).subscribe({
+      next: (data: ValidaPuedeIntercambiar200Response) => {
+        this.desactivarBotonIntercambiar = !data.puedeIntercambiar ?? true
+        if (this.desactivarBotonIntercambiar) {
+          successNotification('Actualmente tienes 4 solicitudes de intercambio', this.snackBar)
+        }
+      },
+      error: (error: ModelError) => {
+        successNotification(error.mensaje, this.snackBar)
+        // eslint-disable-next-line no-console
+        console.error(error)
+      },
+    })
+  }
+
+  intercambiar(aceptante: Dueno) {
+    const intercambio: CreacionIntercambio = {
+      idAceptante: aceptante.id,
+      idLibroAceptante: parseInt(this.libro.isbn),
+    }
+    this.servicioAPI.addIntercambio(this.idUsuario, intercambio).subscribe({
+      next: () => {
+        successNotification('Solicitud de intercambio creada', this.snackBar)
+      },
+      error: (error: ModelError) => {
+        successNotification(error.mensaje, this.snackBar)
+        // eslint-disable-next-line no-console
+        console.error(error)
+      },
+    })
+  }
+
+  success(msg: string) {
+    successNotification(msg, this.snackBar)
   }
 }

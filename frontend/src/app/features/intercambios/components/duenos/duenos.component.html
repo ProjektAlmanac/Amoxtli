@@ -25,3 +25,12 @@
     <app-involucrados [aceptante]="duenoSeleccionado"></app-involucrados>
   </div>
 </div>
+<div class="button">
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="botonIntercambiar"
+    (click)="solicitaIntercambio()">
+    Solicitar intercambio
+  </button>
+</div>

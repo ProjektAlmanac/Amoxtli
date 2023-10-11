@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { ServicioUsuario } from 'src/app/core/services/servicio-usuario.service'
 import { DefaultService, Dueno, PerfilUsuario } from 'src/generated/openapi'
 
@@ -7,7 +7,7 @@ import { DefaultService, Dueno, PerfilUsuario } from 'src/generated/openapi'
   templateUrl: './involucrados.component.html',
   styleUrls: ['./involucrados.component.sass'],
 })
-export class InvolucradosComponent implements OnInit {
+export class InvolucradosComponent {
   @Input()
   public aceptante!: Dueno
 
@@ -16,9 +16,7 @@ export class InvolucradosComponent implements OnInit {
   constructor(
     private apiService: DefaultService,
     private servicioUsuario: ServicioUsuario
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     const idUsuario = this.servicioUsuario.id.value
     this.apiService.getUsuario(idUsuario).subscribe(data => (this.ofertante = data))
   }

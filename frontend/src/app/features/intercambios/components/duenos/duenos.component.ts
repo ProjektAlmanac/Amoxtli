@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { MatSelectionListChange } from '@angular/material/list'
 import { Dueno } from 'src/generated/openapi'
 
@@ -11,9 +11,23 @@ export class DuenosComponent {
   @Input()
   public duenos!: Dueno[]
 
+  @Input()
+  public botonIntercambiar = true
+
+  @Output()
+  public usuarioSeleccionado = new EventEmitter()
+
+  @Output()
+  public solicitarIntercambio = new EventEmitter<Dueno>()
+
   public duenoSeleccionado!: Dueno
 
   actualizarDuenoSeleccionado(event: MatSelectionListChange) {
     this.duenoSeleccionado = event.options[0].value
+    this.usuarioSeleccionado.emit()
+  }
+
+  solicitaIntercambio() {
+    this.solicitarIntercambio.emit(this.duenoSeleccionado)
   }
 }
