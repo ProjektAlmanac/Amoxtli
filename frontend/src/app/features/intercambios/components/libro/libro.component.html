@@ -1,1 +1,31 @@
-<div></div>
+<div class="container">
+  <div class="portadaLibro">
+    <img [src]="libro.urlPortada" alt="Portada_Libro" width="300px" height="300px" />
+  </div>
+  <div class="detallesLibro">
+    <div class="detalleIzquierdo">
+      <p><strong>ISBN</strong></p>
+      <p><strong>Titulo:</strong></p>
+      <p><strong>Autor:</strong></p>
+      <p><strong>Editorial:</strong></p>
+      <p *ngIf="libro.sinopsis"><strong>Sinopsion:</strong></p>
+      <p><strong>Idioma:</strong></p>
+      <p><strong>Fecha publicación:</strong></p>
+      <p><strong>Generos:</strong></p>
+    </div>
+    <div>
+      <p>{{ libro.isbn }}</p>
+      <p>{{ libro.titulo }}</p>
+      <p>{{ libro.autor }}</p>
+      <p>{{ libro.editorial }}</p>
+      <p *ngIf="libro.sinopsis">{{ libro.sinopsis }}</p>
+      <p>{{ libro.idioma }}</p>
+      <p>{{ libro.fechaPublicacion }}</p>
+      <ul class="lista">
+        <li *ngFor="let genero of libro.generos; let last = last" class="inline">
+          <mat-chip class="chips" style="background: rgb(115, 153, 243)">{{ genero }}</mat-chip>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -16,6 +16,8 @@ import { MatInputModule } from '@angular/material/input'
 import { MatListModule } from '@angular/material/list'
 import { MatSidenavModule } from '@angular/material/sidenav'
 import { MatToolbarModule } from '@angular/material/toolbar'
+import { MatChipsModule } from '@angular/material/chips'
+
 import { IntercambioPageComponent } from './pages/intercambio-page/intercambio-page.component'
 import { DuenosComponent } from './components/duenos/duenos.component'
 import { LibroComponent } from './components/libro/libro.component'
@@ -40,6 +42,7 @@ import { LibroComponent } from './components/libro/libro.component'
     RouterModule,
     SharedModule,
     TextFieldModule,
+    MatChipsModule,
   ],
   exports: [IntercambioPageComponent],
 })

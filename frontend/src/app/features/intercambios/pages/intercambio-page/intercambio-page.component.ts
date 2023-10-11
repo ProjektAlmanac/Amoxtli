@@ -12,7 +12,7 @@ export class IntercambioPageComponent {
     isbn: '1234567896',
     autor: 'Andres Lopez',
     titulo: 'El libro de Andres',
-    urlPortada: 'string',
+    urlPortada: 'https://edit.org/images/cat/portadas-libros-big-2019101610.jpg',
     generos: ['miedo', 'terror', 'suspenso'],
     editorial: 'Grijalbo',
     sinopsis: 'Ninguna sinopsis',
