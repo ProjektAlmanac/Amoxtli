@@ -1,10 +1,10 @@
 package io.github.projektalmanac.amoxtli.backend.enums;
 
 public enum Status {
-    CANCELADO("Pendiente"),
+    CANCELADO("Cancelado"),
     ACEPTADO("Aceptado"),
     RECHAZADO("Rechazado"),
-    PENDIENTE("Cancelado");
+    PENDIENTE("Pendiente");
 
     private final String status;
     Status(String s){status = s;}
