@@ -1,13 +1,14 @@
 package io.github.projektalmanac.amoxtli.backend.service;
 
 
+import io.github.projektalmanac.amoxtli.backend.enums.Status;
+import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.Resource;
 
@@ -28,6 +29,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +38,7 @@ import java.util.regex.Pattern;
 @Service
 public class UserService {
     private UserRepository userRepository;
+    private ExchangeRepository exchangeRepository;
     private GoogleBookService googleBookService;
     private JavaMailSender javaMailSender;
     private SecurityConfig seguridad;
@@ -46,11 +49,13 @@ public class UserService {
     @Autowired
     public UserService(
             UserRepository userRepository,
+            ExchangeRepository exchangeRepository,
             GoogleBookService googleBookService,
             JavaMailSender javaMailSender,
             SecurityConfig securityConfig
             ) {
         this.userRepository = userRepository;
+        this.exchangeRepository = exchangeRepository;
         this.googleBookService = googleBookService;
         this.javaMailSender = javaMailSender;
         this.seguridad = securityConfig;
@@ -304,6 +309,77 @@ public class UserService {
         }
 
 
+    }
+    /**/
+    public ValidaPuedeIntercambiar200ResponseDto validaIntercambio(Integer id) {
+
+        Optional<User> userOpt = userRepository.findById(id);
+        if (userOpt.isPresent()) {
+            throw new UserNotFoundException(id);
+        }
+        User user = userOpt.get();
+        if (!user.isVerifiedEmail()) {
+            throw new EmailUserNotVerificationException(id);
+        }
+
+        if(!user.getExchangesAccepting().isEmpty() && user.getExchangesAccepting().size() < 4){
+            throw new InvalidUserException("No puedes realizar más de 4 intercambios a la vez.");
+        }
+        ValidaPuedeIntercambiar200ResponseDto response = new ValidaPuedeIntercambiar200ResponseDto();
+        response.setPuedeIntercambiar(true);
+        response.mensaje("Puede solicitar intercambiar un libro.");
+
+        return response;
+    }
+
+    public IntercambioDto intercambio(Integer idOfertante, CreacionIntercambioDto creacionIntercambioDto) {
+
+        // Recuperamos la información del usuario que recibe el intercambio
+        Integer idAceptante = creacionIntercambioDto.getIdAceptante();
+        Integer idLibroAceptante = creacionIntercambioDto.getIdLibroAceptante();
+
+        // Obtenemos a los usuarios y al libro que se intercambiará
+        Optional <User> userOptionalOfertante = this.userRepository.findById(idOfertante);
+        if (userOptionalOfertante.isEmpty()) {
+            throw new UserNotFoundException(idOfertante);
+        }
+
+        Optional<User> userOptionalAceptante = this.userRepository.findById(idAceptante);
+        if (userOptionalAceptante.isEmpty()) {
+            throw new UserNotFoundException(idAceptante);
+        }
+
+        List<Book> libros = userOptionalAceptante.get().getBooks();
+        AtomicReference<Book> book = null;
+        libros.forEach(libro -> {
+                    if (libro.getId() == idLibroAceptante) {
+                        book.set(libro);
+                    }
+        });
+        if (book == null) {
+            throw new BookNotFoundException("El ID del libro proporcionado, no se encuentra registrado por el usuario.");
+        }
+
+        Book bookAceptante = book.get();
+
+        Exchange exchange = new Exchange();
+
+        exchange.setStatus(Status.PENDIENTE.getStatus());
+        exchange.setBookOfferor(bookAceptante);
+        exchange.setUserOfferor(userOptionalOfertante.get());
+        exchange.setUserAccepting(userOptionalAceptante.get());
+
+        this.exchangeRepository.save(exchange);
+
+        List<Exchange> exchangesOfertante = userOptionalOfertante.get().getExchangesOfferor();
+        exchangesOfertante.add(exchange);
+
+        userOptionalOfertante.get().setExchangesOfferor(exchangesOfertante);
+
+
+
+
+        return  null;
     }
 
 }
