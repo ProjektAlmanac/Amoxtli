@@ -1,5 +1,6 @@
 package io.github.projektalmanac.amoxtli.backend.entity;
 
+import io.github.projektalmanac.amoxtli.backend.enums.Status;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ public class Exchange {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private  int status;
+    private Status status;
     private String offerorConfirmationCode;
     private String confirmationCodeAccepting;
     @OneToOne
