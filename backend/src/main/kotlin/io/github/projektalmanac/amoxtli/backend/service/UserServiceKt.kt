@@ -1,5 +1,6 @@
 package io.github.projektalmanac.amoxtli.backend.service
 
+import io.github.projektalmanac.amoxtli.backend.entity.Exchange
 import io.github.projektalmanac.amoxtli.backend.exception.EmptyResourceException
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException
 import io.github.projektalmanac.amoxtli.backend.generated.model.GetIntercambios200ResponseDto
@@ -19,7 +20,8 @@ open class UserServiceKt {
 
         val user = userOpt.get()
 
-        val intercambios = user.exchangesOfferor
+        val intercambios = mutableListOf<Exchange>()
+        intercambios.addAll(user.exchangesOfferor)
         intercambios.addAll(user.exchangesAccepting)
 
         if (intercambios.isEmpty()) {
