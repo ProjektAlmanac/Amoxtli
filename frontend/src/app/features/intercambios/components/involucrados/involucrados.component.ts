@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core'
-import { ServicioUsuario } from 'src/app/core/services/servicio-usuario.service'
-import { DefaultService, Dueno, PerfilUsuario } from 'src/generated/openapi'
+import { Dueno, PerfilUsuario } from 'src/generated/openapi'
 
 @Component({
   selector: 'app-involucrados',
@@ -11,13 +10,6 @@ export class InvolucradosComponent {
   @Input()
   public aceptante!: Dueno
 
+  @Input()
   public ofertante!: PerfilUsuario
-
-  constructor(
-    private apiService: DefaultService,
-    private servicioUsuario: ServicioUsuario
-  ) {
-    const idUsuario = this.servicioUsuario.id.value
-    this.apiService.getUsuario(idUsuario).subscribe(data => (this.ofertante = data))
-  }
 }

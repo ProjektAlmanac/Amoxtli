@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { MatSelectionListChange } from '@angular/material/list'
-import { Dueno } from 'src/generated/openapi'
+import { Dueno, PerfilUsuario } from 'src/generated/openapi'
 
 @Component({
   selector: 'app-duenos',
@@ -13,6 +13,9 @@ export class DuenosComponent {
 
   @Input()
   public botonIntercambiar = true
+
+  @Input()
+  public ofertante!: PerfilUsuario
 
   @Output()
   public usuarioSeleccionado = new EventEmitter()

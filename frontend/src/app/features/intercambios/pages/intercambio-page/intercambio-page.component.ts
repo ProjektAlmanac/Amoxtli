@@ -1,3 +1,4 @@
+import { PerfilUsuario } from './../../../../../generated/openapi/model/perfilUsuario'
 import { Component, Input, inject } from '@angular/core'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { ServicioUsuario } from 'src/app/core/services/servicio-usuario.service'
@@ -97,6 +98,7 @@ export class IntercambioPageComponent {
   public desactivarBotonIntercambiar = true
 
   public readonly idUsuario!: number
+  public usuario!: PerfilUsuario
 
   private snackBar = inject(MatSnackBar)
 
@@ -105,6 +107,7 @@ export class IntercambioPageComponent {
     private servicioUsuario: ServicioUsuario
   ) {
     this.idUsuario = this.servicioUsuario.id.value
+    this.servicioAPI.getUsuario(this.idUsuario).subscribe(data => (this.usuario = data))
   }
 
   validaPuedeIntercambiar() {

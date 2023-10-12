@@ -2,6 +2,7 @@
   <app-libro [libro]="libro"></app-libro>
   <app-duenos
     [duenos]="libroConDuenos.duenos"
+    [ofertante]="usuario"
     [botonIntercambiar]="desactivarBotonIntercambiar"
     (usuarioSeleccionado)="validaPuedeIntercambiar()"
     (solicitarIntercambio)="intercambiar($event)"></app-duenos>
