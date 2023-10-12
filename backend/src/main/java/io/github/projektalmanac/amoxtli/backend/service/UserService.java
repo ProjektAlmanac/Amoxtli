@@ -2,6 +2,7 @@ package io.github.projektalmanac.amoxtli.backend.service;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -50,6 +51,7 @@ public class UserService extends UserServiceKt {
             JavaMailSender javaMailSender,
             SecurityConfig securityConfig
             ) {
+        super(userRepository);
         this.userRepository = userRepository;
         this.googleBookService = googleBookService;
         this.javaMailSender = javaMailSender;

@@ -7,12 +7,12 @@ import io.github.projektalmanac.amoxtli.backend.generated.model.GetIntercambios2
 import io.github.projektalmanac.amoxtli.backend.mapper.ExchangeMapper
 import io.github.projektalmanac.amoxtli.backend.repository.UserRepository
 
-open class UserServiceKt {
+open class UserServiceKt (private val userRepository: UserRepository) {
 
-    private val userRepository: UserRepository? = null
+
     fun getIntercambios(id: Int): GetIntercambios200ResponseDto {
 
-        val userOpt = userRepository!!.findById(id)
+        val userOpt = userRepository.findById(id)
 
         if (userOpt.isEmpty) {
             throw UserNotFoundException(id)

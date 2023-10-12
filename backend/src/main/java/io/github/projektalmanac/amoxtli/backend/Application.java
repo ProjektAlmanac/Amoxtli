@@ -1,7 +1,8 @@
 package io.github.projektalmanac.amoxtli.backend;
 
-import io.github.projektalmanac.amoxtli.backend.entity.User;
-import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
+import io.github.projektalmanac.amoxtli.backend.entity.*;
+import io.github.projektalmanac.amoxtli.backend.enums.Status;
+import io.github.projektalmanac.amoxtli.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +15,11 @@ public class Application {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private BookRepository bookRepository;
+
+	@Autowired
+	private ExchangeRepository exchangeRepository;
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 
@@ -26,7 +32,37 @@ public class Application {
 		user.setLastName("Pérez");
 		user.setId(1);
 		user.setVerifiedEmail(true);
+		user.setPhone("5578476989");
 
 		userRepository.save(user);
+
+		var user2 = new User();
+		user2.setName("Maria");
+		user2.setLastName("Pérez");
+		user2.setId(2);
+		user2.setVerifiedEmail(true);
+		user2.setPhone("5582134679");
+
+		userRepository.save(user2);
+
+		var book = new Book();
+		book.setId(1);
+		book.setIsbn("9788413621654");
+		book.setDescription("Casi nuevo el libro");
+
+		bookRepository.save(book);
+
+		Status status = Status.PENDIENTE;
+
+		var intercambio = new Exchange();
+		intercambio.setId(1);
+		intercambio.setStatus(status);
+		intercambio.setBookAccepting(book);
+		intercambio.setUserAccepting(user);
+		intercambio.setUserOfferor(user2);
+		intercambio.setBookOfferor(null);
+
+		exchangeRepository.save(intercambio);
+
 	}
 }
