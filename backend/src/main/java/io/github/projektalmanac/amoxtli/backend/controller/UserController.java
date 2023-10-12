@@ -130,8 +130,7 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<ValidaPuedeIntercambiar200ResponseDto> validaPuedeIntercambiar(Integer id) {
-        ValidaPuedeIntercambiar200ResponseDto validaIntercambio = userService.validaIntercambio(id);
-        return ResponseEntity.status(HttpStatus.OK).body(validaIntercambio);
+        return null;
     }
 
 
