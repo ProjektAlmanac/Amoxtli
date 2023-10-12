@@ -1,31 +1,31 @@
-<div class="container">
-  <div class="portadaLibro">
-    <img [src]="libro.urlPortada" alt="Portada_Libro" width="200" height="200" />
-  </div>
-  <div class="detallesLibro">
-    <div class="detalleIzquierdo">
-      <p><strong>ISBN</strong></p>
-      <p><strong>Titulo:</strong></p>
-      <p><strong>Autor:</strong></p>
-      <p><strong>Editorial:</strong></p>
-      <p *ngIf="libro.sinopsis"><strong>Sinopsion:</strong></p>
-      <p><strong>Idioma:</strong></p>
-      <p><strong>Fecha publicación:</strong></p>
-      <p><strong>Generos:</strong></p>
+<mat-card class="tarjeta-libro m-3">
+  <mat-card-header>
+    <mat-card-title>{{ libro.titulo }}</mat-card-title>
+    <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <hr />
+    <p class="mt-3"><strong>DETALLES DEL LIBRO</strong></p>
+    <div class="row">
+      <div class="col-sm-12 col-lg-2 portadaLibro">
+        <img [src]="libro.urlPortada" alt="Portada_Libro" width="150" />
+      </div>
+      <div class="col-sm-12 col-lg-10 mt-3">
+        <p><strong>ISBN: </strong>{{ libro.isbn }}</p>
+        <p><strong>Editorial: </strong> {{ libro.editorial }}</p>
+        <p><strong>Idioma: </strong> {{ libro.idioma }}</p>
+        <p><strong>Fecha de publicacion: </strong>{{ libro.fechaPublicacion }}</p>
+        <p>
+          <strong>Géneros: </strong>
+          <mat-chip
+            *ngFor="let genero of libro.generos"
+            class="chips"
+            style="background: rgb(115, 153, 243)"
+            >{{ genero }}</mat-chip
+          >
+        </p>
+        <p *ngIf="libro.sinopsis" class="mb-0"><strong>Sinopsis: </strong>{{ libro.sinopsis }}</p>
+      </div>
     </div>
-    <div>
-      <p>{{ libro.isbn }}</p>
-      <p>{{ libro.titulo }}</p>
-      <p>{{ libro.autor }}</p>
-      <p>{{ libro.editorial }}</p>
-      <p *ngIf="libro.sinopsis">{{ libro.sinopsis }}</p>
-      <p>{{ libro.idioma }}</p>
-      <p>{{ libro.fechaPublicacion }}</p>
-      <ul class="lista">
-        <li *ngFor="let genero of libro.generos; let last = last" class="inline">
-          <mat-chip class="chips" style="background: rgb(115, 153, 243)">{{ genero }}</mat-chip>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
+  </mat-card-content>
+</mat-card>

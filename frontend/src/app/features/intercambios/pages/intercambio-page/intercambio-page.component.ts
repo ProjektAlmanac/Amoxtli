@@ -1,6 +1,7 @@
 import { PerfilUsuario } from './../../../../../generated/openapi/model/perfilUsuario'
-import { Component, Input, inject } from '@angular/core'
+import { Component, OnInit, inject } from '@angular/core'
 import { MatSnackBar } from '@angular/material/snack-bar'
+import { ActivatedRoute } from '@angular/router'
 import { ServicioUsuario } from 'src/app/core/services/servicio-usuario.service'
 import { successNotification } from 'src/app/shared/config/LibreryConfig'
 import {
@@ -18,96 +19,44 @@ import {
   templateUrl: './intercambio-page.component.html',
   styleUrls: ['./intercambio-page.component.sass'],
 })
-export class IntercambioPageComponent {
-  @Input() // Es el libro con los dueños
-  public libroConDuenos: LibroConDuenos = {
-    isbn: '1234567896',
-    autor: 'Andres Lopez',
-    titulo: 'El libro de Andres',
-    urlPortada: 'https://edit.org/images/cat/portadas-libros-big-2019101610.jpg',
-    generos: ['miedo', 'terror', 'suspenso'],
-    editorial: 'Grijalbo',
-    sinopsis: 'Ninguna sinopsis',
-    idioma: 'Spanish',
-    fechaPublicacion: '1998-03-11',
-    duenos: [
-      {
-        id: 1,
-        nombre: 'Miguel',
-        apellido: 'Guzman',
-        foto: 'https://us.123rf.com/450wm/yupiramos/yupiramos1709/yupiramos170930757/87002882-ilustraci%C3%B3n-de-vector-de-dibujos-animados-de-persona-de-personaje-joven-de-hombre-de-retrato.jpg',
-      },
-      {
-        id: 2,
-        nombre: 'Axel',
-        apellido: 'Guzman',
-        foto: 'https://us.123rf.com/450wm/yupiramos/yupiramos1709/yupiramos170930757/87002882-ilustraci%C3%B3n-de-vector-de-dibujos-animados-de-persona-de-personaje-joven-de-hombre-de-retrato.jpg',
-      },
-      {
-        id: 3,
-        nombre: 'Julian',
-        apellido: 'Guzman',
-        foto: 'https://us.123rf.com/450wm/yupiramos/yupiramos1709/yupiramos170930757/87002882-ilustraci%C3%B3n-de-vector-de-dibujos-animados-de-persona-de-personaje-joven-de-hombre-de-retrato.jpg',
-      },
-      {
-        id: 4,
-        nombre: 'OScar',
-        apellido: 'Guzman',
-        foto: 'https://us.123rf.com/450wm/yupiramos/yupiramos1709/yupiramos170930757/87002882-ilustraci%C3%B3n-de-vector-de-dibujos-animados-de-persona-de-personaje-joven-de-hombre-de-retrato.jpg',
-      },
-      {
-        id: 5,
-        nombre: 'Paola',
-        apellido: 'Guzman',
-        foto: 'https://us.123rf.com/450wm/yupiramos/yupiramos1709/yupiramos170930757/87002882-ilustraci%C3%B3n-de-vector-de-dibujos-animados-de-persona-de-personaje-joven-de-hombre-de-retrato.jpg',
-      },
-      {
-        id: 6,
-        nombre: 'Mari Carmen',
-        apellido: 'Guzman',
-        foto: 'https://us.123rf.com/450wm/yupiramos/yupiramos1709/yupiramos170930757/87002882-ilustraci%C3%B3n-de-vector-de-dibujos-animados-de-persona-de-personaje-joven-de-hombre-de-retrato.jpg',
-      },
-      {
-        id: 7,
-        nombre: 'Valentin',
-        apellido: 'Guzman',
-        foto: 'https://us.123rf.com/450wm/yupiramos/yupiramos1709/yupiramos170930757/87002882-ilustraci%C3%B3n-de-vector-de-dibujos-animados-de-persona-de-personaje-joven-de-hombre-de-retrato.jpg',
-      },
-      {
-        id: 8,
-        nombre: 'Joaquin',
-        apellido: 'Guzman',
-        foto: 'https://us.123rf.com/450wm/yupiramos/yupiramos1709/yupiramos170930757/87002882-ilustraci%C3%B3n-de-vector-de-dibujos-animados-de-persona-de-personaje-joven-de-hombre-de-retrato.jpg',
-      },
-    ],
-  }
-
-  public libro: DetallesLibro = {
-    isbn: this.libroConDuenos.isbn,
-    autor: this.libroConDuenos.autor,
-    titulo: this.libroConDuenos.titulo,
-    urlPortada: this.libroConDuenos.urlPortada,
-    generos: this.libroConDuenos.generos,
-    editorial: this.libroConDuenos.editorial,
-    sinopsis: this.libroConDuenos.sinopsis,
-    idioma: this.libroConDuenos.idioma,
-    fechaPublicacion: this.libroConDuenos.fechaPublicacion,
-  }
-
-  // Si es true, está deshabilitado
+export class IntercambioPageComponent implements OnInit {
+  public libroConDuenos!: LibroConDuenos
+  public libro!: DetallesLibro
   public desactivarBotonIntercambiar = true
-
-  public readonly idUsuario!: number
+  public idUsuario!: number
   public usuario!: PerfilUsuario
-
   private snackBar = inject(MatSnackBar)
+  public isbn!: string
 
   constructor(
     private servicioAPI: DefaultService,
-    private servicioUsuario: ServicioUsuario
-  ) {
-    this.idUsuario = this.servicioUsuario.id.value
-    this.servicioAPI.getUsuario(this.idUsuario).subscribe(data => (this.usuario = data))
+    private servicioUsuario: ServicioUsuario,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.isbn = params['isbn']
+      this.isbn = '1234567896'
+      this.servicioAPI.getLibro(this.isbn).subscribe(data => {
+        this.libroConDuenos = data
+        this.libro = {
+          isbn: this.libroConDuenos.isbn,
+          autor: this.libroConDuenos.autor,
+          titulo: this.libroConDuenos.titulo,
+          urlPortada: this.libroConDuenos.urlPortada,
+          generos: this.libroConDuenos.generos,
+          editorial: this.libroConDuenos.editorial,
+          sinopsis: this.libroConDuenos.sinopsis,
+          idioma: this.libroConDuenos.idioma,
+          fechaPublicacion: this.libroConDuenos.fechaPublicacion,
+        }
+      })
+    })
+    this.servicioUsuario.id.subscribe(id => {
+      this.idUsuario = id
+      this.servicioAPI.getUsuario(this.idUsuario).subscribe(data => (this.usuario = data))
+    })
   }
 
   validaPuedeIntercambiar() {

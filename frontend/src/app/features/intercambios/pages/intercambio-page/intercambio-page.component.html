@@ -1,6 +1,7 @@
 <div class="page" disabled>
-  <app-libro [libro]="libro"></app-libro>
+  <app-libro *ngIf="libro" [libro]="libro"></app-libro>
   <app-duenos
+    *ngIf="libroConDuenos"
     [duenos]="libroConDuenos.duenos"
     [ofertante]="usuario"
     [botonIntercambiar]="desactivarBotonIntercambiar"

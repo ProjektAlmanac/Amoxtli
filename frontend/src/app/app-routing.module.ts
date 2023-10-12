@@ -33,7 +33,7 @@ const routes: Routes = [
       { path: 'miCatalogo', component: MiCatalogoPageComponent },
       { path: 'agregarLibro', component: AgregarLibroComponent },
       { path: 'perfil', component: PerfilComponent },
-      { path: 'intercambio', component: IntercambioPageComponent },
+      { path: 'libro', component: IntercambioPageComponent },
     ],
   },
   // Página no encontrada

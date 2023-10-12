@@ -11,7 +11,7 @@
   </mat-menu>
 </mat-toolbar>
 <mat-drawer-container autosize>
-  <mat-drawer #drawer opened="false" mode="side" position="start">
+  <mat-drawer #drawer opened="false" mode="over" position="start">
     <mat-nav-list>
       <mat-list-item routerLink="/home">
         <mat-icon matListItemIcon>home</mat-icon>
@@ -28,7 +28,7 @@
     </mat-nav-list>
   </mat-drawer>
   <mat-drawer-content>
-    <div style="min-height: 200px; padding-left: 10px">
+    <div style="min-height: 200px">
       <router-outlet></router-outlet>
     </div>
   </mat-drawer-content>
