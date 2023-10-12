@@ -1,37 +1,33 @@
-<!-- <div
-  [ngClass]="{
-    division: duenoSeleccionado !== undefined,
-    sinSeleccionar: duenoSeleccionado === undefined
-  }">
-  <div class="container">
-    <h2>Usuarios disponibles</h2>
-    <div class="listaDuenos">
-      <mat-selection-list
-        (selectionChange)="actualizarDuenoSeleccionado($event)"
-        [multiple]="false">
-        <mat-list-option *ngFor="let dueno of duenos" [value]="dueno" style="height: 100px">
-          <img
-            class="imagenDueno"
-            [src]="dueno.foto"
-            alt="Imagen de dueno"
-            width="80"
-            height="80" />
-          <span>{{ dueno.nombre + ' ' + dueno.apellido }}</span>
-        </mat-list-option>
-      </mat-selection-list>
-    </div>
+<div class="row">
+  <div class="col-sm-12 col-md-6 mt-2">
+    <mat-card class="tarjeta-duenos">
+      <mat-card-header>
+        <mat-card-title>Usuarios que disponen del libro</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-divider></mat-divider>
+        <mat-selection-list
+          (selectionChange)="actualizarDuenoSeleccionado($event)"
+          [multiple]="false"
+          class="listaDuenos">
+          <mat-list-option *ngFor="let dueno of duenos" [value]="dueno" style="height: 100px">
+            <img class="imagenDueno" [src]="dueno.foto" alt="ImgDueno" width="80" height="80" />
+            <span>{{ dueno.nombre + ' ' + dueno.apellido }}</span>
+          </mat-list-option>
+        </mat-selection-list>
+      </mat-card-content>
+    </mat-card>
   </div>
-  <div class="involucrados">
+  <div *ngIf="duenoSeleccionado" class="col-sm-12 col-md-6 mt-2">
     <app-involucrados [ofertante]="ofertante" [aceptante]="duenoSeleccionado"></app-involucrados>
   </div>
-</div> -->
-
-<!-- <div class="button">
-  <button
-    mat-raised-button
-    color="primary"
-    [disabled]="botonIntercambiar"
-    (click)="solicitaIntercambio()">
-    Solicitar intercambio
-  </button>
-</div> -->
+  <div class="col-12 button">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="botonIntercambiar"
+      (click)="solicitaIntercambio()">
+      Solicitar intercambio
+    </button>
+  </div>
+</div>

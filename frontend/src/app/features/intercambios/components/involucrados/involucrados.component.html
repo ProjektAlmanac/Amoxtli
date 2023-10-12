@@ -1,25 +1,33 @@
-<div *ngIf="aceptante">
+<!-- <div *ngIf="aceptante">
   <div class="container">
     <h2>Involucrados</h2>
     <div class="involucrados">
-      <div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div> -->
+
+<mat-card class="tarjeta-duenos">
+  <mat-card-header>
+    <mat-card-title>Invoclucrados para el intercambio</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-list>
+      <mat-list-item class="m-2" style="height: 100px">
         <img
           class="fotoUsuario"
           [src]="ofertante.fotoPerfil"
-          alt="Imagen del ofertante"
+          alt="ImagOfe"
           width="80px"
           height="80px" />
         <h4 class="inline">{{ ofertante.nombre + ' ' + ofertante.apellidos }}</h4>
-      </div>
-      <div>
-        <img
-          class="fotoUsuario"
-          [src]="aceptante.foto"
-          alt="Imagen de aceptante"
-          width="80px"
-          height="80px" />
+      </mat-list-item>
+      <mat-list-item class="m-2" style="height: 100px">
+        <img class="fotoUsuario" [src]="aceptante.foto" alt="ImagAcep" width="80px" height="80px" />
         <h4 class="inline">{{ aceptante.nombre + ' ' + aceptante.apellido }}</h4>
-      </div>
-    </div>
-  </div>
-</div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

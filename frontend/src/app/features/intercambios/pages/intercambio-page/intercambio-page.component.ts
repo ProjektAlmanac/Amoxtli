@@ -40,6 +40,11 @@ export class IntercambioPageComponent implements OnInit {
       this.isbn = '1234567896'
       this.servicioAPI.getLibro(this.isbn).subscribe(data => {
         this.libroConDuenos = data
+        // En caso de no tener foto, se pone una en automatico
+        this.libroConDuenos.duenos.forEach(dueno => {
+          dueno.foto =
+            dueno.foto ?? 'https://investigacion.unimagdalena.edu.co/Content/Imagenes/userVacio.png'
+        })
         this.libro = {
           isbn: this.libroConDuenos.isbn,
           autor: this.libroConDuenos.autor,
@@ -55,7 +60,12 @@ export class IntercambioPageComponent implements OnInit {
     })
     this.servicioUsuario.id.subscribe(id => {
       this.idUsuario = id
-      this.servicioAPI.getUsuario(this.idUsuario).subscribe(data => (this.usuario = data))
+      this.servicioAPI.getUsuario(this.idUsuario).subscribe(data => {
+        this.usuario = data
+        this.usuario.fotoPerfil =
+          this.usuario.fotoPerfil ??
+          'https://investigacion.unimagdalena.edu.co/Content/Imagenes/userVacio.png'
+      })
     })
   }
 

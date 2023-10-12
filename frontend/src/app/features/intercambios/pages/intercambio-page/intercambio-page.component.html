@@ -1,5 +1,7 @@
-<div class="page" disabled>
+<div class="contenedor p-2">
   <app-libro *ngIf="libro" [libro]="libro"></app-libro>
+</div>
+<div class="px-3">
   <app-duenos
     *ngIf="libroConDuenos"
     [duenos]="libroConDuenos.duenos"
