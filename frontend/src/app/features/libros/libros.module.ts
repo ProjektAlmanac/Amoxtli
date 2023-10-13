@@ -15,6 +15,9 @@ import { MatToolbarModule } from '@angular/material/toolbar'
 import { FormsModule } from '@angular/forms'
 import { SharedModule } from 'src/app/shared/shared.module'
 
+import { MatTableModule } from '@angular/material/table'
+import { MatPaginatorModule } from '@angular/material/paginator'
+
 @NgModule({
   declarations: [MostrarLibrosComponent, DetallesLibroComponent],
   imports: [
@@ -31,6 +34,8 @@ import { SharedModule } from 'src/app/shared/shared.module'
     FormsModule,
     NgIf,
     SharedModule,
+    MatTableModule,
+    MatPaginatorModule,
   ],
   exports: [MostrarLibrosComponent, DetallesLibroComponent],
 })
