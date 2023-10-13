@@ -44,7 +44,7 @@ const routes: Routes = [
       },
       { path: 'perfil', component: PerfilComponent },
       { path: 'libros', component: MostrarLibrosComponent },
-      { path: 'detallesLibro', component: DetallesLibroComponent },
+      { path: 'detallesLibro/:isbn', component: DetallesLibroComponent },
     ],
   },
   // Página no encontrada
