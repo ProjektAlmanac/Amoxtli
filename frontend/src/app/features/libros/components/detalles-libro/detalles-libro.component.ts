@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
-import { DefaultService, DetallesLibro } from 'src/generated/openapi'
+import { DefaultService, LibroConDuenos } from 'src/generated/openapi'
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'app-detalles-libro',
@@ -7,18 +8,43 @@ import { DefaultService, DetallesLibro } from 'src/generated/openapi'
   styleUrls: ['./detalles-libro.component.sass'],
 })
 export class DetallesLibroComponent implements OnInit {
-  public infoLibro!: DetallesLibro
+  public Libro!: LibroConDuenos
+  public mostrarSpinner = false
+  public mostrarNotificacionWarn = false
+  public isbn: string
+  constructor(
+    private serviceApi: DefaultService,
+    private route: ActivatedRoute
+  ) {
+    this.isbn = ''
+  }
 
-  constructor(private serviceApi: DefaultService) {}
-
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngOnInit(): void {
-    this.recuperaInfoLibro()
+    this.route.params.subscribe({
+      next: params => {
+        this.isbn = params['isbn']
+        this.mostrarSpinner = true
+        this.mostrarNotificacionWarn = false
+        this.recuperaInfoLibro()
+      },
+      error: () => {
+        this.mostrarSpinner = false
+        // eslint-disable-next-line no-console
+        console.log('No se recupero el isbn correctamente')
+      },
+    })
   }
 
   recuperaInfoLibro() {
-    this.serviceApi.getLibro('dfadfadf').subscribe(libro => {
-      this.infoLibro = libro
+    this.serviceApi.getLibro(this.isbn).subscribe({
+      next: libro => {
+        this.Libro = libro
+        this.mostrarSpinner = false
+      },
+      error: () => {
+        this.mostrarNotificacionWarn = true
+        this.mostrarSpinner = false
+      },
     })
   }
 }
