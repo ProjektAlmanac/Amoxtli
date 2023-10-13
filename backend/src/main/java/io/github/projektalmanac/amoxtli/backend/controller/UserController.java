@@ -97,7 +97,9 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<GetIntercambios200ResponseDto> getIntercambios(Integer id) {
-        return null;
+        //HU-07
+        GetIntercambios200ResponseDto result = userService.getIntercambios(id);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @Override
