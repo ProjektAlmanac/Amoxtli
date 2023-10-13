@@ -18,6 +18,20 @@
   <app-progress-spinner *ngIf="mostrarSpinner"></app-progress-spinner>
 
   <div class="container" *ngIf="!mostrarSpinner">
+    <div class="pagination">
+      <button mat-icon-button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <span>Página {{ currentPage }} de {{ getTotalPages() }}</span>
+
+      <button
+        mat-icon-button
+        (click)="goToPage(currentPage + 1)"
+        [disabled]="currentPage === getTotalPages()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
     <div class="row">
       <div class="col-12">
         <mat-card class="baseCard" *ngIf="libros?.libros?.length; else nohayLibros">
@@ -29,10 +43,11 @@
             </thead>
             <tbody>
               <tr *ngFor="let libro of libros.libros">
+                <!--<tr *ngFor="let libro of getBooksForCurrentPage()">-->
                 <a [routerLink]="['/detallesLibro', libro.isbn]">
                   <button mat-raised-button class="btnLibro" color="primary">
                     <mat-card-title-group>
-                      <mat-card-title>{{ libro.titulo }}</mat-card-title>
+                      <mat-card-title> {{ libro.titulo }} </mat-card-title>
                       <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
                       <img
                         mat-card-md-image
@@ -44,7 +59,6 @@
                   </button>
                 </a>
               </tr>
-              <tr></tr>
             </tbody>
           </table>
         </mat-card>

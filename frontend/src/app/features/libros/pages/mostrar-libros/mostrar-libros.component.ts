@@ -11,6 +11,10 @@ export class MostrarLibrosComponent implements OnInit {
   public libroscopy!: InfoBasicaLibro[]
   public mostrarSpinner = false
   public isbnFilter = ''
+
+  public currentPage = 1
+  public itemsPerPage = 10
+
   constructor(private serviceApi: DefaultService) {}
 
   ngOnInit(): void {
@@ -19,6 +23,7 @@ export class MostrarLibrosComponent implements OnInit {
   }
 
   recuperaLibros() {
+    this.currentPage = 1
     this.serviceApi.getLibros().subscribe(resp => {
       this.libros = resp
       this.libroscopy = resp.libros
@@ -35,5 +40,21 @@ export class MostrarLibrosComponent implements OnInit {
     } else {
       this.libros.libros = this.libroscopy
     }
+  }
+
+  getBooksForCurrentPage(): InfoBasicaLibro[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage
+    const endIndex = startIndex + this.itemsPerPage
+    return this.libroscopy.slice(startIndex, endIndex)
+  }
+
+  goToPage(pageNumber: number) {
+    if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
+      this.currentPage = pageNumber
+    }
+  }
+
+  getTotalPages(): number {
+    return Math.ceil(this.libroscopy.length / this.itemsPerPage)
   }
 }
