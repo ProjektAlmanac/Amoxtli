@@ -1,37 +1,63 @@
-<div class="text-center m-3">
-  <h1>Libros disponibles</h1>
-</div>
-<hr />
-<div class="box text-center">
-  <mat-form-field class="buscar">
-    <mat-label>Ingresa el ISBN</mat-label>
-    <input matInput type="text" />
-  </mat-form-field>
-  <button mat-raised-button color="primary">Buscar</button>
-</div>
-<hr />
-<div class="card" *ngIf="libros?.libros?.length; else nohayLibros">
-  <mat-card class="baseCard" *ngFor="let libro of libros.libros">
-    <mat-card-actions>
-      <a [routerLink]="['/detallesLibro']">
-        <button mat-raised-button class="btnLibro" color="primary" (click)="sendValues(libro.isbn)">
-          <mat-card-title-group>
-            <mat-card-title>{{ libro.titulo }}</mat-card-title>
-            <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
-            <img mat-card-md-image [src]="libro.urlPortada" alt="Img Libro" />
-          </mat-card-title-group>
-        </button>
-      </a>
-    </mat-card-actions>
-  </mat-card>
-</div>
+<div class="muestraLibros">
+  <div class="header-muestraLibros">
+    <div class="text-center m-3">
+      <h1>Libros disponibles</h1>
+    </div>
+    <hr />
 
-<ng-template #nohayLibros>
-  <div style="text-align: center">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title> Todavía no hay libros registrados </mat-card-title>
-      </mat-card-header>
-    </mat-card>
+    <div class="box text-center">
+      <mat-form-field class="buscar">
+        <mat-label>Ingresa el ISBN</mat-label>
+        <input matInput type="text" [(ngModel)]="isbnFilter" />
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="filtrarLibros()">Buscar</button>
+    </div>
+    <hr />
   </div>
-</ng-template>
+
+  <app-progress-spinner *ngIf="mostrarSpinner"></app-progress-spinner>
+
+  <div class="container" *ngIf="!mostrarSpinner">
+    <div class="row">
+      <div class="col-12">
+        <mat-card class="baseCard" *ngIf="libros?.libros?.length; else nohayLibros">
+          <table>
+            <thead>
+              <tr>
+                <th>Libros disponibles</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let libro of libros.libros">
+                <a [routerLink]="['/detallesLibro', libro.isbn]">
+                  <button mat-raised-button class="btnLibro" color="primary">
+                    <mat-card-title-group>
+                      <mat-card-title>{{ libro.titulo }}</mat-card-title>
+                      <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
+                      <img
+                        mat-card-md-image
+                        [src]="libro.urlPortada"
+                        alt="Img Libro"
+                        width="150px"
+                        height="150px" />
+                    </mat-card-title-group>
+                  </button>
+                </a>
+              </tr>
+              <tr></tr>
+            </tbody>
+          </table>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <ng-template #nohayLibros>
+    <div style="text-align: center">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>¡Ops! No se encontraron libros</mat-card-title>
+        </mat-card-header>
+      </mat-card>
+    </div>
+  </ng-template>
+</div>

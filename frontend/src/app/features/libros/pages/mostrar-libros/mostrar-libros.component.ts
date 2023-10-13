@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { DefaultService, PaginaLibros } from 'src/generated/openapi'
+import { DefaultService, PaginaLibros, InfoBasicaLibro } from 'src/generated/openapi'
 
 @Component({
   selector: 'app-mostrar-libros',
@@ -8,24 +8,32 @@ import { DefaultService, PaginaLibros } from 'src/generated/openapi'
 })
 export class MostrarLibrosComponent implements OnInit {
   public libros!: PaginaLibros
-
+  public libroscopy!: InfoBasicaLibro[]
+  public mostrarSpinner = false
+  public isbnFilter = ''
   constructor(private serviceApi: DefaultService) {}
 
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngOnInit(): void {
+    this.mostrarSpinner = true
     this.recuperaLibros()
   }
 
   recuperaLibros() {
-    //this.serviceApi.getLibros(0).subscribe()
-    this.serviceApi.getLibros().subscribe(total => {
-      this.libros = total
+    this.serviceApi.getLibros().subscribe(resp => {
+      this.libros = resp
+      this.libroscopy = resp.libros
+      // eslint-disable-next-line no-console
+      console.log(this.libros)
+      this.mostrarSpinner = false
     })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  sendValues(isbn: string) {
-    // eslint-disable-next-line no-console
-    console.log('estoy aqui: ', isbn)
+  filtrarLibros() {
+    if (this.isbnFilter) {
+      // Filter the libros array based on the entered ISBN
+      this.libros.libros = this.libros.libros.filter(libro => libro.isbn.includes(this.isbnFilter))
+    } else {
+      this.libros.libros = this.libroscopy
+    }
   }
 }
