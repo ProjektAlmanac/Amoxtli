@@ -2,6 +2,7 @@ package io.github.projektalmanac.amoxtli.backend.service;
 
 
 import io.github.projektalmanac.amoxtli.backend.enums.Status;
+import io.github.projektalmanac.amoxtli.backend.mapper.ExchangeMapper;
 import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -309,6 +310,90 @@ public class UserService extends UserServiceKt {
         }
 
 
+    }
+    /**/
+    public ValidaPuedeIntercambiar200ResponseDto validaIntercambio(Integer id) {
+
+        Optional<User> userOpt = userRepository.findById(id);
+        if (userOpt.isPresent()) {
+            throw new UserNotFoundException(id);
+        }
+        User user = userOpt.get();
+        if (!user.isVerifiedEmail()) {
+            throw new EmailUserNotVerificationException(id);
+        }
+
+        if(!user.getExchangesAccepting().isEmpty() && user.getExchangesAccepting().size() < 4){
+            throw new InvalidUserException("No puedes realizar más de 4 intercambios a la vez.");
+        }
+        ValidaPuedeIntercambiar200ResponseDto response = new ValidaPuedeIntercambiar200ResponseDto();
+        response.setPuedeIntercambiar(true);
+        response.mensaje("Puede solicitar intercambiar un libro.");
+
+        return response;
+    }
+
+    public IntercambioDto solicitaIntercambio(Integer idOfertante, CreacionIntercambioDto creacionIntercambioDto) {
+
+        if(creacionIntercambioDto == null){
+            throw new IllegalArgumentException("El cuerpo de la petición no puede ser nulo.");
+        }
+        // Recuperamos la información del usuario y del libro que recibe el intercambio
+        Integer idAceptante = creacionIntercambioDto.getIdAceptante();
+        Integer idLibroAceptante = creacionIntercambioDto.getIdLibroAceptante();
+
+        if (Objects.equals(idOfertante, idAceptante)){
+            throw new BadRequestException("No puedes intercambiar libros contigo mismo.");
+        }
+        // Obtenemos a los usuarios y al libro que se intercambiará
+        Optional <User> userOptionalOfertante = this.userRepository.findById(idOfertante);
+        if (userOptionalOfertante.isEmpty()) {
+            throw new UserNotFoundException(idOfertante);
+        }
+
+        Optional<User> userOptionalAceptante = this.userRepository.findById(idAceptante);
+        if (userOptionalAceptante.isEmpty()) {
+            throw new UserNotFoundException(idAceptante);
+        }
+
+        // Extraemos el libro que se intercambiará de parte de
+        List<Book> libros = userOptionalAceptante.get().getBooks();
+        Book book = libros.stream()
+                .filter(libro -> libro.getId() == idLibroAceptante)
+                .findFirst()
+                .orElseThrow(() -> new BookNotFoundException("El libro no fue encontrado."));
+
+        Exchange exchange = new Exchange();
+
+        exchange.setStatus(Status.PENDIENTE);
+        exchange.setUserOfferor(userOptionalOfertante.get());
+        exchange.setUserAccepting(userOptionalAceptante.get());
+        exchange.setBookAccepting(book);
+
+        this.exchangeRepository.save(exchange);
+
+        List<Exchange> exchangesOfertante = userOptionalOfertante.get().getExchangesOfferor();
+        exchangesOfertante.add(exchange);
+
+        userOptionalOfertante.get().setExchangesOfferor(exchangesOfertante);
+
+        // Se hace el mapeo de las entidades
+        OfertanteDto ofertanteDto = ExchangeMapper.INSTANCE.toOfertanteDto(userOptionalOfertante.get());
+        AceptanteDto aceptanteDto = ExchangeMapper.INSTANCE.toAceptanteDto(userOptionalAceptante.get());
+        LibroAceptanteDto libroAceptanteDto = ExchangeMapper.INSTANCE.tOLibroAceptanteDto(book);
+
+
+        IntercambioDto intercambioDto = new IntercambioDto();
+        intercambioDto.setId(0);
+        intercambioDto.setOfertante(ofertanteDto);
+        intercambioDto.setAceptante(aceptanteDto);
+        intercambioDto.setLibroAceptante(libroAceptanteDto);
+        intercambioDto.setLibroOfertante(null);
+        intercambioDto.setEstado(EstadoIntercambioDto.PENDIENTE);
+
+
+
+        return  intercambioDto;
     }
 }
 
