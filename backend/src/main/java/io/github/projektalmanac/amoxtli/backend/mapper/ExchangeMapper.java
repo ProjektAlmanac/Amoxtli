@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ValueMapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -42,6 +43,7 @@ public interface ExchangeMapper {
 
     default GetIntercambios200ResponseDto toGetIntercambios200ResponseDto(List<Exchange> intercambios){
         var resultado = new GetIntercambios200ResponseDto();
+        resultado.setIntercambios(new ArrayList<>());
 
         for (int i = 0; i < intercambios.size(); i++) {
             var intercambio = intercambios.get(i);

@@ -8,6 +8,7 @@ import io.github.projektalmanac.amoxtli.backend.exception.ResourceNotFoundExcept
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.mapper.BookMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.repository.*;
@@ -75,4 +76,12 @@ public class BookService {
         
         return libroDto;
     }
+
+    public IntercambioDto aceptarIntercambio(Integer idUsuario, Integer idIntercambio, AceptarIntercambioRequestDto aceptarIntercambioRequestDto) {
+
+
+
+        return null;
+    }
+
 }

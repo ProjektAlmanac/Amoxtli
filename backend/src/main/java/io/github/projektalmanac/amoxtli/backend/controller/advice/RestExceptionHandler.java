@@ -84,4 +84,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         var error = new ErrorDto(ex.getMessage(), 9); // Código 3 par que es la historia de usuario que se trato
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(IntercambioNotFoundException.class)
+    public final ResponseEntity<ErrorDto> handleIntercambioNotFoundException(IntercambioNotFoundException ex, WebRequest request) {
+        var error = new ErrorDto(ex.getMessage(), 10);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
 }
