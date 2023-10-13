@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router'
 export class DetallesLibroComponent implements OnInit {
   public Libro!: LibroConDuenos
   public mostrarSpinner = false
+  public mostrarLibro = false
   public mostrarNotificacionWarn = false
   public isbn: string
   constructor(
@@ -20,6 +21,7 @@ export class DetallesLibroComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.mostrarLibro = false
     this.route.params.subscribe({
       next: params => {
         this.isbn = params['isbn']
@@ -29,6 +31,7 @@ export class DetallesLibroComponent implements OnInit {
       },
       error: () => {
         this.mostrarSpinner = false
+        this.mostrarLibro = false
         // eslint-disable-next-line no-console
         console.log('No se recupero el isbn correctamente')
       },
@@ -39,11 +42,14 @@ export class DetallesLibroComponent implements OnInit {
     this.serviceApi.getLibro(this.isbn).subscribe({
       next: libro => {
         this.Libro = libro
+        this.mostrarLibro = true
         this.mostrarSpinner = false
       },
       error: () => {
-        this.mostrarNotificacionWarn = true
+        // eslint-disable-next-line no-console
+        console.log('No se cargaron los datos correctamente')
         this.mostrarSpinner = false
+        this.mostrarLibro = false
       },
     })
   }
