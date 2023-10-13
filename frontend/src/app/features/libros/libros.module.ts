@@ -15,8 +15,7 @@ import { MatToolbarModule } from '@angular/material/toolbar'
 import { FormsModule } from '@angular/forms'
 import { SharedModule } from 'src/app/shared/shared.module'
 
-import { MatTableModule } from '@angular/material/table'
-import { MatPaginatorModule } from '@angular/material/paginator'
+import { HttpClientModule, HttpHeaders } from '@angular/common/http'
 
 @NgModule({
   declarations: [MostrarLibrosComponent, DetallesLibroComponent],
@@ -34,8 +33,8 @@ import { MatPaginatorModule } from '@angular/material/paginator'
     FormsModule,
     NgIf,
     SharedModule,
-    MatTableModule,
-    MatPaginatorModule,
+    HttpClientModule,
+    HttpHeaders,
   ],
   exports: [MostrarLibrosComponent, DetallesLibroComponent],
 })
