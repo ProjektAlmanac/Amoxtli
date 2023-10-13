@@ -3,6 +3,7 @@ import { MostrarLibrosComponent } from './mostrar-libros.component'
 import { HttpClientTestingModule } from '@angular/common/http/testing'
 import { RouterTestingModule } from '@angular/router/testing'
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'
+import { librosModule } from '../../libros.module'
 
 describe('MostrarLibrosComponent', () => {
   let component: MostrarLibrosComponent
@@ -11,7 +12,7 @@ describe('MostrarLibrosComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MostrarLibrosComponent],
-      imports: [NoopAnimationsModule, RouterTestingModule, HttpClientTestingModule],
+      imports: [NoopAnimationsModule, RouterTestingModule, HttpClientTestingModule, librosModule],
     })
     fixture = TestBed.createComponent(MostrarLibrosComponent)
     component = fixture.componentInstance
