@@ -20,10 +20,10 @@ import {
 export class IntercambioPageComponent implements OnInit {
   public libroConDuenos!: LibroConDuenos
   public libro!: DetallesLibro
-  public desactivarBotonIntercambiar = false
   public idUsuario!: number
   public usuario!: PerfilUsuario
   public isbn!: string
+  public desactivarBotonIntercambiar = false
   public mostrarNotificacionSucess = false
   public mostrarNotificacionInfo = false
   public mostrarNotificacionError = false
@@ -92,21 +92,23 @@ export class IntercambioPageComponent implements OnInit {
   }
 
   intercambiar(aceptante: Dueno) {
-    const intercambio: CreacionIntercambio = {
-      idAceptante: aceptante.id,
-      idLibroAceptante: parseInt(this.isbn),
+    if (this.validado) {
+      const intercambio: CreacionIntercambio = {
+        idAceptante: aceptante.id,
+        idLibroAceptante: parseInt(this.isbn),
+      }
+      this.servicioAPI.addIntercambio(this.idUsuario, intercambio).subscribe({
+        next: () => {
+          this.mostrarNotificacionSucess = true
+          this.desactivarBotonIntercambiar = true
+        },
+        error: (error: ModelError) => {
+          this.mensajeError = error.mensaje
+          this.mostrarNotificacionError = true
+          // eslint-disable-next-line no-console
+          console.error(error)
+        },
+      })
     }
-    this.servicioAPI.addIntercambio(this.idUsuario, intercambio).subscribe({
-      next: () => {
-        this.mostrarNotificacionSucess = true
-        this.desactivarBotonIntercambiar = true
-      },
-      error: (error: ModelError) => {
-        this.mensajeError = error.mensaje
-        this.mostrarNotificacionError = true
-        // eslint-disable-next-line no-console
-        console.error(error)
-      },
-    })
   }
 }
