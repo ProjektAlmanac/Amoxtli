@@ -15,7 +15,7 @@ import { MatToolbarModule } from '@angular/material/toolbar'
 import { FormsModule } from '@angular/forms'
 import { SharedModule } from 'src/app/shared/shared.module'
 
-import { HttpClientModule, HttpHeaders } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http'
 
 @NgModule({
   declarations: [MostrarLibrosComponent, DetallesLibroComponent],
@@ -34,7 +34,6 @@ import { HttpClientModule, HttpHeaders } from '@angular/common/http'
     NgIf,
     SharedModule,
     HttpClientModule,
-    HttpHeaders,
   ],
   exports: [MostrarLibrosComponent, DetallesLibroComponent],
 })
