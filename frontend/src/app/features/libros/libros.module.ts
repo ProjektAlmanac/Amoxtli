@@ -14,7 +14,7 @@ import { MatSidenavModule } from '@angular/material/sidenav'
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { FormsModule } from '@angular/forms'
 import { SharedModule } from 'src/app/shared/shared.module'
-import { HttpClientTestingModule } from '@angular/common/http/testing'
+
 import { HttpClientModule, HttpHeaders } from '@angular/common/http'
 
 @NgModule({
@@ -35,7 +35,6 @@ import { HttpClientModule, HttpHeaders } from '@angular/common/http'
     SharedModule,
     HttpClientModule,
     HttpHeaders,
-    HttpClientTestingModule,
   ],
   exports: [MostrarLibrosComponent, DetallesLibroComponent],
 })
