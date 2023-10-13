@@ -1,3 +1,21 @@
+<div *ngIf="mostrarNotificacionSucess" class="contenedor">
+  <div class="alert alert-success notificacion" role="alert">
+    ¡Se creó la solicitud de intercambio!.
+  </div>
+</div>
+
+<div *ngIf="mostrarNotificacionInfo" class="contenedor">
+  <div class="alert alert-primary notificacion" role="alert">
+    Tienes 4 solicitudes de intercambios activos.
+  </div>
+</div>
+
+<div *ngIf="mostrarNotificacionError" class="contenedor">
+  <div class="alert alert-danger notificacion" role="alert">
+    Hubo un error. {{ this.mensajeError }}.
+  </div>
+</div>
+
 <div class="contenedor p-2">
   <app-libro *ngIf="libro" [libro]="libro"></app-libro>
 </div>

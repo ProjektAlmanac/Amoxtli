@@ -25,7 +25,8 @@
     <button
       mat-raised-button
       color="primary"
-      [disabled]="botonIntercambiar"
+      [disabled]="botonIntercambio"
+      [hidden]="botonIntercambiar"
       (click)="solicitaIntercambio()">
       Solicitar intercambio
     </button>

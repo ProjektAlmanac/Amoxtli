@@ -24,7 +24,9 @@
             >{{ genero }}</mat-chip
           >
         </p>
-        <p *ngIf="libro.sinopsis" class="mb-0"><strong>Sinopsis: </strong>{{ libro.sinopsis }}</p>
+        <p *ngIf="libro.sinopsis" class="mb-0 justificado">
+          <strong>Sinopsis: </strong>{{ libro.sinopsis }}
+        </p>
       </div>
     </div>
   </mat-card-content>

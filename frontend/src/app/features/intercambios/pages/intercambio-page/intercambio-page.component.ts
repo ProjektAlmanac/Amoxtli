@@ -1,9 +1,7 @@
 import { PerfilUsuario } from './../../../../../generated/openapi/model/perfilUsuario'
-import { Component, OnInit, inject } from '@angular/core'
-import { MatSnackBar } from '@angular/material/snack-bar'
+import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { ServicioUsuario } from 'src/app/core/services/servicio-usuario.service'
-import { successNotification } from 'src/app/shared/config/LibreryConfig'
 import {
   CreacionIntercambio,
   DefaultService,
@@ -22,11 +20,15 @@ import {
 export class IntercambioPageComponent implements OnInit {
   public libroConDuenos!: LibroConDuenos
   public libro!: DetallesLibro
-  public desactivarBotonIntercambiar = true
+  public desactivarBotonIntercambiar = false
   public idUsuario!: number
   public usuario!: PerfilUsuario
-  private snackBar = inject(MatSnackBar)
   public isbn!: string
+  public mostrarNotificacionSucess = false
+  public mostrarNotificacionInfo = false
+  public mostrarNotificacionError = false
+  public mensajeError!: string
+  public validado = false
 
   constructor(
     private servicioAPI: DefaultService,
@@ -70,40 +72,41 @@ export class IntercambioPageComponent implements OnInit {
   }
 
   validaPuedeIntercambiar() {
-    this.desactivarBotonIntercambiar = true
-    this.servicioAPI.validaPuedeIntercambiar(this.idUsuario).subscribe({
-      next: (data: ValidaPuedeIntercambiar200Response) => {
-        this.desactivarBotonIntercambiar = !data.puedeIntercambiar ?? true
-        if (this.desactivarBotonIntercambiar) {
-          successNotification('Actualmente tienes 4 solicitudes de intercambio', this.snackBar)
-        }
-      },
-      error: (error: ModelError) => {
-        successNotification(error.mensaje, this.snackBar)
-        // eslint-disable-next-line no-console
-        console.error(error)
-      },
-    })
+    if (this.validado !== true) {
+      this.servicioAPI.validaPuedeIntercambiar(this.idUsuario).subscribe({
+        next: (data: ValidaPuedeIntercambiar200Response) => {
+          this.desactivarBotonIntercambiar = !data.puedeIntercambiar ?? true
+          if (this.desactivarBotonIntercambiar) {
+            this.mostrarNotificacionInfo = true
+          }
+          this.validado = true
+        },
+        error: (error: ModelError) => {
+          this.mensajeError = error.mensaje
+          this.mostrarNotificacionError = true
+          // eslint-disable-next-line no-console
+          console.error(error)
+        },
+      })
+    }
   }
 
   intercambiar(aceptante: Dueno) {
     const intercambio: CreacionIntercambio = {
       idAceptante: aceptante.id,
-      idLibroAceptante: parseInt(this.libro.isbn),
+      idLibroAceptante: parseInt(this.isbn),
     }
     this.servicioAPI.addIntercambio(this.idUsuario, intercambio).subscribe({
       next: () => {
-        successNotification('Solicitud de intercambio creada', this.snackBar)
+        this.mostrarNotificacionSucess = true
+        this.desactivarBotonIntercambiar = true
       },
       error: (error: ModelError) => {
-        successNotification(error.mensaje, this.snackBar)
+        this.mensajeError = error.mensaje
+        this.mostrarNotificacionError = true
         // eslint-disable-next-line no-console
         console.error(error)
       },
     })
-  }
-
-  success(msg: string) {
-    successNotification(msg, this.snackBar)
   }
 }
