@@ -46,10 +46,6 @@ jobs:
           echo Version is $VERSION
         working-directory: ./backend
 
-      - name: Copiar JAR a ubicación temporal
-        run: |
-          cp ./backend/build/libs/AmoxtliBackend-${{ env.VERSION }}.jar /tmp/Amoxtli.jar
-
       - name: Iniciar sesión en Docker Hub
         uses: docker/login-action@v3
         with:
@@ -67,4 +63,4 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/amoxtli:latest
           build-args: |
-            JAR_FILE=/tmp/Amoxtli.jar
+            JAR_FILE=build/libs/AmoxtliBackend-${{ env.VERSION }}.jar
