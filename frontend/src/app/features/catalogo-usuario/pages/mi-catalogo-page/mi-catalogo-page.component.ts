@@ -22,7 +22,7 @@ export class MiCatalogoPageComponent implements OnInit {
   }
 
   recuperaLibrosUsuario() {
-    const idUsuario = this.serviceUsuario.id.value
+    const idUsuario = this.serviceUsuario.id()
     this.serviceApi.getLibrosUsuario(idUsuario).subscribe(libros => {
       this.librosUsuario = libros
       this.mostrarSpinner = false
