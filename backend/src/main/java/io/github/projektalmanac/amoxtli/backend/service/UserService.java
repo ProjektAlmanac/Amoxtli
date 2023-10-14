@@ -4,6 +4,7 @@ package io.github.projektalmanac.amoxtli.backend.service;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -21,7 +22,6 @@ import io.github.projektalmanac.amoxtli.backend.exception.*;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
 import io.github.projektalmanac.amoxtli.backend.config.SecurityConfig;
-
 import java.io.IOException;
 
 import javax.mail.MessagingException;
@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 @Slf4j
 
 @Service
-public class UserService {
+public class UserService extends UserServiceKt {
     private final UserRepository userRepository;
     private GoogleBookService googleBookService;
     private final JavaMailSender javaMailSender;
@@ -264,6 +264,5 @@ public class UserService {
         int id = usuario.get().getId();
         return new SessionTokenDto(id, generadorToken(id));
     }
-
 }
 
