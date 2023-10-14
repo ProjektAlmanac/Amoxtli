@@ -1,18 +1,23 @@
-.example-card
-  width: 570px
-  margin: 8px
+.centrado
+  display: flex
+  justify-content: center
+  align-items: center
 
-.title
-  width: 100%
-  text-align: center
-  font-size: 100px
-  margin-top: 20px
+.libros
+  max-height: 700px
+  overflow: auto
 
-.card
-  width: 600px
-  margin: 0 auto
-  margin-bottom: 8px
+@import breakpoints
 
-.sinLibros
-  width: 300px
-  margin: 40px
+.tarjeta-libro
+
+  @include xs
+    width: auto
+    @include sm
+      width: auto
+    @include md
+      width: 600px
+    @include lg
+      width: 600px
+    @include xl
+      width: 600px
