@@ -1,19 +1,18 @@
 package io.github.projektalmanac.amoxtli.backend.mapper;
 
-import io.github.projektalmanac.amoxtli.backend.entity.Book;
 import io.github.projektalmanac.amoxtli.backend.entity.Exchange;
 import io.github.projektalmanac.amoxtli.backend.entity.User;
 import io.github.projektalmanac.amoxtli.backend.enums.Status;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.ValueMapping;
 import org.mapstruct.factory.Mappers;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {BookMapper.class})
 public interface ExchangeMapper {
     ExchangeMapper INSTANCE = Mappers.getMapper(ExchangeMapper.class);
 
@@ -32,14 +31,13 @@ public interface ExchangeMapper {
     @Mapping(target = "correo", source = "email")
     AceptanteDto toAceptanteDto(User user);
 
-    @Mapping(target = "descripcion", source = "description")
-    LibroAceptanteDto tOLibroAceptanteDto(Book book);
-
-    @ValueMapping(source = "PENDIENTE", target = "PENDIENTE")
-    @ValueMapping(source = "ACEPTADO", target = "ACEPTADO")
-    @ValueMapping(source = "RECHAZADO", target = "RECHAZADO")
-    @ValueMapping(source = "CANCELADO", target = "CANCELADO")
     EstadoIntercambioDto toEstadoIntercambioDto(Status status);
+
+    @Mapping(target = "ofertante", source = "userOfferor")
+    @Mapping(target = "aceptante", source = "userAccepting")
+    @Mapping(target = "libroAceptante", source = "bookAccepting")
+    @Mapping(target = "estado", source = "status")
+    IntercambioDto toIntercambioDto(Exchange exchange);
 
     default GetIntercambios200ResponseDto toGetIntercambios200ResponseDto(List<Exchange> intercambios){
         var resultado = new GetIntercambios200ResponseDto();
@@ -47,23 +45,14 @@ public interface ExchangeMapper {
 
         for (int i = 0; i < intercambios.size(); i++) {
             var intercambio = intercambios.get(i);
-            OfertanteDto ofertante = toOfertanteDto(intercambio.getUserOfferor());
-            AceptanteDto aceptante = toAceptanteDto(intercambio.getUserAccepting());
-            LibroAceptanteDto libroAceptante = tOLibroAceptanteDto(intercambio.getBookAccepting());
 
-            LibroRegistradoDto libroOfertante;
-            if (intercambio.getBookOfferor() == null) {
-                libroOfertante = null;
-            } else {
-                libroOfertante = BookMapper.INSTANCE.toLibroRegistradoDto(intercambio.getBookOfferor());
-            }
+            IntercambioDto intercambioDto = toIntercambioDto(intercambio);
 
-            EstadoIntercambioDto estado = toEstadoIntercambioDto(intercambio.getStatus());
+            LibroRegistradoDto libroDelOfertante = BookMapper.INSTANCE.toLibroRegistradoDto(intercambio.getBookOfferor());
+            intercambioDto.setLibroOfertante(JsonNullable.of(libroDelOfertante));
 
-            IntercambioDto intercambioDto = new IntercambioDto(intercambio.getId(), ofertante, aceptante, libroAceptante, libroOfertante, estado);
             resultado.getIntercambios().add(intercambioDto);
         }
         return resultado;
-
     }
 }

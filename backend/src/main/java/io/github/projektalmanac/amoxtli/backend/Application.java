@@ -52,13 +52,20 @@ public class Application {
 
 		bookRepository.save(book);
 
-		Status status = Status.PENDIENTE;
+		var book2 = new Book();
+		book2.setId(2);
+		book2.setIsbn("9788413621654");
+		book2.setDescription("Casi nuevo el libro");
+
+		bookRepository.save(book2);
+
+		Status status = Status.CANCELADO;
 
 		var intercambio = new Exchange();
 		intercambio.setId(1);
 		intercambio.setStatus(status);
 		intercambio.setBookAccepting(book);
-		intercambio.setUserAccepting(user);
+		intercambio.setUserAccepting(user2);
 		intercambio.setUserOfferor(user2);
 		intercambio.setBookOfferor(null);
 

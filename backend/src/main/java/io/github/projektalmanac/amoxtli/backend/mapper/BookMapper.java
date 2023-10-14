@@ -2,10 +2,7 @@ package io.github.projektalmanac.amoxtli.backend.mapper;
 
 import com.google.api.services.books.model.Volume.VolumeInfo;
 import io.github.projektalmanac.amoxtli.backend.entity.Book;
-import io.github.projektalmanac.amoxtli.backend.generated.model.DetallesLibroDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibroRegistradoConDetallesDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibroRegistradoDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibrosUsuarioDto;
+import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import jdk.jfr.Name;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -91,4 +88,7 @@ public interface BookMapper {
         if (imageLinks.getSmallThumbnail() != null) return imageLinks.getSmallThumbnail();
         return null;
     }
+
+    @Mapping(target = "descripcion", source = "description")
+    LibroAceptanteDto tOLibroAceptanteDto(Book book);
 }
