@@ -23,14 +23,11 @@ export class DuenosComponent {
   @Output()
   public solicitarIntercambio = new EventEmitter<Dueno>()
 
-  public botonIntercambio = true
-
   public duenoSeleccionado!: Dueno
 
   actualizarDuenoSeleccionado(event: MatSelectionListChange) {
     this.duenoSeleccionado = event.options[0].value
     this.usuarioSeleccionado.emit()
-    this.botonIntercambio = false
   }
 
   solicitaIntercambio() {

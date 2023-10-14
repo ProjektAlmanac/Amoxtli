@@ -23,7 +23,7 @@ export class IntercambioPageComponent implements OnInit {
   public idUsuario!: number
   public usuario!: PerfilUsuario
   public isbn!: string
-  public desactivarBotonIntercambiar = false
+  public desactivarBotonIntercambiar = true
   public mostrarNotificacionSucess = false
   public mostrarNotificacionInfo = false
   public mostrarNotificacionError = false
@@ -34,7 +34,17 @@ export class IntercambioPageComponent implements OnInit {
     private servicioAPI: DefaultService,
     private servicioUsuario: ServicioUsuario,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.servicioUsuario.id.subscribe(id => {
+      this.idUsuario = id
+      this.servicioAPI.getUsuario(this.idUsuario).subscribe(data => {
+        this.usuario = data
+        this.usuario.fotoPerfil =
+          this.usuario.fotoPerfil ??
+          'https://investigacion.unimagdalena.edu.co/Content/Imagenes/userVacio.png'
+      })
+    })
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -60,55 +70,39 @@ export class IntercambioPageComponent implements OnInit {
         }
       })
     })
-    this.servicioUsuario.id.subscribe(id => {
-      this.idUsuario = id
-      this.servicioAPI.getUsuario(this.idUsuario).subscribe(data => {
-        this.usuario = data
-        this.usuario.fotoPerfil =
-          this.usuario.fotoPerfil ??
-          'https://investigacion.unimagdalena.edu.co/Content/Imagenes/userVacio.png'
-      })
+
+    this.servicioAPI.validaPuedeIntercambiar(this.idUsuario).subscribe({
+      next: (data: ValidaPuedeIntercambiar200Response) => {
+        this.desactivarBotonIntercambiar = !data.puedeIntercambiar ?? true
+        if (this.desactivarBotonIntercambiar) {
+          this.mostrarNotificacionInfo = true
+        }
+      },
+      error: (error: ModelError) => {
+        this.mensajeError = error.mensaje
+        this.mostrarNotificacionError = true
+        // eslint-disable-next-line no-console
+        console.error(error)
+      },
     })
   }
 
-  validaPuedeIntercambiar() {
-    if (this.validado !== true) {
-      this.servicioAPI.validaPuedeIntercambiar(this.idUsuario).subscribe({
-        next: (data: ValidaPuedeIntercambiar200Response) => {
-          this.desactivarBotonIntercambiar = !data.puedeIntercambiar ?? true
-          if (this.desactivarBotonIntercambiar) {
-            this.mostrarNotificacionInfo = true
-          }
-          this.validado = true
-        },
-        error: (error: ModelError) => {
-          this.mensajeError = error.mensaje
-          this.mostrarNotificacionError = true
-          // eslint-disable-next-line no-console
-          console.error(error)
-        },
-      })
-    }
-  }
-
   intercambiar(aceptante: Dueno) {
-    if (this.validado) {
-      const intercambio: CreacionIntercambio = {
-        idAceptante: aceptante.id,
-        idLibroAceptante: parseInt(this.isbn),
-      }
-      this.servicioAPI.addIntercambio(this.idUsuario, intercambio).subscribe({
-        next: () => {
-          this.mostrarNotificacionSucess = true
-          this.desactivarBotonIntercambiar = true
-        },
-        error: (error: ModelError) => {
-          this.mensajeError = error.mensaje
-          this.mostrarNotificacionError = true
-          // eslint-disable-next-line no-console
-          console.error(error)
-        },
-      })
+    this.desactivarBotonIntercambiar = true
+    const intercambio: CreacionIntercambio = {
+      idAceptante: aceptante.id,
+      idLibroAceptante: parseInt(this.isbn),
     }
+    this.servicioAPI.addIntercambio(this.idUsuario, intercambio).subscribe({
+      next: () => {
+        this.mostrarNotificacionSucess = true
+      },
+      error: (error: ModelError) => {
+        this.mensajeError = error.mensaje
+        this.mostrarNotificacionError = true
+        // eslint-disable-next-line no-console
+        console.error(error)
+      },
+    })
   }
 }
