@@ -23,7 +23,7 @@ export class SignUpPageComponent {
       next: value => {
         const id = value.id
         if (id) {
-          this.servicioUsuario.setId(id)
+          this.servicioUsuario.id.set(id)
           this.servicioApi.mandarCorreoConfirmacion(id)
           this.router.navigate(['/signup/verify'], {
             queryParams: {
