@@ -40,7 +40,8 @@ jobs:
         run: ./gradlew bootJar
         working-directory: ./backend
 
-      - run: |
+      - name: Obtener versión del pryecto
+        run: |
           VERSION=$(./gradlew properties -q | awk '/^version:/ {print $2}')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo Version is $VERSION
@@ -69,6 +70,7 @@ jobs:
           push: true
           tags: |
             us-south1-docker.pkg.dev/proyecto-aga/tsis-amoxtli/amoxtli:latest
+            us-south1-docker.pkg.dev/proyecto-aga/tsis-amoxtli/amoxtli:${{ github.env.release.tag_name }}
           build-args: |
             JAR_FILE=build/libs/AmoxtliBackend-${{ env.VERSION }}.jar
 
@@ -77,3 +79,4 @@ jobs:
         with:
           service: amoxtli
           image: us-south1-docker.pkg.dev/proyecto-aga/tsis-amoxtli/amoxtli:latest
+          region: us-west1
