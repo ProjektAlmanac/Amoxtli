@@ -41,11 +41,16 @@ jobs:
         working-directory: ./backend
 
       - name: Obtener versión del pryecto
+        id: get-version
         run: |
           VERSION=$(./gradlew properties -q | awk '/^version:/ {print $2}')
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo ::set-output name=version::${VERSION}
           echo Version is $VERSION
         working-directory: ./backend
+
+      - name: Obtener tag
+        id: get-tag
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
 
       - name: Instalar Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -70,9 +75,9 @@ jobs:
           push: true
           tags: |
             us-south1-docker.pkg.dev/proyecto-aga/tsis-amoxtli/amoxtli:latest
-            us-south1-docker.pkg.dev/proyecto-aga/tsis-amoxtli/amoxtli:${{ github.env.release.tag_name }}
+            us-south1-docker.pkg.dev/proyecto-aga/tsis-amoxtli/amoxtli:${{ steps.get-tag.outputs.short_ref }}
           build-args: |
-            JAR_FILE=build/libs/AmoxtliBackend-${{ env.VERSION }}.jar
+            JAR_FILE=build/libs/AmoxtliBackend-${{ steps.get-version.outputs.version }}.jar
 
       - name: Liberar en Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
