@@ -48,8 +48,7 @@ jobs:
 
       - name: Copiar JAR a ubicación temporal
         run: |
-          mkdir -p $GITHUB_WORKSPACE/tmp
-          cp ./backend/build/libs/AmoxtliBackend-${{ env.VERSION }}.jar $GITHUB_WORKSPACE/tmp/AmoxtliBackend.jar
+          cp ./backend/build/libs/AmoxtliBackend-${{ env.VERSION }}.jar tmp/AmoxtliBackend.jar
 
       - name: Iniciar sesión en Docker Hub
         uses: docker/login-action@v3
@@ -68,4 +67,4 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/amoxtli-backend:latest
           build-args: |
-            JAR_FILE=$GITHUB_WORKSPACE/tmp/AmoxtliBackend.jar
+            JAR_FILE=/tmp/AmoxtliBackend.jar
