@@ -1,27 +1,35 @@
-<div *ngIf="mostrarNotificacionSucess" class="contenedor">
-  <div class="alert alert-success notificacion" role="alert">
-    ¡Se creó la solicitud de intercambio!.
+<div *ngIf="progessSpinner; else mostrarPage">
+  <app-progress-spinner></app-progress-spinner>
+</div>
+
+<ng-template #mostrarPage>
+  <div *ngIf="mostrarNotificacionSucess" class="contenedor">
+    <div class="alert alert-success notificacion" role="alert">
+      ¡Se creó la solicitud de intercambio!.
+    </div>
   </div>
-</div>
 
-<div *ngIf="mostrarNotificacionInfo" class="contenedor">
-  <div class="alert alert-primary notificacion" role="alert">
-    {{ mensajeInfo }}
+  <div *ngIf="mostrarNotificacionInfo" class="contenedor">
+    <div class="alert alert-primary notificacion" role="alert">
+      {{ mensajeInfo }}
+    </div>
   </div>
-</div>
 
-<div *ngIf="mostrarNotificacionError" class="contenedor">
-  <div class="alert alert-danger notificacion" role="alert">Hubo un error. {{ mensajeError }}.</div>
-</div>
+  <div *ngIf="mostrarNotificacionError" class="contenedor">
+    <div class="alert alert-danger notificacion" role="alert">
+      Hubo un error. {{ mensajeError }}.
+    </div>
+  </div>
 
-<div class="contenedor p-2">
-  <app-libro *ngIf="libro" [libro]="libro"></app-libro>
-</div>
-<div class="px-3">
-  <app-duenos
-    *ngIf="libroConDuenos"
-    [duenos]="libroConDuenos.duenos"
-    [ofertante]="usuario"
-    [botonIntercambiar]="desactivarBotonIntercambiar"
-    (solicitarIntercambio)="intercambiar($event)"></app-duenos>
-</div>
+  <div class="contenedor p-2">
+    <app-libro *ngIf="libro" [libro]="libro"></app-libro>
+  </div>
+  <div class="px-3">
+    <app-duenos
+      *ngIf="libroConDuenos"
+      [duenos]="libroConDuenos.duenos"
+      [ofertante]="usuario"
+      [botonIntercambiar]="desactivarBotonIntercambiar"
+      (solicitarIntercambio)="intercambiar($event)"></app-duenos>
+  </div>
+</ng-template>

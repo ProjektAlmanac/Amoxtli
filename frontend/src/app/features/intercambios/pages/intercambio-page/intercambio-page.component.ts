@@ -30,6 +30,7 @@ export class IntercambioPageComponent implements OnInit {
   public mensajeInfo!: string
   public mensajeError!: string
   public validado = false
+  public progessSpinner = true
 
   constructor(
     private servicioAPI: DefaultService,
@@ -69,6 +70,7 @@ export class IntercambioPageComponent implements OnInit {
           idioma: this.libroConDuenos.idioma,
           fechaPublicacion: this.libroConDuenos.fechaPublicacion,
         }
+        this.progessSpinner = false
       })
     })
 
