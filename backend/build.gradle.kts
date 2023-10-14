@@ -15,7 +15,7 @@ plugins {
 }
 
 group = "io.github.projektalmanac"
-version = "dev"
+version = "latest"
 
 sonarqube {
 	properties {
