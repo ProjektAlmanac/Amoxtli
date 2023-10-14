@@ -9,6 +9,7 @@ import org.mapstruct.factory.Mappers;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Base64;
 
 @Mapper
@@ -25,22 +26,15 @@ public interface UserMapper {
     @Mapping(source = "nombre", target = "name")
     @Mapping(source = "apellidos", target = "lastName")
     @Mapping(source = "correo", target = "email")
-    @Mapping(source = "telefono",target = "phone")
-    @Mapping(target = "photoDescription",expression = "java(mapJsonToString(userDto.getDescripcionFoto()))")
+    @Mapping(source = "telefono", target = "phone")
+    @Mapping(target = "photoDescription", expression = "java(mapJsonToString(userDto.getDescripcionFoto()))")
     @Mapping(target = "interests", expression = "java(mapJsonToString(userDto.getIntereses()))")
     @Mapping(source = "correoVerificado", target = "verifiedEmail")
-
     User usuarioDtoToUser(PerfilUsuarioDto userDto);
+
     // Método para obtener el valor de JsonNulleable
-    default String mapJsonToString(JsonNullable<String> campoDto){
-        String campo = null;
-        try {
-            campo = campoDto.orElse(null);
-            return campo;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return campo;
+    default String mapJsonToString(JsonNullable<String> campoDto) {
+        return campoDto.orElse(null);
     }
 
     @Mapping(source = "name", target = "nombre")
@@ -48,7 +42,7 @@ public interface UserMapper {
     @Mapping(source = "email", target = "correo")
     @Mapping(source = "phone", target = "telefono")
     @Mapping(target = "descripcionFoto", expression = "java(org.openapitools.jackson.nullable.JsonNullable.of(user.getPhotoDescription()))")
-    @Mapping(target = "intereses",expression = "java(org.openapitools.jackson.nullable.JsonNullable.of(user.getInterests()))")
+    @Mapping(target = "intereses", expression = "java(org.openapitools.jackson.nullable.JsonNullable.of(user.getInterests()))")
     @Mapping(source = "verifiedEmail", target = "correoVerificado")
     PerfilUsuarioDto userToUserDtoWithoutPhoto(User user);
 
@@ -58,29 +52,31 @@ public interface UserMapper {
     @Mapping(source = "email", target = "correo")
     @Mapping(source = "phone", target = "telefono")
     @Mapping(target = "descripcionFoto", expression = "java(org.openapitools.jackson.nullable.JsonNullable.of(user.getPhotoDescription()))")
-    @Mapping(target = "intereses",expression = "java(org.openapitools.jackson.nullable.JsonNullable.of(user.getInterests()))")
-    @Mapping(target = "fotoPerfil",expression = "java(mapBytetoUri(user.getPhoto()))")
+    @Mapping(target = "intereses", expression = "java(org.openapitools.jackson.nullable.JsonNullable.of(user.getInterests()))")
+    @Mapping(target = "fotoPerfil", expression = "java(mapBytetoUri(user.getPhoto()))")
     @Mapping(source = "verifiedEmail", target = "correoVerificado")
     PerfilUsuarioDto userToUserDto(User user);
+
     // Método para parsear unn byte Array en un URI, usando Base64
     default JsonNullable<URI> mapBytetoUri(byte[] photo) {
-        try {
-            if (photo.length != 0){
-                if (photo.length >= 2 && photo[0] == (byte) 0xFF && photo[1] == (byte) 0xD8) {
-                    String jpegBase64 = Base64.getEncoder().encodeToString(photo);
-                    URI jpegUri = new URI("data:image/jpeg;base64," + jpegBase64);
-                    return JsonNullable.of(jpegUri);
-                } else {
-                    String pngBase64 = Base64.getEncoder().encodeToString(photo);
-                    URI pngUri = new URI("data:image/png;base64," + pngBase64);
-                    return JsonNullable.of(pngUri);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (photo == null) return JsonNullable.undefined();
+        if (photo.length == 0) return JsonNullable.undefined();
 
+        String imgBase64 = Base64.getEncoder().encodeToString(photo);
+
+        String inicioUrl;
+        if (photo.length >= 2 && photo[0] == (byte) 0xFF && photo[1] == (byte) 0xD8) {
+            inicioUrl = "data:image/jpeg;base64,";
+        } else {
+            inicioUrl = "data:image/png;base64,";
         }
-        return JsonNullable.undefined();
+
+        try {
+            URI jpegUri = new URI(inicioUrl + imgBase64);
+            return JsonNullable.of(jpegUri);
+        } catch (URISyntaxException e) {
+            return JsonNullable.undefined();
+        }
     }
 
 }

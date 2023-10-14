@@ -27,14 +27,9 @@ public class LoginController implements IniciarSesionApi {
     public ResponseEntity<SessionTokenDto> iniciarSesion(@RequestBody @Valid CredencialesDto credencialesDto){
 
 
-        if(credencialesDto != null) {
-            SessionTokenDto intentoSesion = userService.iniciarSesion(credencialesDto);
-            return ResponseEntity.status(HttpStatus.OK).body(intentoSesion);
-
-        } else {
-            //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        if (credencialesDto == null)
             throw new InvalidUserSessionException("Sesion rechazada, intente mas tarde.");
-        }
-
+        SessionTokenDto intentoSesion = userService.iniciarSesion(credencialesDto);
+        return ResponseEntity.status(HttpStatus.OK).body(intentoSesion);
     }
 }
