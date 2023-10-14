@@ -46,14 +46,21 @@ jobs:
           echo Version is $VERSION
         working-directory: ./backend
 
-      - name: Iniciar sesión en Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Instalar Docker Buildx
         uses: docker/setup-buildx-action@v3
+      
+      - name: Autenticar con Google
+        id: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCLOUD_CREDENTIALS }}
+
+      - name: Iniciar sesión en Artifact Registry
+        uses: docker/login-action@v3
+        with:
+          registry: us-south1-docker.pkg.dev
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Construir imagen y subir a Docker Hub
         uses: docker/build-push-action@v5
@@ -61,6 +68,6 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/amoxtli:latest
+          tags: us-south1-docker.pkg.dev/proyecto-aga/tsis-amoxtli/amoxtli:latest
           build-args: |
             JAR_FILE=build/libs/AmoxtliBackend-${{ env.VERSION }}.jar
