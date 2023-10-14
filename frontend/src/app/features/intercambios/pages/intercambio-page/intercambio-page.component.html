@@ -6,14 +6,12 @@
 
 <div *ngIf="mostrarNotificacionInfo" class="contenedor">
   <div class="alert alert-primary notificacion" role="alert">
-    Tienes 4 solicitudes de intercambios activos.
+    {{ mensajeInfo }}
   </div>
 </div>
 
 <div *ngIf="mostrarNotificacionError" class="contenedor">
-  <div class="alert alert-danger notificacion" role="alert">
-    Hubo un error. {{ this.mensajeError }}.
-  </div>
+  <div class="alert alert-danger notificacion" role="alert">Hubo un error. {{ mensajeError }}.</div>
 </div>
 
 <div class="contenedor p-2">

@@ -27,6 +27,7 @@ export class IntercambioPageComponent implements OnInit {
   public mostrarNotificacionSucess = false
   public mostrarNotificacionInfo = false
   public mostrarNotificacionError = false
+  public mensajeInfo!: string
   public mensajeError!: string
   public validado = false
 
@@ -71,11 +72,31 @@ export class IntercambioPageComponent implements OnInit {
       })
     })
 
-    this.servicioAPI.validaPuedeIntercambiar(this.idUsuario).subscribe({
-      next: (data: ValidaPuedeIntercambiar200Response) => {
-        this.desactivarBotonIntercambiar = !data.puedeIntercambiar ?? true
-        if (this.desactivarBotonIntercambiar) {
+    // Validar si el usuario puede intercambiar
+    this.servicioAPI.getLibrosUsuario(this.idUsuario).subscribe({
+      next: data => {
+        // Si no tiene libros, no puede intercambiar
+        if (data.libros.length === 0) {
+          this.desactivarBotonIntercambiar = true
+          this.mensajeInfo = 'No tienes libros para intercambiar.'
           this.mostrarNotificacionInfo = true
+        } else {
+          // Si tiene libros, valida que no tenga 4 intercambios activos
+          this.servicioAPI.validaPuedeIntercambiar(this.idUsuario).subscribe({
+            next: (data: ValidaPuedeIntercambiar200Response) => {
+              this.desactivarBotonIntercambiar = !data.puedeIntercambiar ?? true
+              if (this.desactivarBotonIntercambiar) {
+                this.mensajeInfo = 'Tienes 4 intercambios activos.'
+                this.mostrarNotificacionInfo = true
+              }
+            },
+            error: (error: ModelError) => {
+              this.mensajeError = error.mensaje
+              this.mostrarNotificacionError = true
+              // eslint-disable-next-line no-console
+              console.error(error)
+            },
+          })
         }
       },
       error: (error: ModelError) => {
