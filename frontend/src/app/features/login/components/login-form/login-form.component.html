@@ -5,10 +5,10 @@
         <mat-label>Correo electrónico</mat-label>
         <input matInput formControlName="correo" />
 
-        <mat-error *ngIf="signInForm.get('email')?.hasError('required')">
+        <mat-error *ngIf="signInForm.get('correo')?.hasError('required')">
           Este campo es obligatorio
         </mat-error>
-        <mat-error *ngIf="signInForm.get('email')?.hasError('email')">
+        <mat-error *ngIf="signInForm.get('correo')?.hasError('email')">
           Favor de especificar una dirección de correo electrónico válida
         </mat-error>
       </mat-form-field>
@@ -28,11 +28,8 @@
           <mat-icon>{{ mostrarContrasena ? 'visibility' : 'visibility_off' }}</mat-icon>
         </button>
 
-        <mat-error *ngIf="signInForm.get('password')?.hasError('required')">
+        <mat-error *ngIf="signInForm.get('contrasena')?.hasError('required')">
           Este campo es obligatorio
-        </mat-error>
-        <mat-error *ngIf="signInForm.get('password')?.hasError('minlength')">
-          La contraseña debe tener al menos {{ PASSWORD_LENGTH }} caracteres
         </mat-error>
       </mat-form-field>
 

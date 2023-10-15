@@ -14,14 +14,13 @@ export class LoginFormComponent {
   @Output()
   formSubmit = new EventEmitter<Credenciales>()
 
-  readonly PASSWORD_LENGTH = 8
   public mostrarContrasena = false
 
   constructor(private fb: FormBuilder) {}
 
   public signInForm = this.fb.group({
     correo: ['', [Validators.required, Validators.email]],
-    contrasena: ['', [Validators.required, Validators.minLength(this.PASSWORD_LENGTH)]],
+    contrasena: ['', [Validators.required]],
   })
 
   onSubmit() {
