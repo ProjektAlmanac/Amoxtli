@@ -13,9 +13,7 @@ open class UserServiceKt (private val userRepository: UserRepository, private va
 
     fun getIntercambios(id: Int): GetIntercambios200ResponseDto {
 
-        val userOpt = userRepository.findById(id) ?: throw UserNotFoundException(id)
-
-        val user = userOpt.get()
+        val user = userRepository.findById(id).orElseThrow { UserNotFoundException(id) }
 
         val intercambios = mutableListOf<Exchange>()
         intercambios.addAll(user.exchangesOfferor)
