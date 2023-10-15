@@ -97,7 +97,7 @@ export class AgregarLibroComponent {
   }
 
   agregarLibroCalotogoUsuario(libro: LibroRegistrado) {
-    const idUsuario = this.servicioUsuario.id.value
+    const idUsuario = this.servicioUsuario.id()
     this.apiService.addLibro(idUsuario, libro).subscribe({
       next: () => {
         this.mostrarCardLibro = false
