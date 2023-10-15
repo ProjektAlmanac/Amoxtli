@@ -10,11 +10,11 @@ import { MatInputModule } from '@angular/material/input'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { RouterModule } from '@angular/router'
 
-import { SignInFormComponent } from './components/sign-in-form/sign-in-form.component'
-import { SignInPageComponent } from './pages/sign-in-page/sign-in-page.component'
+import { LoginFormComponent } from './components/login-form/login-form.component'
+import { LoginPageComponent } from './pages/login-page/login-page.component'
 
 @NgModule({
-  declarations: [SignInPageComponent, SignInFormComponent],
+  declarations: [LoginPageComponent, LoginFormComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -27,6 +27,6 @@ import { SignInPageComponent } from './pages/sign-in-page/sign-in-page.component
     ReactiveFormsModule,
     RouterModule,
   ],
-  exports: [SignInPageComponent],
+  exports: [LoginPageComponent],
 })
-export class SignInModule {}
+export class LoginModule {}

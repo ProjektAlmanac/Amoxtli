@@ -3,11 +3,11 @@ import { FormBuilder, Validators } from '@angular/forms'
 import { Credenciales } from 'src/generated/openapi'
 
 @Component({
-  selector: 'app-sign-in-form',
-  templateUrl: './sign-in-form.component.html',
-  styleUrls: ['./sign-in-form.component.sass'],
+  selector: 'app-login-form',
+  templateUrl: './login-form.component.html',
+  styleUrls: ['./login-form.component.sass'],
 })
-export class SignInFormComponent {
+export class LoginFormComponent {
   @Input()
   mensajeError = ''
 

@@ -4,11 +4,11 @@ import { ServicioUsuario } from 'src/app/core/services/servicio-usuario.service'
 import { Credenciales, DefaultService, ModelError } from 'src/generated/openapi'
 
 @Component({
-  selector: 'app-sign-in-page',
-  templateUrl: './sign-in-page.component.html',
-  styleUrls: ['./sign-in-page.component.sass'],
+  selector: 'app-login-page',
+  templateUrl: './login-page.component.html',
+  styleUrls: ['./login-page.component.sass'],
 })
-export class SignInPageComponent {
+export class LoginPageComponent {
   public mensajeError = ''
 
   constructor(
