@@ -88,10 +88,7 @@ public class BookService {
 
         for (User dueno : duenos) {
             DuenoDto duenoDto = new DuenoDto();
-           // duenoDto.setId(dueno.getId());
-           // duenoDto.setNombre(dueno.getName());
-           // duenoDto.setApellido(dueno.getLastName());
-            //duenoDto.setFoto(dueno.getPhoto());
+
             duenoDto = UserMapper.INSTANCE.userToUserDto1(dueno);
             duenosDtoList.add(duenoDto);
         }
@@ -129,24 +126,6 @@ public class BookService {
 
         return librosDto;
 
-
-        /*
-        // Obtener todos los libros de la base de datos
-        List<Book> books = bookRepository.findAll();
-
-        Set<InfoBasicaLibroDto> librosDtoSet = new HashSet<>();
-
-        for (Book book : books) {
-            VolumeInfo libroGoogleBooks = googleBookService.getVolumeInfoByIsbn(book.getIsbn());
-
-            InfoBasicaLibroDto infoBasicaLibroDto = BookMapper.INSTANCE.toInfoBasicaLibroDto(book.getIsbn(), libroGoogleBooks);
-            librosDtoSet.add(infoBasicaLibroDto);
-        }
-
-        // Convertir el HashSet a ArrayList
-        List<InfoBasicaLibroDto> librosDto = new ArrayList<>(librosDtoSet);
-
-        return librosDto;*/
     }
 
     public PaginaLibrosDto getLibrospag(Integer pagina, Integer tamanoPagina, List<InfoBasicaLibroDto> libros) {

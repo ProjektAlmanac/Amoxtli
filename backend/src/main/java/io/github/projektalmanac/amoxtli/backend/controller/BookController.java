@@ -41,27 +41,12 @@ public class BookController implements LibrosApi {
 
         // Obtener la lista de libros de la página especificada
         List<InfoBasicaLibroDto> libros = bookService.getLibros(pagina, tamanoPagina);
-/*
-        // Calcular página anterior y página siguiente
-        int pagAnterior = (pagina > 1) ? pagina - 1 : 1;
-        int pagSiguiente = pagina + 1;
 
-        // Crear objeto PaginaLibrosDto
-        PaginaLibrosDto paginaLibrosDto = new PaginaLibrosDto();
-        paginaLibrosDto.setPagAnterior(pagAnterior);
-        paginaLibrosDto.setPagSiguiente(pagSiguiente);
-        paginaLibrosDto.setResultados(libros.size());
-        paginaLibrosDto.setLibros(libros);*/
 
         // Retornar la respuesta con el objeto PaginaLibrosDto
         PaginaLibrosDto paginaLibrosDto = bookService.getLibrospag(pagina, tamanoPagina, libros);
         return ResponseEntity.status(HttpStatus.OK).body(paginaLibrosDto);
-       // return null;
 
     }
-   /* @GetMapping (path = "/librosget")
-    public ResponseEntity<List<InfoBasicaLibroDto>> getLibross() {
-        List<InfoBasicaLibroDto> libros = bookService.getLibros();
-        return ResponseEntity.status(HttpStatus.OK).body(libros);
-    }*/
+
 }

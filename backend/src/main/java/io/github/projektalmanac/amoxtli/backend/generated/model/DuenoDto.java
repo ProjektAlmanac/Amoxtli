@@ -165,7 +165,5 @@ public class DuenoDto {
     return o.toString().replace("\n", "\n    ");
   }
 
- /* public void setFoto(byte[] photo) {
-  }*/
 }
 
