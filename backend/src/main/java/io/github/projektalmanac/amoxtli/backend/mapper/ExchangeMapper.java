@@ -11,7 +11,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {BookMapper.class, UserMapper.class})
 public interface ExchangeMapper {
     ExchangeMapper INSTANCE = Mappers.getMapper(ExchangeMapper.class);
 
@@ -30,12 +30,17 @@ public interface ExchangeMapper {
     @Mapping(target = "correo", source = "email")
     AceptanteDto toAceptanteDto(User user);
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "isbn", source = "isbn")
-    @Mapping(target = "descripcion", source = "description")
-    LibroAceptanteDto tOLibroAceptanteDto(Book book);
 
     EstadoIntercambioDto toEstadoIntercambioDto(Status status);
+
+    default IntercambioDto toIntercambioDto(Exchange exchange){
+        var ofertante = toOfertanteDto(exchange.getUserOfferor());
+        var aceptante = toAceptanteDto(exchange.getUserAccepting());
+        var libroAceptante = BookMapper.INSTANCE.tOLibroAceptanteDto(exchange.getBookAccepting());
+        var estado = toEstadoIntercambioDto(exchange.getStatus());
+        return new IntercambioDto(exchange.getId(), ofertante, aceptante, libroAceptante, null, estado);
+
+    }
     default GetIntercambios200ResponseDto toGetIntercambios200ResponseDto(List<Exchange> intercambios){
         var resultado = new GetIntercambios200ResponseDto();
 
@@ -43,7 +48,7 @@ public interface ExchangeMapper {
             var intercambio = intercambios.get(i);
             OfertanteDto ofertante = toOfertanteDto(intercambio.getUserOfferor());
             AceptanteDto aceptante = toAceptanteDto(intercambio.getUserAccepting());
-            LibroAceptanteDto libroAceptante = tOLibroAceptanteDto(intercambio.getBookAccepting());
+            LibroAceptanteDto libroAceptante = BookMapper.INSTANCE.tOLibroAceptanteDto(intercambio.getBookAccepting());
             LibroRegistradoDto libroOfertante = BookMapper.INSTANCE.toLibroRegistradoDto(intercambio.getBookOfferor());
 
             IntercambioDto intercambioDto = new IntercambioDto(intercambio.getId(), ofertante, aceptante, libroAceptante, libroOfertante, null);

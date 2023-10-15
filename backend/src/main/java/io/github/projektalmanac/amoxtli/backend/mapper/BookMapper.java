@@ -55,6 +55,9 @@ public interface BookMapper {
 
     @Mapping(target = "descripcion", source = "description")
     LibroRegistradoDto toLibroRegistradoDto(Book book);
+
+    @Mapping(target = "descripcion", source = "description")
+    LibroAceptanteDto tOLibroAceptanteDto(Book book);
     default URI stringToUri(String string) {
         if (string == null) return null;
         return URI.create(string);
