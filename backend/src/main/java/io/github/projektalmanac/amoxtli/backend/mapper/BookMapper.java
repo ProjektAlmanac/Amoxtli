@@ -65,6 +65,13 @@ public interface BookMapper {
     //@Mapping(target = "duenos", source = "dueños" )
     LibroConDuenosDto toLibroConDuenosDto(String ISBN, VolumeInfo libroGoogleBooks);
 
+
+    @Mapping(target = "isbn", source = "ISBN")
+    @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")
+    @Mapping(target = "titulo", source = "libroGoogleBooks.title")
+    @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks")
+    InfoBasicaLibroDto toInfoBasicaLibroDto(String ISBN, VolumeInfo libroGoogleBooks);
+
     default URI stringToUri(String string) {
         if (string == null) return null;
         return URI.create(string);
@@ -99,5 +106,4 @@ public interface BookMapper {
         return null;
     }
 
-    LibroConDuenosDto toLibroConDuenosDto(Book book);
 }

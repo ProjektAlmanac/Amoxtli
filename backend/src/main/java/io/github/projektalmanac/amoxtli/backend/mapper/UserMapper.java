@@ -1,6 +1,7 @@
 package io.github.projektalmanac.amoxtli.backend.mapper;
 
 import io.github.projektalmanac.amoxtli.backend.entity.User;
+import io.github.projektalmanac.amoxtli.backend.generated.model.DuenoDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.PerfilUsuarioDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.UsuarioDto;
 import org.mapstruct.Mapper;
@@ -78,5 +79,10 @@ public interface UserMapper {
             return JsonNullable.undefined();
         }
     }
+
+    @Mapping(source = "name", target = "nombre")
+    @Mapping(source = "lastName", target = "apellido")
+    @Mapping(target = "foto",expression = "java(mapBytetoUri(user.getPhoto()))")
+    DuenoDto userToUserDto1(User user);
 
 }

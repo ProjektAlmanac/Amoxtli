@@ -25,11 +25,11 @@ import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
 import io.github.projektalmanac.amoxtli.backend.config.SecurityConfig;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -276,7 +276,7 @@ class UserServiceTest {
 
     @Test
     void verificaCorreo() {
-        int userId = 1;
+        Integer userId = 1;
 
         //////// Codigo valido.///////
         CodigoVerificacionDto codigoVerificacionDto = new CodigoVerificacionDto();

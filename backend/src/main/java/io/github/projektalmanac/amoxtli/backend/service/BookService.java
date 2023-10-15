@@ -6,20 +6,19 @@ import io.github.projektalmanac.amoxtli.backend.entity.User;
 import io.github.projektalmanac.amoxtli.backend.exception.BookAlreadyExistsException;
 import io.github.projektalmanac.amoxtli.backend.exception.ResourceNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
-import io.github.projektalmanac.amoxtli.backend.generated.model.DetallesLibroDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.DuenoDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibroConDuenosDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibroRegistradoDto;
+import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.mapper.BookMapper;
+import io.github.projektalmanac.amoxtli.backend.mapper.UserMapper;
 import io.github.projektalmanac.amoxtli.backend.repository.BookRepository;
 import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
 import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class BookService {
@@ -53,6 +52,7 @@ public class BookService {
 
         User user = userOpt.get();
 
+        libroRegistradoDto.setIsbn(libroRegistradoDto.getIsbn().replace("-",""));
         // Regla de negocio: No se permite agregar dos libros con el mismo isbn en el mismo perfil
         boolean result = userRepository.existsBookByIsbnAndUserId(libroRegistradoDto.getIsbn(), user.getId());
 
@@ -63,11 +63,10 @@ public class BookService {
 
         Book book = BookMapper.INSTANCE.toBook(libroRegistradoDto);
 
-        bookRepository.save(book);
+        book = bookRepository.save(book);
         user.addBook(book);
         userRepository.save(user);
 
-        book = bookRepository.findByIsbn(book.getIsbn());
 
         return BookMapper.INSTANCE.toLibroRegistradoDto(book);
     }
@@ -89,10 +88,11 @@ public class BookService {
 
         for (User dueno : duenos) {
             DuenoDto duenoDto = new DuenoDto();
-            duenoDto.setId(dueno.getId());
-            duenoDto.setNombre(dueno.getName());
-            duenoDto.setApellido(dueno.getLastName());
-            duenoDto.setFoto(dueno.getPhoto());
+           // duenoDto.setId(dueno.getId());
+           // duenoDto.setNombre(dueno.getName());
+           // duenoDto.setApellido(dueno.getLastName());
+            //duenoDto.setFoto(dueno.getPhoto());
+            duenoDto = UserMapper.INSTANCE.userToUserDto1(dueno);
             duenosDtoList.add(duenoDto);
         }
 
@@ -108,4 +108,59 @@ public class BookService {
 
     }
 
+
+    public List<InfoBasicaLibroDto> getLibros(Integer pagina, Integer tamanoPagina) {
+
+        // Utiliza Spring Data JPA para obtener los resultados paginados del repositorio
+        Pageable pageable = PageRequest.of(pagina - 1, tamanoPagina); // Spring Data JPA usa índices basados en 0, por eso se resta 1 a la página
+        Page<Book> bookPage = bookRepository.findAll(pageable);
+
+        Set<InfoBasicaLibroDto> librosDtoSet = new HashSet<>();
+
+        // Convierte la página de libros a una lista de InfoBasicaLibroDto
+        List<InfoBasicaLibroDto> libros = new ArrayList<>();
+        for (Book book : bookPage.getContent()) {
+            VolumeInfo libroGoogleBooks = googleBookService.getVolumeInfoByIsbn(book.getIsbn());
+            InfoBasicaLibroDto infoBasicaLibroDto = BookMapper.INSTANCE.toInfoBasicaLibroDto(book.getIsbn(), libroGoogleBooks);
+            librosDtoSet.add(infoBasicaLibroDto);
+        }
+        // Convertir el HashSet a ArrayList
+        List<InfoBasicaLibroDto> librosDto = new ArrayList<>(librosDtoSet);
+
+        return librosDto;
+
+
+        /*
+        // Obtener todos los libros de la base de datos
+        List<Book> books = bookRepository.findAll();
+
+        Set<InfoBasicaLibroDto> librosDtoSet = new HashSet<>();
+
+        for (Book book : books) {
+            VolumeInfo libroGoogleBooks = googleBookService.getVolumeInfoByIsbn(book.getIsbn());
+
+            InfoBasicaLibroDto infoBasicaLibroDto = BookMapper.INSTANCE.toInfoBasicaLibroDto(book.getIsbn(), libroGoogleBooks);
+            librosDtoSet.add(infoBasicaLibroDto);
+        }
+
+        // Convertir el HashSet a ArrayList
+        List<InfoBasicaLibroDto> librosDto = new ArrayList<>(librosDtoSet);
+
+        return librosDto;*/
+    }
+
+    public PaginaLibrosDto getLibrospag(Integer pagina, Integer tamanoPagina, List<InfoBasicaLibroDto> libros) {
+        // Calcular página anterior y página siguiente
+        int pagAnterior = (pagina > 1) ? pagina - 1 : 1;
+        int pagSiguiente = pagina + 1;
+
+        // Crear objeto PaginaLibrosDto
+        PaginaLibrosDto paginaLibrosDto = new PaginaLibrosDto();
+        paginaLibrosDto.setPagAnterior(pagAnterior);
+        paginaLibrosDto.setPagSiguiente(pagSiguiente);
+        paginaLibrosDto.setResultados(libros.size());
+        paginaLibrosDto.setLibros(libros);
+
+        return paginaLibrosDto;
+    }
 }
