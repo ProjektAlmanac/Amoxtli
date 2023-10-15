@@ -29,6 +29,7 @@ import { CatalogoUsuarioModule } from './features/catalogo-usuario/catalogo-usua
 import { NotFoundComponent } from './core/pages/not-found/not-found.component'
 import { PerfilComponent } from './features/perfil/pages/perfil.component'
 import { LoginModule } from './features/login/login.module'
+import { LibroModule } from './features/libros/libro.module'
 
 @NgModule({
   declarations: [AppComponent, NotFoundComponent, PerfilComponent, SharedComponent],
@@ -56,6 +57,7 @@ import { LoginModule } from './features/login/login.module'
     MatSnackBarModule,
     CatalogoUsuarioModule,
     LoginModule,
+    LibroModule,
   ],
   providers: [
     { provide: BASE_PATH, useValue: environment.apiBasePath },
