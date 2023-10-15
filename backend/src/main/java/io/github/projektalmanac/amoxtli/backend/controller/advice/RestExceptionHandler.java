@@ -86,7 +86,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(BookNotFoundException.class)
     public final ResponseEntity<ErrorDto> handleBookNotFoundException(BookNotFoundException ex, WebRequest request) {
-        var error = new ErrorDto(ex.getMessage(), 1); // Código 3 par que es la historia de usuario que se trato
+        var error = new ErrorDto(ex.getMessage(), 10);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(SelfExchangeException.class)
+    public  final ResponseEntity<ErrorDto> handleSelfExchangeException(SelfExchangeException ex, WebRequest request){
+        var error = new ErrorDto(ex.getMessage(), 11);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(UnregisteredPhoneNumberException.class)
+    public final ResponseEntity<ErrorDto> handleUnregisteredPhoneNumberException(UnregisteredPhoneNumberException ex, WebRequest request) {
+        var error = new ErrorDto(ex.getMessage(), 12);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }

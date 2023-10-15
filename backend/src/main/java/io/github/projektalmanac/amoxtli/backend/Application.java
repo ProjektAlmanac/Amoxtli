@@ -47,29 +47,29 @@ public class Application {
 		user3.setLastName("Morales");
 		user3.setId(3);
 		user3.setVerifiedEmail(true);
-		List<Book> libro = new ArrayList<>();
-		List<Book> libro2 = new ArrayList<>();
+		List<Book> libros = new ArrayList<>();
+		List<Book> libros2 = new ArrayList<>();
 
 		var book = new Book();
 		book.setIsbn("9783716026434");
-		book.setDescription("El principito, pasta dura");
+		book.setDescription("EL libro esta en buen estado");
 
 		var book1 = new Book();
 		book1.setIsbn("9780156014045");
-		book1.setDescription("El principito, pasta blanda");
+		book1.setDescription("Tiene algunas hojas dobladas");
 
 		var book2 = new Book();
 		book2.setIsbn("9786077350140");
-		book2.setDescription("El principito, tapa blanda");
+		book2.setDescription("Solo tiene una hoja rota");
 
-		libro.add(book);
-		libro.add(book1);
-		user.setBooks(libro);
+		libros.add(book);
+		libros.add(book1);
+		user.setBooks(libros);
 
-		libro2.add(book);
-		libro2.add(book1);
-		libro2.add(book2);
-		user2.setBooks(libro2);
+		libros2.add(book);
+		libros2.add(book1);
+		libros2.add(book2);
+		user2.setBooks(libros2);
 
 		userRepository.save(user);
 		userRepository.save(user2);

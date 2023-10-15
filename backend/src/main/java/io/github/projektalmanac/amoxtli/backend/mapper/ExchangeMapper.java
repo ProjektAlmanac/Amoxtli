@@ -3,6 +3,7 @@ package io.github.projektalmanac.amoxtli.backend.mapper;
 import io.github.projektalmanac.amoxtli.backend.entity.Book;
 import io.github.projektalmanac.amoxtli.backend.entity.Exchange;
 import io.github.projektalmanac.amoxtli.backend.entity.User;
+import io.github.projektalmanac.amoxtli.backend.enums.Status;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -34,6 +35,7 @@ public interface ExchangeMapper {
     @Mapping(target = "descripcion", source = "description")
     LibroAceptanteDto tOLibroAceptanteDto(Book book);
 
+    EstadoIntercambioDto toEstadoIntercambioDto(Status status);
     default GetIntercambios200ResponseDto toGetIntercambios200ResponseDto(List<Exchange> intercambios){
         var resultado = new GetIntercambios200ResponseDto();
 

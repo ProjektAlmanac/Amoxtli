@@ -30,7 +30,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -314,8 +313,10 @@ public class UserService extends UserServiceKt {
     /**/
     public ValidaPuedeIntercambiar200ResponseDto validaIntercambio(Integer id) {
 
+        ValidaPuedeIntercambiar200ResponseDto response = null;
+
         Optional<User> userOpt = userRepository.findById(id);
-        if (userOpt.isPresent()) {
+        if (userOpt.isEmpty()) {
             throw new UserNotFoundException(id);
         }
         User user = userOpt.get();
@@ -323,12 +324,23 @@ public class UserService extends UserServiceKt {
             throw new EmailUserNotVerificationException(id);
         }
 
-        if(!user.getExchangesAccepting().isEmpty() && user.getExchangesAccepting().size() < 4){
-            throw new InvalidUserException("No puedes realizar más de 4 intercambios a la vez.");
+        if (user.getPhone().isEmpty()) {
+            throw new UnregisteredPhoneNumberException(id);
         }
-        ValidaPuedeIntercambiar200ResponseDto response = new ValidaPuedeIntercambiar200ResponseDto();
+
+        if (user.getExchangesAccepting().size() > 4 ) {
+            response = new ValidaPuedeIntercambiar200ResponseDto();
+            response.setPuedeIntercambiar(false);
+            response.mensaje("El usuario con id:" + id +", no puede aceptar más de 4 intercambios.");
+        }
+        if (user.getExchangesOfferor().size() > 4 ) {
+            response = new ValidaPuedeIntercambiar200ResponseDto();
+            response.setPuedeIntercambiar(false);
+            response.mensaje("El usuario con id:" + id +", no puede solicitar más de 4 intercambios.");
+        }
+
+        response = new ValidaPuedeIntercambiar200ResponseDto();
         response.setPuedeIntercambiar(true);
-        response.mensaje("Puede solicitar intercambiar un libro.");
 
         return response;
     }
@@ -342,21 +354,15 @@ public class UserService extends UserServiceKt {
         Integer idAceptante = creacionIntercambioDto.getIdAceptante();
         Integer idLibroAceptante = creacionIntercambioDto.getIdLibroAceptante();
 
-        if (Objects.equals(idOfertante, idAceptante)){
-            throw new BadRequestException("No puedes intercambiar libros contigo mismo.");
+        if (idOfertante.equals(idAceptante)) {
+            throw new SelfExchangeException(idOfertante);
         }
         // Obtenemos a los usuarios y al libro que se intercambiará
-        Optional <User> userOptionalOfertante = this.userRepository.findById(idOfertante);
-        if (userOptionalOfertante.isEmpty()) {
-            throw new UserNotFoundException(idOfertante);
-        }
 
-        Optional<User> userOptionalAceptante = this.userRepository.findById(idAceptante);
-        if (userOptionalAceptante.isEmpty()) {
-            throw new UserNotFoundException(idAceptante);
-        }
+        Optional<User> userOptionalOfertante = Optional.of(this.userRepository.findById(idOfertante)).orElseThrow(() -> new UserNotFoundException(idOfertante));
+        Optional<User> userOptionalAceptante = Optional.of(this.userRepository.findById(idAceptante)).orElseThrow(() -> new UserNotFoundException(idAceptante));
 
-        // Extraemos el libro que se intercambiará de parte de
+        // Extraemos el libro que se intercambiará de parte del usuario aceptante
         List<Book> libros = userOptionalAceptante.get().getBooks();
         Book book = libros.stream()
                 .filter(libro -> libro.getId() == idLibroAceptante)
@@ -370,7 +376,7 @@ public class UserService extends UserServiceKt {
         exchange.setUserAccepting(userOptionalAceptante.get());
         exchange.setBookAccepting(book);
 
-        this.exchangeRepository.save(exchange);
+        exchange =this.exchangeRepository.save(exchange);
 
         List<Exchange> exchangesOfertante = userOptionalOfertante.get().getExchangesOfferor();
         exchangesOfertante.add(exchange);
@@ -381,15 +387,16 @@ public class UserService extends UserServiceKt {
         OfertanteDto ofertanteDto = ExchangeMapper.INSTANCE.toOfertanteDto(userOptionalOfertante.get());
         AceptanteDto aceptanteDto = ExchangeMapper.INSTANCE.toAceptanteDto(userOptionalAceptante.get());
         LibroAceptanteDto libroAceptanteDto = ExchangeMapper.INSTANCE.tOLibroAceptanteDto(book);
+        EstadoIntercambioDto estadoIntercambioDto = ExchangeMapper.INSTANCE.toEstadoIntercambioDto(exchange.getStatus());
 
 
         IntercambioDto intercambioDto = new IntercambioDto();
-        intercambioDto.setId(0);
+        intercambioDto.setId(exchange.getId());
         intercambioDto.setOfertante(ofertanteDto);
         intercambioDto.setAceptante(aceptanteDto);
         intercambioDto.setLibroAceptante(libroAceptanteDto);
         intercambioDto.setLibroOfertante(null);
-        intercambioDto.setEstado(EstadoIntercambioDto.PENDIENTE);
+        intercambioDto.setEstado(estadoIntercambioDto);
 
 
 
