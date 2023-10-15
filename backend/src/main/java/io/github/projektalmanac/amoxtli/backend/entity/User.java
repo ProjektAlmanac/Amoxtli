@@ -35,6 +35,7 @@ public class User {
 
     @OneToMany(mappedBy = "userOfferor")
     private List<Exchange> exchangesOfferor =  new ArrayList<>();
+
     public boolean addBook(Book book) {
 
         if (book == null) {

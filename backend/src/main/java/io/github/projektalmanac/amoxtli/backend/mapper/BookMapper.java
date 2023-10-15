@@ -2,20 +2,14 @@ package io.github.projektalmanac.amoxtli.backend.mapper;
 
 import com.google.api.services.books.model.Volume.VolumeInfo;
 import io.github.projektalmanac.amoxtli.backend.entity.Book;
-import io.github.projektalmanac.amoxtli.backend.generated.model.DetallesLibroDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibroRegistradoConDetallesDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibroRegistradoDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibrosUsuarioDto;
-import jdk.jfr.Name;
+import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -58,6 +52,19 @@ public interface BookMapper {
     @Mapping(target = "descripcion", source = "description")
     LibroRegistradoDto toLibroRegistradoDto(Book book);
 
+
+    @Mapping(target = "isbn", source = "ISBN")
+    @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")
+    @Mapping(target = "titulo", source = "libroGoogleBooks.title")
+    @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks")
+    @Mapping(target = "generos", source = "libroGoogleBooks.categories")
+    @Mapping(target = "editorial", source = "libroGoogleBooks.publisher")
+    @Mapping(target = "sinopsis", source = "libroGoogleBooks.description")
+    @Mapping(target = "idioma", source = "libroGoogleBooks.language")
+    @Mapping(target = "fechaPublicacion", source = "libroGoogleBooks.publishedDate" )
+    //@Mapping(target = "duenos", source = "dueños" )
+    LibroConDuenosDto toLibroConDuenosDto(String ISBN, VolumeInfo libroGoogleBooks);
+
     default URI stringToUri(String string) {
         if (string == null) return null;
         return URI.create(string);
@@ -91,4 +98,6 @@ public interface BookMapper {
         if (imageLinks.getSmallThumbnail() != null) return imageLinks.getSmallThumbnail();
         return null;
     }
+
+    LibroConDuenosDto toLibroConDuenosDto(Book book);
 }
