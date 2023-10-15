@@ -1,4 +1,4 @@
-import { PerfilUsuario } from './../../../../../generated/openapi/model/perfilUsuario'
+import { PerfilUsuario } from '../../../../../generated/openapi/model/perfilUsuario'
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { ServicioUsuario } from 'src/app/core/services/servicio-usuario.service'
@@ -13,11 +13,11 @@ import {
 } from 'src/generated/openapi'
 
 @Component({
-  selector: 'app-intercambio-page',
-  templateUrl: './intercambio-page.component.html',
-  styleUrls: ['./intercambio-page.component.sass'],
+  selector: 'app-libro-page',
+  templateUrl: './libro-page.component.html',
+  styleUrls: ['./libro-page.component.sass'],
 })
-export class IntercambioPageComponent implements OnInit {
+export class LibroPageComponent implements OnInit {
   public libroConDuenos!: LibroConDuenos
   public libro!: DetallesLibro
   public idUsuario!: number
@@ -30,7 +30,7 @@ export class IntercambioPageComponent implements OnInit {
   public mensajeInfo!: string
   public mensajeError!: string
   public validado = false
-  public spinerProceso = true
+  public spinnerProceso = true
 
   constructor(
     private servicioAPI: DefaultService,
@@ -41,8 +41,7 @@ export class IntercambioPageComponent implements OnInit {
       this.idUsuario = id
       this.servicioAPI.getUsuario(this.idUsuario).subscribe(data => {
         this.usuario = data
-        this.usuario.fotoPerfil =
-          this.usuario.fotoPerfil ??
+        this.usuario.fotoPerfil ??=
           'https://investigacion.unimagdalena.edu.co/Content/Imagenes/userVacio.png'
       })
     })
@@ -51,13 +50,11 @@ export class IntercambioPageComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.isbn = params['isbn']
-      this.isbn = '1234567896'
       this.servicioAPI.getLibro(this.isbn).subscribe(data => {
         this.libroConDuenos = data
         // En caso de no tener foto, se pone una en automatico
         this.libroConDuenos.duenos.forEach(dueno => {
-          dueno.foto =
-            dueno.foto ?? 'https://investigacion.unimagdalena.edu.co/Content/Imagenes/userVacio.png'
+          dueno.foto ??= 'https://investigacion.unimagdalena.edu.co/Content/Imagenes/userVacio.png'
         })
         this.libro = {
           isbn: this.libroConDuenos.isbn,
@@ -70,35 +67,17 @@ export class IntercambioPageComponent implements OnInit {
           idioma: this.libroConDuenos.idioma,
           fechaPublicacion: this.libroConDuenos.fechaPublicacion,
         }
-        this.spinerProceso = false
+        this.spinnerProceso = false
       })
     })
 
     // Validar si el usuario puede intercambiar
-    this.servicioAPI.getLibrosUsuario(this.idUsuario).subscribe({
-      next: data => {
-        // Si no tiene libros, no puede intercambiar
-        if (data.libros.length === 0) {
-          this.desactivarBotonIntercambiar = true
-          this.mensajeInfo = 'No tienes libros para intercambiar.'
+    this.servicioAPI.validaPuedeIntercambiar(this.idUsuario).subscribe({
+      next: (data: ValidaPuedeIntercambiar200Response) => {
+        this.desactivarBotonIntercambiar = !data.puedeIntercambiar ?? true
+        if (this.desactivarBotonIntercambiar) {
+          this.mensajeInfo = data.mensaje ?? 'No puedes intercambiar'
           this.mostrarNotificacionInfo = true
-        } else {
-          // Si tiene libros, valida que no tenga 4 intercambios activos
-          this.servicioAPI.validaPuedeIntercambiar(this.idUsuario).subscribe({
-            next: (data: ValidaPuedeIntercambiar200Response) => {
-              this.desactivarBotonIntercambiar = !data.puedeIntercambiar ?? true
-              if (this.desactivarBotonIntercambiar) {
-                this.mensajeInfo = 'Tienes 4 intercambios activos.'
-                this.mostrarNotificacionInfo = true
-              }
-            },
-            error: (error: ModelError) => {
-              this.mensajeError = error.mensaje
-              this.mostrarNotificacionError = true
-              // eslint-disable-next-line no-console
-              console.error(error)
-            },
-          })
         }
       },
       error: (error: ModelError) => {
@@ -123,6 +102,7 @@ export class IntercambioPageComponent implements OnInit {
       error: (error: ModelError) => {
         this.mensajeError = error.mensaje
         this.mostrarNotificacionError = true
+        this.desactivarBotonIntercambiar = false
         // eslint-disable-next-line no-console
         console.error(error)
       },

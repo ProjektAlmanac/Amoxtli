@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { LibroComponent } from './libro.component'
-import { IntercambiosModule } from '../../intercambios.module'
+import { InvolucradosComponent } from './involucrados.component'
+import { IntercambiosModule } from '../../libro.module'
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterTestingModule } from '@angular/router/testing'
 import { HttpClientTestingModule } from '@angular/common/http/testing'
 import { SharedModule } from 'src/app/shared/shared.module'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 
-describe('LibroComponent', () => {
+describe('InvolucradosComponent', () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let component: LibroComponent
+  let component: InvolucradosComponent
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let fixture: ComponentFixture<LibroComponent>
+  let fixture: ComponentFixture<InvolucradosComponent>
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [LibroComponent],
+      declarations: [InvolucradosComponent],
       imports: [
         IntercambiosModule,
         NoopAnimationsModule,
@@ -26,9 +26,8 @@ describe('LibroComponent', () => {
         MatSnackBarModule,
       ],
     })
-    fixture = TestBed.createComponent(LibroComponent)
+    fixture = TestBed.createComponent(InvolucradosComponent)
   })
-
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   it('should create', () => {})
 })

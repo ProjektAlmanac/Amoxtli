@@ -18,13 +18,13 @@ import { MatSidenavModule } from '@angular/material/sidenav'
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatChipsModule } from '@angular/material/chips'
 
-import { IntercambioPageComponent } from './pages/intercambio-page/intercambio-page.component'
+import { LibroPageComponent } from './pages/libro-page/libro-page.component'
 import { DuenosComponent } from './components/duenos/duenos.component'
 import { LibroComponent } from './components/libro/libro.component'
 import { InvolucradosComponent } from './components/involucrados/involucrados.component'
 
 @NgModule({
-  declarations: [IntercambioPageComponent, DuenosComponent, LibroComponent, InvolucradosComponent],
+  declarations: [LibroPageComponent, DuenosComponent, LibroComponent, InvolucradosComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -45,6 +45,6 @@ import { InvolucradosComponent } from './components/involucrados/involucrados.co
     TextFieldModule,
     MatChipsModule,
   ],
-  exports: [IntercambioPageComponent],
+  exports: [LibroPageComponent],
 })
-export class IntercambiosModule {}
+export class LibroModule {}

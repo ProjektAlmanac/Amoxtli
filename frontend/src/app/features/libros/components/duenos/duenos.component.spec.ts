@@ -1,22 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { InvolucradosComponent } from './involucrados.component'
-import { IntercambiosModule } from '../../intercambios.module'
+import { DuenosComponent } from './duenos.component'
+import { IntercambiosModule } from '../../libro.module'
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterTestingModule } from '@angular/router/testing'
 import { HttpClientTestingModule } from '@angular/common/http/testing'
 import { SharedModule } from 'src/app/shared/shared.module'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 
-describe('InvolucradosComponent', () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let component: InvolucradosComponent
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let fixture: ComponentFixture<InvolucradosComponent>
+describe('DuenosComponent', () => {
+  let component: DuenosComponent
+  let fixture: ComponentFixture<DuenosComponent>
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InvolucradosComponent],
+      declarations: [DuenosComponent],
       imports: [
         IntercambiosModule,
         NoopAnimationsModule,
@@ -26,8 +24,12 @@ describe('InvolucradosComponent', () => {
         MatSnackBarModule,
       ],
     })
-    fixture = TestBed.createComponent(InvolucradosComponent)
+    fixture = TestBed.createComponent(DuenosComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
   })
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  it('should create', () => {})
+
+  it('should create', () => {
+    expect(component).toBeTruthy()
+  })
 })
