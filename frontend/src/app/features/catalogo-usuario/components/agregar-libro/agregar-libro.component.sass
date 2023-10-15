@@ -1,38 +1,41 @@
-.box
+.centrado
   display: flex
+  justify-content: center
   align-items: center
-  flex-direction: column
 
 .input
-  width: 250px
   margin-right: 20px
 
-.info-libro
-  margin-top: 40px
-  margin-left: 20px
-  width: 800px
+.textArea
+  min-width: 300px
+  max-width: 650px
 
-p
-  font-size: 14px
-
-.container
-  display: flex
-
-.half-width
-  width: 75%
-
-.formISBN
-  display: flex
-  align-items: center
-  flex-direction: column
-
-.textarea
-  width: 550px
-
-.card
-  height: 300px
+.text
+  width: 100%
 
 .notificacion
   width: 500px
   margin-left: 30px
 
+.portadaLibro
+  display: flex
+  justify-content: center
+  align-items: center
+
+.justificado
+  text-align: justify
+
+@import breakpoints
+
+.tarjeta-libro
+
+  @include xs
+    width: auto
+    @include sm
+      width: auto
+    @include md
+      width: 950px
+    @include lg
+      width: 950px
+    @include xl
+      width: 950px
