@@ -34,9 +34,12 @@ import { SharedComponent } from './shared/shared.component'
 import { CatalogoUsuarioModule } from './features/catalogo-usuario/catalogo-usuario.module'
 import { NotFoundComponent } from './core/pages/not-found/not-found.component'
 import { PerfilComponent } from './features/perfil/pages/perfil.component'
+import { LibroModule } from './features/libros/libro.module'
 
 export function apiConfigFactory(): Configuration {
-  const params: ConfigurationParameters = {}
+  const params: ConfigurationParameters = {
+    credentials: { Token: '123' },
+  }
   return new Configuration(params)
 }
 
@@ -65,6 +68,7 @@ export function apiConfigFactory(): Configuration {
     MatCardModule,
     MatSnackBarModule,
     CatalogoUsuarioModule,
+    LibroModule,
   ],
   providers: [{ provide: BASE_PATH, useValue: environment.apiBasePath }, ServicioUsuario],
   bootstrap: [AppComponent],
