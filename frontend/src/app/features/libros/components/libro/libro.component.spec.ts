@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
 import { LibroComponent } from './libro.component'
-import { IntercambiosModule } from '../../libro.module'
+import { LibroModule } from '../../libro.module'
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterTestingModule } from '@angular/router/testing'
 import { HttpClientTestingModule } from '@angular/common/http/testing'
@@ -18,7 +18,7 @@ describe('LibroComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LibroComponent],
       imports: [
-        IntercambiosModule,
+        LibroModule,
         NoopAnimationsModule,
         RouterTestingModule,
         HttpClientTestingModule,
