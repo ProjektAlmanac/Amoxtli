@@ -54,22 +54,11 @@ export class LibroPageComponent implements OnInit {
         this.libroConDuenos.duenos.forEach(dueno => {
           dueno.foto ??= 'https://investigacion.unimagdalena.edu.co/Content/Imagenes/userVacio.png'
         })
-        this.libro = {
-          isbn: this.libroConDuenos.isbn,
-          autor: this.libroConDuenos.autor,
-          titulo: this.libroConDuenos.titulo,
-          urlPortada: this.libroConDuenos.urlPortada,
-          generos: this.libroConDuenos.generos,
-          editorial: this.libroConDuenos.editorial,
-          sinopsis: this.libroConDuenos.sinopsis,
-          idioma: this.libroConDuenos.idioma,
-          fechaPublicacion: this.libroConDuenos.fechaPublicacion,
-        }
+        this.libro = { ...this.libroConDuenos }
         this.spinnerProceso = false
       })
     })
 
-    // Validar si el usuario puede intercambiar
     this.servicioAPI.validaPuedeIntercambiar(this.idUsuario).subscribe({
       next: (data: ValidaPuedeIntercambiar200Response) => {
         this.desactivarBotonIntercambiar = !data.puedeIntercambiar ?? true
