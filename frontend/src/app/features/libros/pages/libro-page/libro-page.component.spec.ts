@@ -8,7 +8,7 @@ import { LibroModule } from '../../libro.module'
 import { SharedModule } from 'src/app/shared/shared.module'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 
-describe('IntercambioPageComponent', () => {
+describe('LibroPageComponent', () => {
   let component: LibroPageComponent
   let fixture: ComponentFixture<LibroPageComponent>
 
