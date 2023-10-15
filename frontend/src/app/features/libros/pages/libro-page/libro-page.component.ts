@@ -37,13 +37,11 @@ export class LibroPageComponent implements OnInit {
     private servicioUsuario: ServicioUsuario,
     private route: ActivatedRoute
   ) {
-    this.servicioUsuario.id.subscribe(id => {
-      this.idUsuario = id
-      this.servicioAPI.getUsuario(this.idUsuario).subscribe(data => {
-        this.usuario = data
-        this.usuario.fotoPerfil ??=
-          'https://investigacion.unimagdalena.edu.co/Content/Imagenes/userVacio.png'
-      })
+    this.idUsuario = this.servicioUsuario.id()
+    this.servicioAPI.getUsuario(this.idUsuario).subscribe(data => {
+      this.usuario = data
+      this.usuario.fotoPerfil ??=
+        'https://investigacion.unimagdalena.edu.co/Content/Imagenes/userVacio.png'
     })
   }
 
