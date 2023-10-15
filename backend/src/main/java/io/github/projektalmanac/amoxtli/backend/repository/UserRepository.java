@@ -13,14 +13,11 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User,Integer> {
     Optional<User> findByEmail(String correo);
 
-    Optional<User> findById(long id);
-
     @Query("SELECT CASE WHEN COUNT(b) > 0 THEN true ELSE false END FROM User u JOIN u.books b WHERE b.isbn = :isbn AND u.id = :userId")
     boolean existsBookByIsbnAndUserId(@Param("isbn") String isbn, @Param("userId") Integer userId);
 
     public User getUserById(Integer id);
 
-    Optional<User> findByEmailAndPasswordHash(String email, String passwordHash);
 
     @Query("SELECT u FROM User u JOIN u.books b WHERE b.isbn = :isbn")
     List<User> findUsersByBookIsbn(@Param("isbn") String isbn);

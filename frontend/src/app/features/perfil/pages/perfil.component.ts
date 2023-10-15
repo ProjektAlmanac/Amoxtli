@@ -59,7 +59,7 @@ export class PerfilComponent implements OnInit {
   }
 
   recuperaUsuario() {
-    this.serviceApi.getUsuario(this.servicioUsuario.id.value).subscribe(usuario => {
+    this.serviceApi.getUsuario(this.servicioUsuario.id()).subscribe(usuario => {
       this.perfilUsuario = usuario
       this.imageSrc = usuario.fotoPerfil ?? ''
 
@@ -141,7 +141,7 @@ export class PerfilComponent implements OnInit {
   }
 
   actualizaUsuario(updateUser: PerfilUsuario, foto: File | null) {
-    const idUsuario = this.servicioUsuario.id.value
+    const idUsuario = this.servicioUsuario.id()
 
     let actualizacionDatos = this.serviceApi.actualizarUsuario(
       idUsuario,
