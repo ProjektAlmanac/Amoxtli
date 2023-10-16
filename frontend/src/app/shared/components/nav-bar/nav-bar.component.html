@@ -2,7 +2,7 @@
   <button (click)="drawer.toggle()" mat-icon-button>
     <mat-icon>menu</mat-icon>
   </button>
-  <span>Información del perfil</span>
+  <span>Amoxtli</span>
   <span class="spacer"></span>
   <button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
   <mat-menu #menu="matMenu" position="end">
@@ -11,7 +11,7 @@
   </mat-menu>
 </mat-toolbar>
 <mat-drawer-container autosize>
-  <mat-drawer #drawer opened="false" mode="side" position="start">
+  <mat-drawer #drawer opened="false" mode="over" position="start">
     <mat-nav-list>
       <mat-list-item routerLink="/home">
         <mat-icon matListItemIcon>home</mat-icon>
@@ -31,8 +31,8 @@
       </mat-list-item>
     </mat-nav-list>
   </mat-drawer>
-  <mat-drawer-content>
-    <div style="height: 100vh">
+  <mat-drawer-content style="overflow: hidden">
+    <div style="min-height: 200px">
       <router-outlet></router-outlet>
     </div>
   </mat-drawer-content>

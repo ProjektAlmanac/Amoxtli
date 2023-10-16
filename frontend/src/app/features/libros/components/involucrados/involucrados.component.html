@@ -1,0 +1,23 @@
+<mat-card class="tarjeta-duenos">
+  <mat-card-header>
+    <mat-card-title>Invoclucrados para el intercambio</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-list>
+      <mat-list-item class="m-2" style="height: 100px">
+        <img
+          class="fotoUsuario"
+          [src]="ofertante.fotoPerfil"
+          alt="ImagOfe"
+          width="80px"
+          height="80px" />
+        <h4 class="inline">{{ ofertante.nombre + ' ' + ofertante.apellidos }}</h4>
+      </mat-list-item>
+      <mat-list-item class="m-2" style="height: 100px">
+        <img class="fotoUsuario" [src]="aceptante.foto" alt="ImagAcep" width="80px" height="80px" />
+        <h4 class="inline">{{ aceptante.nombre + ' ' + aceptante.apellido }}</h4>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

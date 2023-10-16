@@ -11,6 +11,7 @@ import { AgregarLibroComponent } from './features/catalogo-usuario/components/ag
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component'
 import { NotFoundComponent } from './core/pages/not-found/not-found.component'
 import { PerfilComponent } from './features/perfil/pages/perfil.component'
+import { LibroPageComponent } from './features/libros/pages/libro-page/libro-page.component'
 
 const routes: Routes = [
   {
@@ -30,21 +31,15 @@ const routes: Routes = [
     path: '',
     component: NavBarComponent,
     children: [
-      {
-        path: 'home',
-        component: HomePageComponent,
-      },
-      {
-        path: 'miCatalogo',
-        component: MiCatalogoPageComponent,
-      },
-      {
-        path: 'agregarLibro',
-        component: AgregarLibroComponent,
-      },
+      { path: 'home', component: HomePageComponent },
+      { path: 'miCatalogo', component: MiCatalogoPageComponent },
+      { path: 'agregarLibro', component: AgregarLibroComponent },
       { path: 'perfil', component: PerfilComponent },
+
       { path: 'libros', component: MostrarLibrosComponent },
       { path: 'detallesLibro/:isbn', component: DetallesLibroComponent },
+
+      { path: 'libro', component: LibroPageComponent },
     ],
   },
   // Página no encontrada
