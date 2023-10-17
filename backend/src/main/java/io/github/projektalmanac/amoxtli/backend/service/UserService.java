@@ -336,6 +336,7 @@ public class UserService extends UserServiceKt {
             response = new ValidaPuedeIntercambiar200ResponseDto();
             response.setPuedeIntercambiar(false);
             response.mensaje("El usuario con id:" + idUser +", no puede aceptar o solicitar más de 4 intercambios.");
+            return response;
         }
 
         response = new ValidaPuedeIntercambiar200ResponseDto();
@@ -356,6 +357,7 @@ public class UserService extends UserServiceKt {
         if (idOfertante.equals(idAceptante)) {
             throw new SelfExchangeException(idOfertante);
         }
+
         // Obtenemos a los usuarios y al libro que se intercambiará
 
         User userOfertante = this.userRepository.findById(idOfertante).orElseThrow(() -> new UserNotFoundException(idOfertante));
