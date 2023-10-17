@@ -8,7 +8,7 @@ import {
   LibroRegistradoConDetalles,
   Ofertante,
 } from 'src/generated/openapi'
-import { BookListDialogComponent } from '../../components/book-list/book-list-dialog/book-list-dialog.component'
+import { BookListDialogComponent } from '../../components/book-list-dialog/book-list-dialog.component'
 import { lastValueFrom } from 'rxjs'
 
 @Component({

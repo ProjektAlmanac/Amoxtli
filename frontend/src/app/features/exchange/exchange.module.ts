@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon'
 import { MatDialogModule } from '@angular/material/dialog'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { BookListComponent } from './components/book-list/book-list.component'
-import { BookListDialogComponent } from './components/book-list/book-list-dialog/book-list-dialog.component'
+import { BookListDialogComponent } from './components/book-list-dialog/book-list-dialog.component'
 
 @NgModule({
   declarations: [
