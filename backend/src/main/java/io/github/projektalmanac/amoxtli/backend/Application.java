@@ -102,7 +102,7 @@ public class Application {
 
 		List<Exchange> exchangesOfferor =  new ArrayList<>();
 		exchangesOfferor.add(intercambio2);
-		
+
 		user.setExchangesOfferor(exchangesOfferor);
 
 	}

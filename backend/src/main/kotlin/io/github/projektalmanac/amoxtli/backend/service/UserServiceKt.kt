@@ -2,9 +2,7 @@ package io.github.projektalmanac.amoxtli.backend.service
 
 import io.github.projektalmanac.amoxtli.backend.entity.Exchange
 import io.github.projektalmanac.amoxtli.backend.enums.Status
-import io.github.projektalmanac.amoxtli.backend.exception.EmptyResourceException
-import io.github.projektalmanac.amoxtli.backend.exception.IntercambioNotFoundException
-import io.github.projektalmanac.amoxtli.backend.exception.ResourceNotFoundException
+import io.github.projektalmanac.amoxtli.backend.exception.*
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException
 import io.github.projektalmanac.amoxtli.backend.generated.model.AceptarIntercambioRequestDto
 import io.github.projektalmanac.amoxtli.backend.generated.model.GetIntercambios200ResponseDto
@@ -44,7 +42,7 @@ open class UserServiceKt (private val userRepository: UserRepository, private va
 
         usuario.removeExchangesOfferor(intercambio)
 
-        intercambio.bookOfferor = bookRepository.findById(aceptarIntercambioRequestDto?.idLibro?.toInt() ?: throw ResourceNotFoundException("El libro no existe"))
+        intercambio.bookOfferor = bookRepository.findById(aceptarIntercambioRequestDto?.idLibro?.toInt() ?: throw InvalidIdException()) ?: throw ResourceNotFoundException("El libro no existe") 
         intercambio.status = Status.ACEPTADO
 
         exchangeRepository.save(intercambio)
