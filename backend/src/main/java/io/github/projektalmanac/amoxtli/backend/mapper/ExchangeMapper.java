@@ -55,4 +55,13 @@ public interface ExchangeMapper {
         }
         return resultado;
     }
+
+    default IntercambioDto intercambioToIntercambioDto(Exchange intercambio){
+        IntercambioDto intercambioDto = toIntercambioDto(intercambio);
+
+        LibroRegistradoDto libroDelOfertante = BookMapper.INSTANCE.toLibroRegistradoDto(intercambio.getBookOfferor());
+        intercambioDto.setLibroOfertante(JsonNullable.of(libroDelOfertante));
+
+        return intercambioDto;
+    }
 }

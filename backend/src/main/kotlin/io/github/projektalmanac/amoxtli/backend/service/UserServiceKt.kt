@@ -1,14 +1,20 @@
 package io.github.projektalmanac.amoxtli.backend.service
 
 import io.github.projektalmanac.amoxtli.backend.entity.Exchange
-import io.github.projektalmanac.amoxtli.backend.exception.*
+import io.github.projektalmanac.amoxtli.backend.enums.Status
+import io.github.projektalmanac.amoxtli.backend.exception.EmptyResourceException
+import io.github.projektalmanac.amoxtli.backend.exception.IntercambioNotFoundException
+import io.github.projektalmanac.amoxtli.backend.exception.ResourceNotFoundException
+import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException
 import io.github.projektalmanac.amoxtli.backend.generated.model.AceptarIntercambioRequestDto
 import io.github.projektalmanac.amoxtli.backend.generated.model.GetIntercambios200ResponseDto
 import io.github.projektalmanac.amoxtli.backend.generated.model.IntercambioDto
 import io.github.projektalmanac.amoxtli.backend.mapper.ExchangeMapper
-import io.github.projektalmanac.amoxtli.backend.repository.*
+import io.github.projektalmanac.amoxtli.backend.repository.BookRepository
+import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository
+import io.github.projektalmanac.amoxtli.backend.repository.UserRepository
 
-open class UserServiceKt (private val userRepository: UserRepository, private val exchangeRepository: ExchangeRepository) {
+open class UserServiceKt (private val userRepository: UserRepository, private val exchangeRepository: ExchangeRepository, private val bookRepository: BookRepository) {
 
 
     fun getIntercambios(id: Int): GetIntercambios200ResponseDto {
@@ -32,13 +38,19 @@ open class UserServiceKt (private val userRepository: UserRepository, private va
         aceptarIntercambioRequestDto: AceptarIntercambioRequestDto?
     ): IntercambioDto? {
 
-        val userOpt = userRepository.findById(idUsuario) ?: throw UserNotFoundException(idUsuario)
-        val user = userOpt.get()
+        val usuario = userRepository.findById(idUsuario).orElseThrow { UserNotFoundException(idUsuario) }
 
-        val intercambioOpt = exchangeRepository.findByIdAndUserAccepting(idIntercambio, user) ?: throw IntercambioNotFoundException(idIntercambio)
+        val intercambio = exchangeRepository.findByIdAndUserAccepting(idIntercambio, usuario).orElseThrow { IntercambioNotFoundException(idIntercambio)}
 
+        usuario.removeExchangesOfferor(intercambio)
 
+        intercambio.bookOfferor = bookRepository.findById(aceptarIntercambioRequestDto?.idLibro?.toInt() ?: throw ResourceNotFoundException("El libro no existe"))
+        intercambio.status = Status.ACEPTADO
 
-        return null
+        exchangeRepository.save(intercambio)
+        usuario.addExchangesAccepting(intercambio)
+        userRepository.save(usuario)
+
+       return ExchangeMapper.INSTANCE.intercambioToIntercambioDto(intercambio)
     }
 }

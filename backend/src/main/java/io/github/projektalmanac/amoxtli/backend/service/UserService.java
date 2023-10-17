@@ -1,6 +1,7 @@
 package io.github.projektalmanac.amoxtli.backend.service;
 
 
+import io.github.projektalmanac.amoxtli.backend.repository.BookRepository;
 import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -51,9 +52,10 @@ public class UserService extends UserServiceKt {
             GoogleBookService googleBookService,
             JavaMailSender javaMailSender,
             SecurityConfig securityConfig,
-            ExchangeRepository exchangeRepository
+            ExchangeRepository exchangeRepository,
+            BookRepository bookRepository
     ) {
-        super(userRepository, exchangeRepository);
+        super(userRepository, exchangeRepository, bookRepository);
         this.userRepository = userRepository;
         this.googleBookService = googleBookService;
         this.javaMailSender = javaMailSender;

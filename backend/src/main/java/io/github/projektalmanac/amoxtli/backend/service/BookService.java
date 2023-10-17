@@ -2,7 +2,9 @@ package io.github.projektalmanac.amoxtli.backend.service;
 
 import com.google.api.services.books.model.Volume.VolumeInfo;
 import io.github.projektalmanac.amoxtli.backend.entity.Book;
+import io.github.projektalmanac.amoxtli.backend.entity.Exchange;
 import io.github.projektalmanac.amoxtli.backend.entity.User;
+import io.github.projektalmanac.amoxtli.backend.enums.Status;
 import io.github.projektalmanac.amoxtli.backend.exception.BookAlreadyExistsException;
 import io.github.projektalmanac.amoxtli.backend.exception.ResourceNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
@@ -14,6 +16,8 @@ import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.repository.*;
 import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -27,6 +31,9 @@ public class BookService {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private ExchangeRepository exchangeRepository;
 
     public DetallesLibroDto getDetallesLibro(String isbn) {
 
@@ -75,13 +82,6 @@ public class BookService {
         LibroRegistradoDto libroDto = BookMapper.INSTANCE.toLibroRegistradoDto(book);
         
         return libroDto;
-    }
-
-    public IntercambioDto aceptarIntercambio(Integer idUsuario, Integer idIntercambio, AceptarIntercambioRequestDto aceptarIntercambioRequestDto) {
-
-
-
-        return null;
     }
 
 }
