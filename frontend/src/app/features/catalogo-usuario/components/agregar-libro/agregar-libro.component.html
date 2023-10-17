@@ -1,11 +1,16 @@
-<div class="text-center m-3">
-  <h1>Agregar nuevo libro</h1>
-</div>
-<hr />
+<mat-card class="centrado">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>
+        <h1>Mi catálogo</h1>
+      </mat-card-title>
+    </mat-card-title-group>
+  </mat-card-header>
+</mat-card>
 
-<div class="formISBN">
+<div class="centrado mt-3">
   <form [formGroup]="isbnInputForm" (ngSubmit)="onSubmit()">
-    <mat-form-field class="input">
+    <mat-form-field class="input mb-2 mx-2">
       <mat-label>ISBN</mat-label>
       <input matInput placeholder="Ingresa el ISBN" formControlName="isbn" />
 
@@ -20,66 +25,71 @@
         El ISBN debe tener 10 ó 13 dígitos
       </mat-error>
     </mat-form-field>
-    <button mat-raised-button class="submit" type="submit" color="primary">Agregar libro</button>
+    <button mat-raised-button class="submit mx-2" type="submit" color="primary">
+      Agregar libro
+    </button>
   </form>
 </div>
 
 <app-progress-spinner *ngIf="mostrarSpinner"></app-progress-spinner>
 
-<div class="info-libro" *ngIf="mostrarCardLibro">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>{{ libro.titulo }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="mt-3">
-      <div class="container">
-        <div class="half-width">
-          <p aria-disabled="true"><strong>ISBN: </strong>{{ libro.isbn }}</p>
-          <p><strong>Autor: </strong>{{ libro.autor }}</p>
-          <p><strong>Editorial: </strong>{{ libro.editorial }}</p>
-          <p><strong>Fecha de publicación: </strong>{{ libro.fechaPublicacion }}</p>
-          <p><strong>Sinopsis: </strong>{{ libro.sinopsis }}</p>
-        </div>
-        <div>
-          <img [src]="this.libro.urlPortada" alt="portada_libro" width="180" height="180" />
+<div class="centrado">
+  <div *ngIf="mostrarNotificacionExito" class="alert alert-success notificacion" role="alert">
+    ¡Se agregó el libro! <a routerLink="/miCatalogo" class="alert-link">Ir a mi catálogo</a>.
+  </div>
+
+  <div *ngIf="mostrarNotificacionWarn" class="alert alert-warning notificacion" role="alert">
+    No se encontró el libro con el ISBN proporcionado.
+  </div>
+
+  <div *ngIf="mostrarNotificacionError" class="alert alert-danger notificacion" role="alert">
+    Hubo un error. {{ mensajeError }}
+  </div>
+</div>
+
+<mat-card *ngIf="mostrarCardLibro" class="tarjeta-libro m-3">
+  <mat-card-header>
+    <mat-card-title>{{ libro.titulo }}</mat-card-title>
+    <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-divider></mat-divider>
+    <div class="row">
+      <div class="col-sm-12 col-lg-10 mt-3">
+        <p><strong>ISBN: </strong>{{ libro.isbn }}</p>
+        <p><strong>Editorial: </strong> {{ libro.editorial }}</p>
+        <p><strong>Fecha de publicacion: </strong>{{ libro.fechaPublicacion }}</p>
+        <p *ngIf="libro.sinopsis" class="mb-0 justificado">
+          <strong>Sinopsis: </strong>{{ libro.sinopsis }}
+        </p>
+        <div [formGroup]="descripcionForm" class="textArea mt-2">
+          <mat-form-field style="width: 100%">
+            <mat-label>Descripción personal</mat-label>
+            <textarea
+              matInput
+              formControlName="descripcion"
+              placeholder="Ejemplo: La portada del libro esta maltratada"
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5"></textarea>
+            <mat-error *ngIf="descripcionForm.get('descripcion')?.hasError('required')"
+              >Este campo es obligatorio</mat-error
+            >
+          </mat-form-field>
         </div>
       </div>
-      <div [formGroup]="descripcionForm">
-        <mat-form-field class="textarea">
-          <mat-label>Descripción personal</mat-label>
-          <textarea
-            matInput
-            formControlName="descripcion"
-            placeholder="Ejemplo: La portada del libro esta maltratada"
-            cdkTextareaAutosize
-            #autosize="cdkTextareaAutosize"
-            cdkAutosizeMinRows="1"
-            cdkAutosizeMaxRows="5"></textarea>
-          <mat-error *ngIf="descripcionForm.get('descripcion')?.hasError('required')"
-            >Este campo es obligatorio</mat-error
-          >
-        </mat-form-field>
+      <div class="col-sm-12 col-lg-2 portadaLibro">
+        <img [src]="libro.urlPortada" alt="Portada_Libro" width="150" />
       </div>
-    </mat-card-content>
-    <mat-card-actions [align]="'end'">
-      <button class="m-1" mat-button mat-stroked-button color="primary" (click)="agregarLibro()">
-        Agregar libro
-      </button>
-      <button class="m-1" mat-button mat-stroked-button color="warn" (click)="cancelar()">
-        Cancelar
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</div>
-
-<div *ngIf="mostrarNotificacionExito" class="alert alert-success notificacion" role="alert">
-  ¡Se agregó el libro! <a routerLink="/miCatalogo" class="alert-link">Ir a mi catálogo</a>.
-</div>
-
-<div *ngIf="mostrarNotificacionWarn" class="alert alert-warning notificacion" role="alert">
-  No se encontró el libro con el ISBN proporcionado.
-</div>
-
-<div *ngIf="mostrarNotificacionError" class="alert alert-danger notificacion" role="alert">
-  Hubo un error. {{ mensajeError }}
-</div>
+    </div>
+  </mat-card-content>
+  <mat-card-actions [align]="'end'">
+    <button class="m-1" mat-button mat-stroked-button color="primary" (click)="agregarLibro()">
+      Agregar libro
+    </button>
+    <button class="m-1" mat-button mat-stroked-button color="warn" (click)="cancelar()">
+      Cancelar
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,40 @@
+<div>
+  <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+    <div class="grid">
+      <mat-form-field class="email">
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput formControlName="correo" />
+
+        <mat-error *ngIf="signInForm.get('correo')?.hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
+        <mat-error *ngIf="signInForm.get('correo')?.hasError('email')">
+          Favor de especificar una dirección de correo electrónico válida
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="password">
+        <mat-label>Contraseña</mat-label>
+        <input
+          matInput
+          [type]="mostrarContrasena ? 'text' : 'password'"
+          formControlName="contrasena" />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="mostrarContrasena = !mostrarContrasena"
+          aria-label="Mostrar contraseña"
+          [attr.aria-pressed]="mostrarContrasena">
+          <mat-icon>{{ mostrarContrasena ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+
+        <mat-error *ngIf="signInForm.get('contrasena')?.hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button class="submit" type="submit" color="primary">Iniciar sesión</button>
+      <mat-error *ngIf="mensajeError"> {{ mensajeError }} </mat-error>
+    </div>
+  </form>
+</div>

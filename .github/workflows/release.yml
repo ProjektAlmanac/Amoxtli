@@ -40,13 +40,48 @@ jobs:
         run: ./gradlew bootJar
         working-directory: ./backend
 
-      - run: |
+      - name: Obtener versión del pryecto
+        id: get-version
+        run: |
           VERSION=$(./gradlew properties -q | awk '/^version:/ {print $2}')
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo ::set-output name=version::${VERSION}
           echo Version is $VERSION
         working-directory: ./backend
 
-      - name: Subir archivo JAR
-        uses: softprops/action-gh-release@v1
+      - name: Obtener tag
+        id: get-tag
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+
+      - name: Instalar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Iniciar sesión en Artifact Registry
+        uses: docker/login-action@v3
         with:
-          files: backend/build/libs/AmoxtliBackend-${{ env.VERSION }}.jar
+          registry: us-south1-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.GCLOUD_CREDENTIALS }}
+
+      - name: Iniciar sesión en Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCLOUD_CREDENTIALS }}
+
+      - name: Construir imagen y subir a Artifact Registry
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            us-south1-docker.pkg.dev/proyecto-aga/tsis-amoxtli/amoxtli:latest
+            us-south1-docker.pkg.dev/proyecto-aga/tsis-amoxtli/amoxtli:${{ steps.get-tag.outputs.short_ref }}
+          build-args: |
+            JAR_FILE=build/libs/AmoxtliBackend-${{ steps.get-version.outputs.version }}.jar
+
+      - name: Liberar en Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v1
+        with:
+          service: amoxtli
+          image: us-south1-docker.pkg.dev/proyecto-aga/tsis-amoxtli/amoxtli:latest
+          region: us-west1
