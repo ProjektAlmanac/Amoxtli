@@ -1,14 +1,14 @@
 package io.github.projektalmanac.amoxtli.backend.enums;
 
 public enum Status {
-    CANCELADO(0),
-    ACEPTADO(1),
-    RECHAZADO(2),
-    PENDIENTE(3);
+    CANCELADO("Cancelado"),
+    ACEPTADO("Aceptado"),
+    RECHAZADO("Rechazado"),
+    PENDIENTE("Pendiente");
 
-    private final int status;
-    Status(int i){status = i;}
-    public int getStatus(){
+    private final String status;
+    Status(String s){status = s;}
+    public String getStatus(){
         return status;
     }
 }

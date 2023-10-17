@@ -6,6 +6,7 @@ plugins {
 
 	kotlin("jvm") version "1.9.10"
 	kotlin("plugin.spring") version "1.9.10"
+	kotlin("plugin.lombok") version "1.9.10"
 
 	id("org.springframework.boot") version "3.1.3"
 	id("io.spring.dependency-management") version "1.1.3"
@@ -14,7 +15,7 @@ plugins {
 }
 
 group = "io.github.projektalmanac"
-version = "0.0.1-SNAPSHOT"
+version = "latest"
 
 sonarqube {
 	properties {
@@ -89,11 +90,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-mail")
 	implementation ("javax.mail:javax.mail-api:1.6.2")
 
-
 	testImplementation(kotlin("test"))
 
 	implementation("com.google.apis:google-api-services-books:v1-rev20201021-1.30.10")
 
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
 }
 
 tasks.withType<Test> {
