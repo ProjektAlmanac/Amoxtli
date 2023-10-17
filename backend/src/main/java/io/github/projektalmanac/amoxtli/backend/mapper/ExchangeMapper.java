@@ -1,5 +1,6 @@
 package io.github.projektalmanac.amoxtli.backend.mapper;
 
+import io.github.projektalmanac.amoxtli.backend.entity.Book;
 import io.github.projektalmanac.amoxtli.backend.entity.Exchange;
 import io.github.projektalmanac.amoxtli.backend.entity.User;
 import io.github.projektalmanac.amoxtli.backend.enums.Status;
@@ -36,6 +37,7 @@ public interface ExchangeMapper {
     @Mapping(target = "ofertante", source = "userOfferor")
     @Mapping(target = "aceptante", source = "userAccepting")
     @Mapping(target = "libroAceptante", source = "bookAccepting")
+    @Mapping(target = "libroOfertante", source = "bookOfferor")
     @Mapping(target = "estado", source = "status")
     IntercambioDto toIntercambioDto(Exchange exchange);
 
@@ -44,24 +46,14 @@ public interface ExchangeMapper {
         resultado.setIntercambios(new ArrayList<>());
 
         for (int i = 0; i < intercambios.size(); i++) {
-            var intercambio = intercambios.get(i);
-
-            IntercambioDto intercambioDto = toIntercambioDto(intercambio);
-
-            LibroRegistradoDto libroDelOfertante = BookMapper.INSTANCE.toLibroRegistradoDto(intercambio.getBookOfferor());
-            intercambioDto.setLibroOfertante(JsonNullable.of(libroDelOfertante));
-
-            resultado.getIntercambios().add(intercambioDto);
+            var intercambio =  toIntercambioDto(intercambios.get(i));
+            resultado.getIntercambios().add(intercambio);
         }
         return resultado;
     }
 
-    default IntercambioDto intercambioToIntercambioDto(Exchange intercambio){
-        IntercambioDto intercambioDto = toIntercambioDto(intercambio);
-
-        LibroRegistradoDto libroDelOfertante = BookMapper.INSTANCE.toLibroRegistradoDto(intercambio.getBookOfferor());
-        intercambioDto.setLibroOfertante(JsonNullable.of(libroDelOfertante));
-
-        return intercambioDto;
+    default JsonNullable<LibroRegistradoDto> toBookOfferor(Book libro){
+       LibroRegistradoDto libroDelOfertante = BookMapper.INSTANCE.toLibroRegistradoDto(libro);
+        return JsonNullable.of(libroDelOfertante);
     }
 }

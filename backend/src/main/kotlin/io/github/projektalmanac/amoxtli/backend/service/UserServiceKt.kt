@@ -14,7 +14,6 @@ import io.github.projektalmanac.amoxtli.backend.repository.UserRepository
 
 open class UserServiceKt (private val userRepository: UserRepository, private val exchangeRepository: ExchangeRepository, private val bookRepository: BookRepository) {
 
-
     fun getIntercambios(id: Int): GetIntercambios200ResponseDto {
 
         val user = userRepository.findById(id).orElseThrow { UserNotFoundException(id) }
@@ -31,24 +30,25 @@ open class UserServiceKt (private val userRepository: UserRepository, private va
     }
 
     fun aceptarIntercambio(
-        idUsuario: Int?,
-        idIntercambio: Int?,
-        aceptarIntercambioRequestDto: AceptarIntercambioRequestDto?
-    ): IntercambioDto? {
+        idUsuario: Int,
+        idIntercambio: Int,
+        aceptarIntercambioRequestDto: AceptarIntercambioRequestDto
+    ): IntercambioDto {
 
         val usuario = userRepository.findById(idUsuario).orElseThrow { UserNotFoundException(idUsuario) }
 
-        val intercambio = exchangeRepository.findByIdAndUserAccepting(idIntercambio, usuario).orElseThrow { IntercambioNotFoundException(idIntercambio)}
+        var intercambio = exchangeRepository.findByIdAndUserAccepting(idIntercambio, usuario).orElseThrow { IntercambioNotFoundException(idIntercambio)}
 
         usuario.removeExchangesOfferor(intercambio)
 
-        intercambio.bookOfferor = bookRepository.findById(aceptarIntercambioRequestDto?.idLibro?.toInt() ?: throw InvalidIdException()) ?: throw ResourceNotFoundException("El libro no existe") 
+        val idLibro = aceptarIntercambioRequestDto.idLibro?.toInt() ?: throw InvalidIdException()
+        intercambio.bookOfferor = bookRepository.findById(idLibro) ?: throw ResourceNotFoundException("El libro no existe")
         intercambio.status = Status.ACEPTADO
 
-        exchangeRepository.save(intercambio)
+        intercambio = exchangeRepository.save(intercambio)
         usuario.addExchangesAccepting(intercambio)
         userRepository.save(usuario)
 
-       return ExchangeMapper.INSTANCE.intercambioToIntercambioDto(intercambio)
+       return ExchangeMapper.INSTANCE.toIntercambioDto(intercambio)
     }
 }
