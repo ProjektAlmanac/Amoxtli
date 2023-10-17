@@ -6,9 +6,9 @@ x-json-schema-faker:
   optionalsProbability: 0.5
 info:
   title: amoxtli
-  version: "1.0"
+  version: '1.0'
 servers:
-  - url: "http://localhost:3000"
+  - url: 'http://localhost:3000'
 paths:
   /usuarios/:
     parameters: []
@@ -16,32 +16,32 @@ paths:
       summary: Registrar usuario
       operationId: crearUsuario
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UsuarioId"
+                $ref: '#/components/schemas/UsuarioId'
           headers:
             Location:
               schema:
                 type: string
               description: Ubicación del usuario creado
-        "400":
+        '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       x-stoplight:
         id: sagts3fcvh2u1
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Usuario"
+              $ref: '#/components/schemas/Usuario'
       description: Registra a un nuevo usuario en el sistema
-  "/usuarios/{id}":
+  '/usuarios/{id}':
     parameters:
       - schema:
           type: integer
@@ -53,12 +53,12 @@ paths:
       summary: Recuperar usuario
       tags: []
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PerfilUsuario"
+                $ref: '#/components/schemas/PerfilUsuario'
               examples:
                 juan-perez:
                   value:
@@ -66,10 +66,10 @@ paths:
                     nombre: Juan
                     apellidos: Pérez Morales
                     correo: usuario@example.com
-                    telefono: "9999999"
-                    descripcionFoto: ""
-                    intereses: ""
-                    fotoPerfil: "https://amoxtli.io/usuarios/1/perfil.png"
+                    telefono: '9999999'
+                    descripcionFoto: ''
+                    intereses: ''
+                    fotoPerfil: 'https://amoxtli.io/usuarios/1/perfil.png'
                     correoVerificado: true
                 maria-lopez:
                   value:
@@ -77,29 +77,29 @@ paths:
                     nombre: María
                     apellidos: López
                     correo: user2@example.com
-                    telefono: "0000000000"
+                    telefono: '0000000000'
                     descripcionFoto: Descripción de mi foto de perfil
                     intereses: Descripción de mis intereses
-                    fotoPerfil: "https://amoxtli.io/usuarios/2/perfil.png"
+                    fotoPerfil: 'https://amoxtli.io/usuarios/2/perfil.png'
                     correoVerificado: false
-        "401":
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "403":
+                $ref: '#/components/schemas/Error'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       operationId: getUsuario
       x-stoplight:
         id: ng4epkhi8vqk2
@@ -108,30 +108,30 @@ paths:
       summary: Actualizar usuario
       operationId: actualizarUsuario
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PerfilUsuario"
-        "401":
+                $ref: '#/components/schemas/PerfilUsuario'
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "403":
+                $ref: '#/components/schemas/Error'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       x-stoplight:
         id: k7ky54dj0ji8x
       description: Actualiza los datos de un usuario
@@ -139,8 +139,8 @@ paths:
         content:
           application/json-patch+json:
             schema:
-              $ref: "#/components/schemas/PerfilUsuario"
-  "/usuarios/{id}/libros":
+              $ref: '#/components/schemas/PerfilUsuario'
+  '/usuarios/{id}/libros':
     parameters:
       - schema:
           type: integer
@@ -152,21 +152,21 @@ paths:
       summary: Recuperar libros de un usuario
       tags: []
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LibrosUsuario"
-        "204":
+                $ref: '#/components/schemas/LibrosUsuario'
+        '204':
           description: No Content
           content: {}
-        "404":
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       operationId: getLibrosUsuario
       x-stoplight:
         id: 8dekfihyinqg3
@@ -176,36 +176,36 @@ paths:
       summary: Añadir libro a catálogo de usuario
       operationId: addLibro
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LibroRegistrado"
-        "400":
+                $ref: '#/components/schemas/LibroRegistrado'
+        '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "401":
+                $ref: '#/components/schemas/Error'
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "403":
+                $ref: '#/components/schemas/Error'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       x-stoplight:
         id: gyrnflybfao0e
       description: Añade un libro al catálogo de un usuario
@@ -213,8 +213,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LibroRegistrado"
-  "/usuarios/{id}/mandarCorreoConfirmacion":
+              $ref: '#/components/schemas/LibroRegistrado'
+  '/usuarios/{id}/mandarCorreoConfirmacion':
     parameters:
       - schema:
           type: integer
@@ -226,30 +226,30 @@ paths:
       summary: Mandar correo de confirmación
       operationId: mandarCorreoConfirmacion
       responses:
-        "204":
+        '204':
           description: No Content
-        "401":
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "403":
+                $ref: '#/components/schemas/Error'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       x-stoplight:
         id: n9t4q22l0qna0
       description: Manda un correo de confirmación de dirección de correo electrónico al usuario
-  "/usuarios/{id}/verificarCorreo":
+  '/usuarios/{id}/verificarCorreo':
     parameters:
       - schema:
           type: integer
@@ -261,32 +261,32 @@ paths:
       summary: Verificar correo
       operationId: verificarCorreo
       responses:
-        "204":
+        '204':
           description: No Content
-        "400":
+        '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "401":
+                $ref: '#/components/schemas/Error'
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "403":
+                $ref: '#/components/schemas/Error'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       x-stoplight:
         id: ksmk3z851jj4e
       description: Verifica la dirección de correo de un usuario
@@ -294,9 +294,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CodigoVerificacion"
-        description: ""
-  "/usuarios/{id}/validaPuedeIntercambiar":
+              $ref: '#/components/schemas/CodigoVerificacion'
+        description: ''
+  '/usuarios/{id}/validaPuedeIntercambiar':
     parameters:
       - schema:
           type: integer
@@ -308,7 +308,7 @@ paths:
       summary: Validar puede intercambiar
       operationId: validaPuedeIntercambiar
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -323,28 +323,28 @@ paths:
                     type: string
                     x-stoplight:
                       id: i3vhc72q500a1
-        "401":
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "403":
+                $ref: '#/components/schemas/Error'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       x-stoplight:
         id: 8478m7hqi46zz
       description: Valida que el usuario cumpla los requerimientos para poder realizar intercambios de libros con otros usuarios
-  "/usuarios/{id}/intercambios":
+  '/usuarios/{id}/intercambios':
     parameters:
       - schema:
           type: integer
@@ -356,7 +356,7 @@ paths:
       summary: Recuperar intercambios de usuario
       tags: []
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -368,25 +368,25 @@ paths:
                     x-stoplight:
                       id: atw1bg9zqekdu
                     items:
-                      $ref: "#/components/schemas/Intercambio"
-        "401":
+                      $ref: '#/components/schemas/Intercambio'
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "403":
+                $ref: '#/components/schemas/Error'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       operationId: getIntercambios
       x-stoplight:
         id: ymotn2svrq9ze
@@ -395,30 +395,30 @@ paths:
       summary: Realizar solicitud de intercambio
       operationId: addIntercambio
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Intercambio"
-        "401":
+                $ref: '#/components/schemas/Intercambio'
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "403":
+                $ref: '#/components/schemas/Error'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       x-stoplight:
         id: qvj90wrzucxxo
       description: Realiza una solicitud de intercambio con otro usuario
@@ -426,8 +426,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreacionIntercambio"
-  "/usuarios/{idUsuario}/intercambios/{idIntercambio}/aceptar":
+              $ref: '#/components/schemas/CreacionIntercambio'
+  '/usuarios/{idUsuario}/intercambios/{idIntercambio}/aceptar':
     parameters:
       - schema:
           type: integer
@@ -445,34 +445,34 @@ paths:
       summary: Aceptar intercambio
       operationId: aceptarIntercambio
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Intercambio"
+                $ref: '#/components/schemas/Intercambio'
             application/xml:
               schema:
                 type: object
                 properties: {}
           description: Ok
-        "401":
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "403":
+                $ref: '#/components/schemas/Error'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       x-stoplight:
         id: ku6mo9p4wy6e8
       description: Acepta una solicitud de intercambio
@@ -486,7 +486,7 @@ paths:
                   type: number
                   x-stoplight:
                     id: z4g16rifart4w
-  "/usuarios/{idUsuario}/intercambios/{idIntercambio}/codigo":
+  '/usuarios/{idUsuario}/intercambios/{idIntercambio}/codigo':
     parameters:
       - schema:
           type: integer
@@ -504,35 +504,35 @@ paths:
       summary: Obtener código de intercambio
       tags: []
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CodigoIntercambio"
-        "401":
+                $ref: '#/components/schemas/CodigoIntercambio'
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "403":
+                $ref: '#/components/schemas/Error'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       operationId: getCodigoIntercambio
       x-stoplight:
         id: zj94rqel01kpd
       description: Recupera el código requerido para finalizar un intercambio
-  "/usuarios/{idUsuario}/intercambios/{idIntercambio}/finalizar":
+  '/usuarios/{idUsuario}/intercambios/{idIntercambio}/finalizar':
     parameters:
       - schema:
           type: integer
@@ -550,34 +550,34 @@ paths:
       summary: Finalizar intercambio
       operationId: finalizarIntercambio
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Intercambio"
-        "401":
+                $ref: '#/components/schemas/Intercambio'
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
             application/xml:
               schema:
                 type: object
                 properties: {}
-        "403":
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "404":
+                $ref: '#/components/schemas/Error'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       x-stoplight:
         id: nz4214glthbgh
       description: Envía el código de intercambio para finalizarlo
@@ -585,18 +585,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CodigoIntercambio"
+              $ref: '#/components/schemas/CodigoIntercambio'
   /libros:
     get:
       summary: Recuperar libros
       tags: []
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PaginaLibros"
+                $ref: '#/components/schemas/PaginaLibros'
       operationId: getLibros
       x-stoplight:
         id: t7zlzjxlrwh5i
@@ -608,7 +608,7 @@ paths:
           in: query
           name: pagina
           description: Página a recuperar
-  "/libros/{isbn}":
+  '/libros/{isbn}':
     parameters:
       - schema:
           type: string
@@ -620,24 +620,24 @@ paths:
       summary: Recuperar libro
       tags: []
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LibroConDuenos"
-        "404":
+                $ref: '#/components/schemas/LibroConDuenos'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       operationId: getLibro
       x-stoplight:
         id: 0dmmns2snfs0g
       description: Recupera un la información de un libro
       security: []
-  "/libros/{isbn}/detalles":
+  '/libros/{isbn}/detalles':
     parameters:
       - schema:
           type: string
@@ -649,18 +649,18 @@ paths:
       summary: Recuperar información de un libro
       tags: []
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DetallesLibro"
-        "404":
+                $ref: '#/components/schemas/DetallesLibro'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       operationId: getDetallesLibro
       x-stoplight:
         id: h94tofvp3rnxd
@@ -671,18 +671,18 @@ paths:
       summary: Iniciar sesión
       operationId: iniciarSesion
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SessionToken"
-        "400":
+                $ref: '#/components/schemas/SessionToken'
+        '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       x-stoplight:
         id: ev6hr6vohwq50
       description: Recupera el token de inicio de sesión de un usuario
@@ -690,8 +690,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Credenciales"
-  "/usuarios/{id}/fotoPerfil":
+              $ref: '#/components/schemas/Credenciales'
+      security: []
+  '/usuarios/{id}/fotoPerfil':
     parameters:
       - schema:
           type: integer
@@ -702,26 +703,26 @@ paths:
       summary: Actualizar foto de perfil
       operationId: actualizarFotoPerfil
       responses:
-        "204":
+        '204':
           description: No Content
-        "400":
+        '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "401":
+                $ref: '#/components/schemas/Error'
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "403":
+                $ref: '#/components/schemas/Error'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
       x-stoplight:
         id: m8k42x5nrf180
       description: Actualiza la foto de perfil de un usuario
@@ -746,7 +747,7 @@ components:
           correo: usuario@example.com
           nombre: Juan
           apellildos: Pérez Morales
-          password: "12345"
+          password: '12345'
       description: Datos para la creación de un usuario
       properties:
         correo:
@@ -870,24 +871,24 @@ components:
           idIntercambio: 0
           ofertante:
             id: 0
-            nombre: ""
-            apellidos: ""
+            nombre: ''
+            apellidos: ''
             telefono: null
             correo: null
           aceptante:
             id: 0
-            nombre: ""
-            apellidos: ""
+            nombre: ''
+            apellidos: ''
             telefono: null
             correo: null
           libroAceptante:
-            "id ": 0
-            imagen: ""
-            titulo: ""
-            autor: ""
-            isbn: ""
+            'id ': 0
+            imagen: ''
+            titulo: ''
+            autor: ''
+            isbn: ''
           libroOfertante: null
-          estado: ""
+          estado: ''
       description: Información relacionada con un intercambio de libros que realizará un par de usuarios
       properties:
         id:
@@ -896,15 +897,15 @@ components:
             id: eb3bnu0y43ul4
           description: ID del intercambio
         ofertante:
-          $ref: "#/components/schemas/Ofertante"
+          $ref: '#/components/schemas/Ofertante'
         aceptante:
-          $ref: "#/components/schemas/Aceptante"
+          $ref: '#/components/schemas/Aceptante'
         libroAceptante:
-          $ref: "#/components/schemas/LibroAceptante"
+          $ref: '#/components/schemas/LibroAceptante'
         libroOfertante:
-          $ref: "#/components/schemas/LibroOfertante"
+          $ref: '#/components/schemas/LibroOfertante'
         estado:
-          $ref: "#/components/schemas/EstadoIntercambio"
+          $ref: '#/components/schemas/EstadoIntercambio'
       required:
         - id
         - ofertante
@@ -952,7 +953,7 @@ components:
           description: URL de la portada del libro
           x-faker:
             fake:
-              - "http://loremflickr.com/480/640/abstract"
+              - 'http://loremflickr.com/480/640/abstract'
       required:
         - isbn
         - autor
@@ -996,7 +997,7 @@ components:
               description: ID del libro
           required:
             - id
-        - $ref: "#/components/schemas/InfoBasicaLibro"
+        - $ref: '#/components/schemas/InfoBasicaLibro'
     DetallesLibro:
       x-examples:
         Example 1:
@@ -1010,7 +1011,7 @@ components:
           id: 0
       description: Información detallada respecto a un libro
       allOf:
-        - $ref: "#/components/schemas/InfoBasicaLibro"
+        - $ref: '#/components/schemas/InfoBasicaLibro'
         - type: object
           properties:
             generos:
@@ -1052,8 +1053,8 @@ components:
     LibroConDuenos:
       x-examples: {}
       allOf:
-        - $ref: "#/components/schemas/InfoBasicaLibro"
-        - $ref: "#/components/schemas/DetallesLibro"
+        - $ref: '#/components/schemas/InfoBasicaLibro'
+        - $ref: '#/components/schemas/DetallesLibro'
         - type: object
           properties:
             duenos:
@@ -1062,16 +1063,16 @@ components:
               type: array
               description: Lista de usuarios que tienen este libro en su catálogo
               items:
-                $ref: "#/components/schemas/Dueno"
+                $ref: '#/components/schemas/Dueno'
           required:
             - duenos
-      description: "Información detallada de un libro, incluyendo "
+      description: 'Información detallada de un libro, incluyendo '
     LibroAceptante:
       title: LibroAceptante
       x-stoplight:
         id: 08ndmekszfb56
       allOf:
-        - $ref: "#/components/schemas/LibroRegistrado"
+        - $ref: '#/components/schemas/LibroRegistrado'
       description: Libro que pertenece al usuario que recibe la oferta de intercambio
     LibroOfertante:
       title: LibroOfertante
@@ -1079,7 +1080,7 @@ components:
         id: er3u6hlbp3xtf
       description: Libro que pertenece al usuario que realiza la oferta de intercambio
       anyOf:
-        - $ref: "#/components/schemas/LibroRegistrado"
+        - $ref: '#/components/schemas/LibroRegistrado'
         - nullable: true
     Dueno:
       type: object
@@ -1145,14 +1146,14 @@ components:
       x-stoplight:
         id: rijirn6tjxvhw
       allOf:
-        - $ref: "#/components/schemas/UsuarioIntercambio"
+        - $ref: '#/components/schemas/UsuarioIntercambio'
       description: Usuario que recibe la oferta de intercambio
     Ofertante:
       title: Ofertante
       x-stoplight:
         id: 97a35d4jj5sns
       allOf:
-        - $ref: "#/components/schemas/UsuarioIntercambio"
+        - $ref: '#/components/schemas/UsuarioIntercambio'
       description: Usuario que realiza la oferta de intercambio
     CreacionIntercambio:
       title: CreacionIntercambio
@@ -1178,10 +1179,10 @@ components:
       type: array
       items:
         oneOf:
-          - $ref: "#/components/schemas/JSONPatchRequestAddReplaceTest"
-          - $ref: "#/components/schemas/JSONPatchRequestRemove"
-          - $ref: "#/components/schemas/JSONPatchRequestMoveCopy"
-      description: ""
+          - $ref: '#/components/schemas/JSONPatchRequestAddReplaceTest'
+          - $ref: '#/components/schemas/JSONPatchRequestRemove'
+          - $ref: '#/components/schemas/JSONPatchRequestMoveCopy'
+      description: ''
     JSONPatchRequestAddReplaceTest:
       type: object
       additionalProperties: false
@@ -1194,7 +1195,7 @@ components:
           description: A JSON Pointer path.
           type: string
         value:
-          description: "The value to add, replace or test."
+          description: 'The value to add, replace or test.'
         op:
           description: The operation to perform.
           type: string
@@ -1262,7 +1263,7 @@ components:
             id: tm4ubdhcn98gh
           description: Los libros del usuario
           items:
-            $ref: "#/components/schemas/LibroRegistradoConDetalles"
+            $ref: '#/components/schemas/LibroRegistradoConDetalles'
       required:
         - libros
     Credenciales:
@@ -1333,7 +1334,7 @@ components:
           x-stoplight:
             id: 5ix81948wl50w
           items:
-            $ref: "#/components/schemas/Intercambio"
+            $ref: '#/components/schemas/Intercambio'
       required:
         - intercambios
     PaginaLibros:
@@ -1360,7 +1361,7 @@ components:
         libros:
           type: array
           items:
-            $ref: "#/components/schemas/InfoBasicaLibro"
+            $ref: '#/components/schemas/InfoBasicaLibro'
       required:
         - pagSiguiente
         - pagAnterior
@@ -1371,6 +1372,6 @@ components:
     Token:
       type: http
       scheme: bearer
-      description: ""
+      description: ''
 security:
   - Token: []

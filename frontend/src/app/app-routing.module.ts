@@ -9,6 +9,7 @@ import { AgregarLibroComponent } from './features/catalogo-usuario/components/ag
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component'
 import { NotFoundComponent } from './core/pages/not-found/not-found.component'
 import { PerfilComponent } from './features/perfil/pages/perfil.component'
+import { LoginPageComponent } from './features/login/pages/login-page/login-page.component'
 import { LibroPageComponent } from './features/libros/pages/libro-page/libro-page.component'
 
 const routes: Routes = [
@@ -24,7 +25,10 @@ const routes: Routes = [
     path: 'welcome',
     component: WelcomePageComponent,
   },
-
+  {
+    path: 'login',
+    component: LoginPageComponent,
+  },
   {
     path: '',
     component: NavBarComponent,
