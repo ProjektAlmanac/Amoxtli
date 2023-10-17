@@ -37,7 +37,7 @@ public class BookController implements LibrosApi {
     public ResponseEntity<PaginaLibrosDto> getLibros(Integer pagina) {
 
         // Establecer el tamaño de la página (por ejemplo, 10 resultados por página)
-        int tamanoPagina = 2;
+        int tamanoPagina = 10;
 
         // Obtener la lista de libros de la página especificada
         List<InfoBasicaLibroDto> libros = bookService.getLibros(pagina, tamanoPagina);
