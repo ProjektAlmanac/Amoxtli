@@ -273,7 +273,8 @@ public class UserService extends UserServiceKt {
 
     public ValidaPuedeIntercambiar200ResponseDto validaIntercambio(Integer idUser) {
 
-        ValidaPuedeIntercambiar200ResponseDto response = null;
+        var response = new ValidaPuedeIntercambiar200ResponseDto();
+        response.setPuedeIntercambiar(false);
 
         Optional<User> userOpt = userRepository.findById(idUser);
         if (userOpt.isEmpty()) {
@@ -281,34 +282,25 @@ public class UserService extends UserServiceKt {
         }
         User user = userOpt.get();
         if (!user.isVerifiedEmail()) {
-            response = new ValidaPuedeIntercambiar200ResponseDto();
-            response.setPuedeIntercambiar(false);
-            response.mensaje("El usuario con id:" + idUser +", no cuenta con un correo con verificación.");
+            response.mensaje("No cuentas con un correo verificado.");
             return response;
         }
 
         if (user.getPhone() == null || user.getPhone().isEmpty()) {
-            response = new ValidaPuedeIntercambiar200ResponseDto();
-            response.setPuedeIntercambiar(false);
-            response.mensaje("El usuario con id:" + idUser +", no cuenta con informacipon de contacto.");
+            response.mensaje("No cuenta con información de contacto.");
             return response;
         }
 
         if (user.getBooks().isEmpty()) {
-            response = new ValidaPuedeIntercambiar200ResponseDto();
-            response.setPuedeIntercambiar(false);
-            response.mensaje("El usuario con id:" + idUser +", no cuenta con libros registrados.");
+            response.mensaje("No cuentas con libros registrados.");
             return response;
         }
 
         if (user.getExchangesAccepting().size() + user.getExchangesOfferor().size() >= 4 ) {
-            response = new ValidaPuedeIntercambiar200ResponseDto();
-            response.setPuedeIntercambiar(false);
-            response.mensaje("El usuario con id:" + idUser +", no puede aceptar o solicitar más de 4 intercambios.");
+            response.mensaje("No puedes aceptar o solicitar más de 4 intercambios.");
             return response;
         }
 
-        response = new ValidaPuedeIntercambiar200ResponseDto();
         response.setPuedeIntercambiar(true);
 
         return response;
