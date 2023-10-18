@@ -1,25 +1,43 @@
-<h1>Ofertas de intercambio</h1>
-<app-exchange-card
-  *ngFor="let exchange of pendingExchanges()"
-  [imgLeft]="exchange.acceptingBook.urlPortada"
-  [imgRight]="exchange.offeringBook?.urlPortada ?? ''"
-  [titleLeft]="exchange.acceptingBook.titulo"
-  [titleRight]="exchange.offeringBook?.titulo ?? ''"
-  [state]="exchange.state"
-  [name]="exchange.offeringUser.nombre + ' ' + exchange.offeringUser.apellidos"
-  (accept)="showBookList(exchange)">
-</app-exchange-card>
-<h1>Intercambios</h1>
-<app-exchange-card
-  *ngFor="let exchange of otherExchanges()"
-  [imgLeft]="exchange.acceptingBook.urlPortada"
-  [imgRight]="exchange.offeringBook?.urlPortada ?? ''"
-  [titleLeft]="exchange.acceptingBook.titulo"
-  [titleRight]="exchange.offeringBook?.titulo ?? ''"
-  [state]="exchange.state"
-  [name]="
-    this.userId() === exchange.offeringUser.id
-      ? exchange.acceptingUser.nombre + ' ' + exchange.acceptingUser.apellidos
-      : exchange.offeringUser.nombre + ' ' + exchange.offeringUser.apellidos
-  ">
-</app-exchange-card>
+<div
+  class="exchanges"
+  *ngIf="pendingExchanges() !== undefined || otherExchanges() !== undefined; else loading">
+  <h1 *ngIf="pendingExchanges()?.length !== 0">Ofertas de intercambio</h1>
+  <div class="exchange-list">
+    <app-exchange-card
+      *ngFor="let exchange of pendingExchanges()"
+      [imgLeft]="exchange.acceptingBook.urlPortada"
+      [imgRight]="exchange.offeringBook?.urlPortada ?? ''"
+      [titleLeft]="exchange.acceptingBook.titulo"
+      [titleRight]="exchange.offeringBook?.titulo ?? ''"
+      [state]="exchange.state"
+      [name]="exchange.offeringUser.nombre + ' ' + exchange.offeringUser.apellidos"
+      (accept)="showBookList(exchange)">
+    </app-exchange-card>
+  </div>
+  <h1 *ngIf="otherExchanges()?.length !== 0">Intercambios</h1>
+  <div class="exchange-list">
+    <app-exchange-card
+      *ngFor="let exchange of otherExchanges()"
+      [imgLeft]="exchange.acceptingBook.urlPortada"
+      [imgRight]="exchange.offeringBook?.urlPortada ?? ''"
+      [titleLeft]="exchange.acceptingBook.titulo"
+      [titleRight]="exchange.offeringBook?.titulo ?? ''"
+      [state]="exchange.state"
+      [name]="
+        userId() === exchange.offeringUser.id
+          ? exchange.acceptingUser.nombre + ' ' + exchange.acceptingUser.apellidos
+          : exchange.offeringUser.nombre + ' ' + exchange.offeringUser.apellidos
+      ">
+    </app-exchange-card>
+  </div>
+  <div
+    class="empty-exchanges"
+    *ngIf="pendingExchanges()?.length === 0 && otherExchanges()?.length === 0">
+    No tienes intercabmios
+  </div>
+</div>
+<ng-template #loading>
+  <div class="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

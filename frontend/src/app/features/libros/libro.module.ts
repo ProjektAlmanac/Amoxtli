@@ -45,6 +45,6 @@ import { InvolucradosComponent } from './components/involucrados/involucrados.co
     TextFieldModule,
     MatChipsModule,
   ],
-  exports: [LibroPageComponent],
+  exports: [LibroPageComponent, LibroComponent],
 })
 export class LibroModule {}

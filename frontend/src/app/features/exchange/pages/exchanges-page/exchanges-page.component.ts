@@ -56,7 +56,10 @@ export class ExchangesPageComponent implements OnInit {
     const dialogRef = this.dialog.open(BookListDialogComponent, {
       data: { userId: exchange.offeringUser.id },
     })
-    const result: LibroRegistradoConDetalles = await lastValueFrom(dialogRef.afterClosed())
+    const result = (await lastValueFrom(dialogRef.afterClosed())) as
+      | LibroRegistradoConDetalles
+      | undefined
+    if (result === undefined) return
     this.apiService
       .aceptarIntercambio(exchange.acceptingUser.id, exchange.id, {
         idLibro: result.id,

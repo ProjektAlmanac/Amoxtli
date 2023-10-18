@@ -11,6 +11,8 @@ import { MatDialogModule } from '@angular/material/dialog'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { BookListComponent } from './components/book-list/book-list.component'
 import { BookListDialogComponent } from './components/book-list-dialog/book-list-dialog.component'
+import { LibroModule } from '../libros/libro.module'
+import { BookDialogComponent } from './components/book-dialog/book-dialog.component'
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { BookListDialogComponent } from './components/book-list-dialog/book-list
     ExchangeCardComponent,
     BookListComponent,
     BookListDialogComponent,
+    BookDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -27,6 +30,7 @@ import { BookListDialogComponent } from './components/book-list-dialog/book-list
     MatIconModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    LibroModule,
   ],
 })
 export class ExchangeModule {}
