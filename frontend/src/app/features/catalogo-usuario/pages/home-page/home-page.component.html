@@ -1,1 +1,82 @@
-<p>home-page works!</p>
+<div style="height: 92vh">
+  <mat-card class="centrado">
+    <mat-card-header>
+      <mat-card-title>
+        <h1>Libros</h1>
+      </mat-card-title>
+    </mat-card-header>
+  </mat-card>
+
+  <div class="centrado mt-3">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field class="input mb-2 mx-2">
+        <mat-label>ISBN</mat-label>
+        <input matInput placeholder="Ingresa el ISBN" formControlName="isbn" />
+
+        <mat-error *ngIf="form.get('isbn')?.hasError('maxlength')">
+          El ISBN debe tener 10 ó 13 dígitos
+        </mat-error>
+        <mat-error *ngIf="form.get('isbn')?.hasError('minlength')">
+          El ISBN debe tener 10 ó 13 dígitos
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button class="submit mx-2" type="submit" color="primary">Buscar</button>
+    </form>
+  </div>
+
+  <app-progress-spinner *ngIf="mostrarSpinner"></app-progress-spinner>
+
+  <div *ngIf="!mostrarSpinner" class="centrado">
+    <div class="tarjeta-libro libros m-4">
+      <div class="row">
+        <div class="col">
+          <mat-card class="baseCard" *ngIf="libros?.libros?.length; else nohayLibros">
+            <table>
+              <thead>
+                <tr>
+                  <th>Libros disponibles</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="my-2 mx-1" *ngFor="let libro of libros.libros">
+                  <!--<tr *ngFor="let libro of getBooksForCurrentPage()">-->
+                  <a [routerLink]="['/detallesLibro', libro.isbn]">
+                    <button mat-raised-button class="btnLibro" color="primary">
+                      <mat-card-title-group>
+                        <mat-card-title> {{ libro.titulo }} </mat-card-title>
+                        <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
+                        <img
+                          class="mx-3"
+                          mat-card-md-image
+                          [src]="libro.urlPortada"
+                          alt="Img Libro"
+                          width="150px" />
+                      </mat-card-title-group>
+                    </button>
+                  </a>
+                </tr>
+              </tbody>
+            </table>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+    <ng-template #nohayLibros>
+      <div class="alert alert-primary" role="alert">No tienes libros en tu catálogo.</div>
+    </ng-template>
+  </div>
+</div>
+<div class="centrado mt-3">
+  <div class="pagination">
+    <button mat-icon-button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <span>Página {{ currentPage }} de {{ getTotalPages() }}</span>
+    <button
+      mat-icon-button
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === getTotalPages()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</div>

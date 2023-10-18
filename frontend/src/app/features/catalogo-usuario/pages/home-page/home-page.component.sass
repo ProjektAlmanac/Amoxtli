@@ -1,0 +1,51 @@
+.centrado
+  display: flex
+  justify-content: center
+  align-items: center
+
+.input
+  margin-right: 20px
+
+
+.libros
+  max-height: 700px
+  overflow: auto
+
+@import breakpoints
+
+.tarjeta-libro
+
+  @include xs
+    width: auto
+  @include sm
+    width: auto
+  @include md
+    width: 600px
+  @include lg
+    width: 600px
+  @include xl
+    width: 600px
+
+
+/****
+    .baseCard
+  width: 600px
+  margin: 10px
+
+    .mat-mdc-card-header
+    display: flex
+    padding: 16px 16px 0
+    height: 140px
+    a
+        text-decoration: none
+        *******/
+
+mat-card-title-group
+  width: 540px 
+  height: 140px 
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+mat-card-subtitle
+    color: white  
