@@ -2,22 +2,17 @@ package io.github.projektalmanac.amoxtli.backend.service;
 
 import com.google.api.services.books.model.Volume.VolumeInfo;
 import io.github.projektalmanac.amoxtli.backend.entity.Book;
-import io.github.projektalmanac.amoxtli.backend.entity.Exchange;
 import io.github.projektalmanac.amoxtli.backend.entity.User;
-import io.github.projektalmanac.amoxtli.backend.enums.Status;
-import io.github.projektalmanac.amoxtli.backend.exception.BookAlreadyExistsException;
 import io.github.projektalmanac.amoxtli.backend.exception.ResourceNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.mapper.BookMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.repository.*;
 import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
 
-import javax.validation.Valid;
-import java.math.BigDecimal;
+
 import java.util.Optional;
 
 @Service
@@ -31,9 +26,6 @@ public class BookService {
 
     @Autowired
     private BookRepository bookRepository;
-
-    @Autowired
-    private ExchangeRepository exchangeRepository;
 
     public DetallesLibroDto getDetallesLibro(String isbn) {
 

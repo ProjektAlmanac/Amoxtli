@@ -20,6 +20,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -70,8 +71,9 @@ class UserServiceTest {
     private User user1;
     private PerfilUsuarioDto perfilUsuarioDto;
     private PerfilUsuarioDto perfilUsuarioDtoCambio;
-
     private Book book1;
+    private Volume.VolumeInfo volumeInfo;
+    private Volume.VolumeInfo.ImageLinks imageLinks;
 
     @BeforeEach
     void setUp() {
@@ -131,6 +133,19 @@ class UserServiceTest {
         book1.setId(1);
         book1.setIsbn("1111111111");
         book1.setDescription("Casi nuevo el libro");
+
+        volumeInfo = new Volume.VolumeInfo();
+        imageLinks = new Volume.VolumeInfo.ImageLinks();
+
+        volumeInfo.setAuthors(Arrays.asList("Autor1", "Autor2", "Autor3"));
+        volumeInfo.setTitle("Titulo 1");
+        imageLinks.setMedium("http://books.google.com/books/content?id=O9ztAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api");
+        volumeInfo.setImageLinks(imageLinks);
+        volumeInfo.setCategories(Arrays.asList("Categoria1", "Categoria2"));
+        volumeInfo.setPublisher("Editorial 1");
+        volumeInfo.setDescription("Sinopsis del libro");
+        volumeInfo.setLanguage("Español");
+        volumeInfo.setPublishedDate("1990");
 
     }
 
@@ -425,19 +440,25 @@ class UserServiceTest {
             userService.getLibrosUsuario(1);
         });
 
-        //Caso 3:
+        //Caso 3: Caso de exito en la obtencion de los libros de un usuario
 
-        when(userRepository.findById(1)).thenReturn(Optional.of(user));
         List<Book> userBooks = new ArrayList<>();
         userBooks.add(book1);
+        user.setBooks(userBooks);
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
 
         List<Volume.VolumeInfo> volumeInfoList = new ArrayList<>();
+        volumeInfoList.add(volumeInfo);
 
-        Volume.VolumeInfo volumeInfo = new Volume.VolumeInfo();
+        when(googleBookService.searchVolumeInfo(userBooks)).thenReturn(volumeInfoList);
 
-        List<String> authors = Arrays.asList("Autor1", "Autor2", "Autor3");
-        volumeInfo.setAuthors(authors);
+        LibrosUsuarioDto result = userService.getLibrosUsuario(1);
 
-       // when(googleBookService.searchVolumeInfo(userBooks)).thenReturn(Arrays.asList(/* aquí coloca tus objetos VolumeInfo ficticios */));
+        Assertions.assertEquals(userBooks.get(0).getId(), result.getLibros().get(0).getId());
+        Assertions.assertEquals(userBooks.get(0).getIsbn(), result.getLibros().get(0).getIsbn());
+        Assertions.assertEquals(volumeInfo.getAuthors().get(0), result.getLibros().get(0).getAutor());
+        Assertions.assertEquals(volumeInfo.getTitle(), result.getLibros().get(0).getTitulo());
+        Assertions.assertEquals(URI.create(imageLinks.getMedium()), result.getLibros().get(0).getUrlPortada());
     }
 }
