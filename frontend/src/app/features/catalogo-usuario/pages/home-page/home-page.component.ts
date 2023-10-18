@@ -77,6 +77,10 @@ export class HomePageComponent implements OnInit {
   }
 
   getTotalPages(): number {
-    return Math.ceil(this.libroscopy.length / this.itemsPerPage)
+    if (this.libroscopy) {
+      return Math.ceil(this.libroscopy.length / this.itemsPerPage)
+    } else {
+      return 0 // Or handle this case as per your application's logic.
+    }
   }
 }

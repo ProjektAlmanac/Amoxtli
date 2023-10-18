@@ -7,13 +7,13 @@
       </mat-card-title>
     </mat-card-header>
   </mat-card>
-  <div [formGroup]="form" class="container">
+  <div [formGroup]="form" class="container" style="overflow-y: auto; max-height: 80vh">
     <mat-card-content>
       <mat-label>Ingrese una foto de perfil:</mat-label>
       <th></th>
-      <div class="row" style="border: 1px solid red">
-        <div class="col" style="border: 1px solid rgb(255, 0, 191)">
-          <div class="" style="border: 1px solid rgb(255, 174, 0)">
+      <div class="row">
+        <div class="col">
+          <div class="">
             <button (click)="mostrarCampoDeFoto()">
               <img
                 class="image-button"
@@ -27,16 +27,14 @@
             </button>
           </div>
         </div>
-        <div class="col" position="inline-block" style="border: 1px solid rgb(0, 132, 255)">
+        <div class="col" position="inline-block">
           <div style="margin-left: 10px" *ngIf="showInputPhoto">
             <input
               type="file"
               (change)="onFileSelected($event)"
               (ngModelChange)="onChange(1); checkTouchedFielsd()" />
           </div>
-          <mat-form-field
-            appearence="fill"
-            style="margin-left: 10px; border: 1px solid rgb(47, 0, 255)">
+          <mat-form-field appearence="fill">
             <mat-label>Descripción de foto: </mat-label>
             <input
               matInput
@@ -49,8 +47,8 @@
       <th></th>
       <mat-label>Ingrese los siguientes datos: </mat-label>
       <th></th>
-      <div class="row" style="border: 1px solid red">
-        <div class="col" style="border: 1px solid red">
+      <div class="row">
+        <div class="col">
           <mat-form-field appearence="fill" class="">
             <mat-label>Nombre(s):</mat-label>
             <input
@@ -63,7 +61,7 @@
           </mat-form-field>
         </div>
 
-        <div class="col" style="border: 1px solid red">
+        <div class="col">
           <mat-form-field appearence="fill" class="">
             <mat-label>Apellido(s):</mat-label>
             <input
@@ -77,7 +75,7 @@
         </div>
       </div>
 
-      <div class="row" style="border: 1px solid red">
+      <div class="row">
         <div class="col">
           <mat-form-field appearence="fill" class="">
             <mat-label>Correo electrónico:</mat-label>
@@ -115,7 +113,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="row" style="border: 1px solid red">
+      <div class="row">
         <div class="col">
           <mat-form-field appearence="fill">
             <mat-label>Intereses:</mat-label>
