@@ -2,18 +2,14 @@ package io.github.projektalmanac.amoxtli.backend.mapper;
 
 import com.google.api.services.books.model.Volume.VolumeInfo;
 import io.github.projektalmanac.amoxtli.backend.entity.Book;
-import io.github.projektalmanac.amoxtli.backend.entity.Exchange;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
-import jdk.jfr.Name;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @Mapper

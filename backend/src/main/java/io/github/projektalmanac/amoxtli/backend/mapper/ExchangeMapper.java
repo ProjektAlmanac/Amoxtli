@@ -1,6 +1,5 @@
 package io.github.projektalmanac.amoxtli.backend.mapper;
 
-import io.github.projektalmanac.amoxtli.backend.entity.Book;
 import io.github.projektalmanac.amoxtli.backend.entity.Exchange;
 import io.github.projektalmanac.amoxtli.backend.entity.User;
 import io.github.projektalmanac.amoxtli.backend.enums.Status;
