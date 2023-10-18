@@ -11,10 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.jackson.nullable.JsonNullable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -27,9 +25,9 @@ import java.util.Optional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.swing.text.html.Option;
 
 import io.github.projektalmanac.amoxtli.backend.entity.User;
-import io.github.projektalmanac.amoxtli.backend.service.UserService;
 import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
 import io.github.projektalmanac.amoxtli.backend.config.SecurityConfig;
 
@@ -55,26 +53,25 @@ class UserServiceTest {
     ExchangeRepository exchangeRepository;
 
 
-
-    private User user;
-    private User user1;
-    private PerfilUsuarioDto perfilUsuarioDto;
-    private PerfilUsuarioDto perfilUsuarioDtoCambio;
-
     String email, password, passwordHash, salt;
     CredencialesDto credencialesDto;
     SessionTokenDto sessionTokenDto;
 
     SecurityConfig seguridad;
 
+
+    private User user;
+    private User user1;
+    private PerfilUsuarioDto perfilUsuarioDto;
+    private PerfilUsuarioDto perfilUsuarioDtoCambio;
+
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
         seguridad = new SecurityConfig();
         email = "test@example.com";
         password = "passwordHash";
-        salt = seguridad.saltHash();
-        passwordHash = seguridad.hashContrasena(password + salt);
+        salt = SecurityConfig.saltHash();
+        passwordHash = SecurityConfig.hashContrasena(password + salt);
         // System.out.println("Password hash -> "+passwordHash);
 
         // credencialdto
@@ -82,7 +79,6 @@ class UserServiceTest {
         credencialesDto.setEmail(email);
         credencialesDto.setContrasena(password);
 
-        //Se crea un usuario provicional
         user = new User();
         user.setId(1);
         user.setName("Eduardo");
@@ -126,7 +122,7 @@ class UserServiceTest {
 
     @Test
     void iniciarSesion() {
-        // Indicacion del test que se ejecuta
+        // Indicación del test que se ejecuta
         System.out.println("Test:: iniciarSesion");
 
         // 1.- cuando el usuario no tiene una cuenta es decir su correo no existe en el
@@ -239,11 +235,11 @@ class UserServiceTest {
         String passwRep = expectedUser.get().getPasswordHash();
 
         // 1. considere un usuario que ingresa una constraseña incorrecta
-        assertFalse(seguridad.matchContrasena(password.substring(2) + salt, passwRep));
-        assertFalse(seguridad.matchContrasena("password" + salt, passwRep));
+        assertFalse(SecurityConfig.matchContrasena(password.substring(2) + salt, passwRep));
+        assertFalse(SecurityConfig.matchContrasena("password" + salt, passwRep));
 
         // 2. Considere que un usuario ingresa su contraseña correcta
-        assertTrue(seguridad.matchContrasena(password + salt, passwRep));
+        assertTrue(SecurityConfig.matchContrasena(password + salt, passwRep));
     }
 
     @Test
@@ -286,12 +282,12 @@ class UserServiceTest {
         System.out.println(token);
         String userTokenInfo = userService.infoSesion(token);
         System.out.println(userTokenInfo);
-        assertTrue(token != null, "Error: No se pudo generar el token");
+        Assertions.assertNotNull(token, "Error: No se pudo generar el token");
     }
 
     @Test
     void verificaCorreo() {
-        long userId = 1;
+        int userId = 1;
 
         //////// Codigo valido.///////
         CodigoVerificacionDto codigoVerificacionDto = new CodigoVerificacionDto();
@@ -334,13 +330,13 @@ class UserServiceTest {
 
         //Caso 1. El usuario no existe en la base de datos
         Integer id = 0;
-        when(userRepository.getUserById(id)).thenReturn(null);
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
         Assertions.assertThrows(UserNotFoundException.class,() ->{
             userService.getUsuario(id);
         });
-        //Caso 2. El usuario existe pero su correo no esta verificado
+        //Caso 2. El usuario existe, pero su correo no está verificado
         Integer idUser = 1;
-        when(userRepository.getUserById(idUser)).thenReturn(this.user);
+        when(userRepository.findById(idUser)).thenReturn(Optional.of(this.user));
         Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
             userService.getUsuario(idUser);
         });
@@ -352,21 +348,21 @@ class UserServiceTest {
 
         // Caso 1. EL usuario no existe
         Integer idUser = 1;
-        when(userRepository.getUserById(idUser)).thenReturn(null);
+        when(userRepository.findById(idUser)).thenReturn(Optional.empty());
         Assertions.assertThrows(UserNotFoundException.class,() ->{
             userService.actualizaUsuario(idUser,perfilUsuarioDto);
         });
 
-        // Caso 2. El usuario existe pero su correo no esta autenticado
+        // Caso 2. El usuario existe, pero su correo no está verificado
         Integer idUser1 = 1;
-        when(userRepository.getUserById(idUser)).thenReturn(this.user);
+        when(userRepository.findById(idUser1)).thenReturn(Optional.of(this.user));
         Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
             userService.actualizaUsuario(idUser1,perfilUsuarioDto);
         });
 
         // Caso 3. Se actualizan los cambios correctamente
         Integer id = 2;
-        when(userRepository.getUserById(id)).thenReturn(this.user1);
+        when(userRepository.findById(id)).thenReturn(Optional.of(this.user1));
         when(userRepository.save(any(User.class))).then(returnsFirstArg());
         PerfilUsuarioDto perfil = userService.actualizaUsuario(id,perfilUsuarioDtoCambio);
         Assertions.assertEquals(perfilUsuarioDtoCambio.getApellidos(),perfil.getApellidos());
@@ -379,18 +375,18 @@ class UserServiceTest {
         // Representación de una imagen.
         Resource body = new ByteArrayResource(new byte[]{1, 2, 3});
         // Caso 1. El usuario no existe
-        when(userRepository.getUserById(1)).thenReturn(null);
+        when(userRepository.findById(1)).thenReturn(Optional.empty());
         Assertions.assertThrows(UserNotFoundException.class,() ->{
             userService.actualizaFoto(1,body);
         });
         // Caso 2: El correo del usuario verificado
-        when(userRepository.getUserById(1)).thenReturn(this.user);
+        when(userRepository.findById(1)).thenReturn(Optional.of(this.user));
         Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
             userService.actualizaFoto(1,body);
         });
 
         // Caso 3. Se guarda la foto correctamente
-        when(userRepository.getUserById(2)).thenReturn(this.user1);
+        when(userRepository.findById(2)).thenReturn(Optional.of(this.user1));
         when(userRepository.save(this.user1)).thenReturn(this.user1);
         userService.actualizaFoto(2,body);
         Assertions.assertArrayEquals(body.getInputStream().readAllBytes(),this.user1.getPhoto());
@@ -408,7 +404,7 @@ class UserServiceTest {
             userService.validaIntercambio(idUser);
         });
 
-        // Caso 2. El usuario existe pero su correo no esta verificado
+        // Caso 2. El usuario existe, pero su correo no está verificado
         User user = new User();
         user.setId(idUser);
         user.setVerifiedEmail(false);

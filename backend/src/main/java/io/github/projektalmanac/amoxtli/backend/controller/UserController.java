@@ -1,6 +1,7 @@
 package io.github.projektalmanac.amoxtli.backend.controller;
 
 import io.github.projektalmanac.amoxtli.backend.exception.InvalidPhotoException;
+import io.github.projektalmanac.amoxtli.backend.exception.InvalidVerificationCodeException;
 import io.github.projektalmanac.amoxtli.backend.generated.api.UsuariosApi;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.service.UserService;
@@ -113,6 +114,7 @@ public class UserController implements UsuariosApi {
     @Override
     public ResponseEntity<PerfilUsuarioDto> getUsuario(Integer id) {
         PerfilUsuarioDto perfilUsuarioDto = this.userService.getUsuario(id);
+
         return ResponseEntity.ok(perfilUsuarioDto);
     }
 
@@ -121,8 +123,6 @@ public class UserController implements UsuariosApi {
     @PostMapping(path = "/usuarios/{id}/mandarCorreoConfirmacion")
     @Override
     public ResponseEntity<Void> mandarCorreoConfirmacion(@PathVariable Integer id) {
-
-
         userService.enviarCorreoVerificacion(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(null);
@@ -139,15 +139,11 @@ public class UserController implements UsuariosApi {
     @PostMapping(path = "/usuarios/{id}/verificarCorreo")
     @Override
     public ResponseEntity<Void> verificarCorreo(@PathVariable Integer id, @RequestBody @Valid CodigoVerificacionDto codigoVerificacionDto) {
-
         boolean codigoCorrecto = userService.verificaCorreo(id, codigoVerificacionDto);
 
-        if (codigoCorrecto) {
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+        if (!codigoCorrecto) throw new InvalidVerificationCodeException();
 
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 }

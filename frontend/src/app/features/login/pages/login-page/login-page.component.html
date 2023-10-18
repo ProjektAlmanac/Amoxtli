@@ -1,0 +1,19 @@
+<div class="login-page">
+  <div class="title">
+    <h1>Iniciar sesión en Amoxtli</h1>
+  </div>
+  <div class="login-card">
+    <mat-card>
+      <mat-card-content>
+        <app-login-form [mensajeError]="mensajeError" (formSubmit)="onSubmit($event)" />
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="sign-up-card">
+    <mat-card>
+      <mat-card-content>
+        <p>¿Nuevo en Amoxtli? <a [routerLink]="['/signup']">Crea una cuenta</a></p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
