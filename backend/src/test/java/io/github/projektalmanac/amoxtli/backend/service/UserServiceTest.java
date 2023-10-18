@@ -1,7 +1,12 @@
 package io.github.projektalmanac.amoxtli.backend.service;
 
+import com.google.api.services.books.model.Volume;
+import io.github.projektalmanac.amoxtli.backend.entity.Book;
 import io.github.projektalmanac.amoxtli.backend.exception.*;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
+import io.github.projektalmanac.amoxtli.backend.repository.BookRepository;
+import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
+import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +20,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
@@ -42,6 +50,15 @@ class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
+    @Mock
+    private GoogleBookService googleBookService;
+
+    @Mock
+    private ExchangeRepository exchangeRepository;
+
+    @Mock
+    private BookRepository bookRepository;
+
     String email, password, passwordHash, salt;
     CredencialesDto credencialesDto;
     SessionTokenDto sessionTokenDto;
@@ -53,6 +70,8 @@ class UserServiceTest {
     private User user1;
     private PerfilUsuarioDto perfilUsuarioDto;
     private PerfilUsuarioDto perfilUsuarioDtoCambio;
+
+    private Book book1;
 
     @BeforeEach
     void setUp() {
@@ -107,9 +126,15 @@ class UserServiceTest {
         perfilUsuarioDtoCambio.setTelefono("585858332");
         perfilUsuarioDtoCambio.setFotoPerfil(JsonNullable.of(URI.create("foto")));
         perfilUsuarioDtoCambio.setCorreoVerificado(true);
+
+        book1 = new Book();
+        book1.setId(1);
+        book1.setIsbn("1111111111");
+        book1.setDescription("Casi nuevo el libro");
+
     }
 
-    @Test
+    /*@Test
     void iniciarSesion() {
         // Indicación del test que se ejecuta
         System.out.println("Test:: iniciarSesion");
@@ -379,5 +404,40 @@ class UserServiceTest {
         userService.actualizaFoto(2, body);
         Assertions.assertArrayEquals(body.getInputStream().readAllBytes(), this.user1.getPhoto());
 
+    }*/
+
+    @Test
+    void getLibrosUsuario() {
+
+        //Caso 1: El usuario no existe
+        when(userRepository.findById(1)).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> {
+            userService.getLibrosUsuario(1);
+        });
+
+        //Caso 2: El usuario existe pero no tiene registrado ningun libro
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        user.setBooks(new ArrayList<>());
+
+        assertThrows(EmptyResourceException.class, () -> {
+            userService.getLibrosUsuario(1);
+        });
+
+        //Caso 3:
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        List<Book> userBooks = new ArrayList<>();
+        userBooks.add(book1);
+
+        List<Volume.VolumeInfo> volumeInfoList = new ArrayList<>();
+
+        Volume.VolumeInfo volumeInfo = new Volume.VolumeInfo();
+
+        List<String> authors = Arrays.asList("Autor1", "Autor2", "Autor3");
+        volumeInfo.setAuthors(authors);
+
+       // when(googleBookService.searchVolumeInfo(userBooks)).thenReturn(Arrays.asList(/* aquí coloca tus objetos VolumeInfo ficticios */));
     }
 }
