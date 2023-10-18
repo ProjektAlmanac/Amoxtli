@@ -34,6 +34,8 @@ public class Application {
 		user.setName("Juan");
 		user.setLastName("Pérez");
 		user.setId(1);
+		user.setPhone("1234567890");
+		user.setEmail("jperaz@gmail.com");
 		user.setVerifiedEmail(true);
 
 		var user2 = new User();

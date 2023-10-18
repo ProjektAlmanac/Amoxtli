@@ -317,19 +317,31 @@ public class UserService extends UserServiceKt {
 
         Optional<User> userOpt = userRepository.findById(idUser);
         if (userOpt.isEmpty()) {
-            throw new UserNotFoundException(idUser);
+            response = new ValidaPuedeIntercambiar200ResponseDto();
+            response.setPuedeIntercambiar(false);
+            response.mensaje("El usuario con id:" + idUser +", no se encontro el la base de datos.");
+            return response;
         }
         User user = userOpt.get();
         if (!user.isVerifiedEmail()) {
-            throw new EmailUserNotVerificationException(idUser);
+            response = new ValidaPuedeIntercambiar200ResponseDto();
+            response.setPuedeIntercambiar(false);
+            response.mensaje("El usuario con id:" + idUser +", no cuenta con un correo con verificación.");
+            return response;
         }
 
         if (user.getPhone() == null || user.getPhone().isEmpty()) {
-            throw new UnregisteredPhoneNumberException(idUser);
+            response = new ValidaPuedeIntercambiar200ResponseDto();
+            response.setPuedeIntercambiar(false);
+            response.mensaje("El usuario con id:" + idUser +", no cuenta con informacipon de contacto.");
+            return response;
         }
 
         if (user.getBooks().isEmpty()) {
-            throw new NoBooksRegisteredException(idUser);
+            response = new ValidaPuedeIntercambiar200ResponseDto();
+            response.setPuedeIntercambiar(false);
+            response.mensaje("El usuario con id:" + idUser +", no cuenta con libros registrados.");
+            return response;
         }
 
         if (user.getExchangesAccepting().size() + user.getExchangesOfferor().size() >= 4 ) {
