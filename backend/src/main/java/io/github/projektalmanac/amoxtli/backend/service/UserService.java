@@ -317,10 +317,7 @@ public class UserService extends UserServiceKt {
 
         Optional<User> userOpt = userRepository.findById(idUser);
         if (userOpt.isEmpty()) {
-            response = new ValidaPuedeIntercambiar200ResponseDto();
-            response.setPuedeIntercambiar(false);
-            response.mensaje("El usuario con id:" + idUser +", no se encontro el la base de datos.");
-            return response;
+            throw new UserNotFoundException(idUser);
         }
         User user = userOpt.get();
         if (!user.isVerifiedEmail()) {

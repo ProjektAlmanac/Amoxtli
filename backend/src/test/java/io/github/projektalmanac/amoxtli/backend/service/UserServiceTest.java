@@ -404,8 +404,9 @@ class UserServiceTest {
         ValidaPuedeIntercambiar200ResponseDto result;
         Optional<User> userOptional = Optional.empty();
         when(userRepository.findById(idUser)).thenReturn(userOptional);
-        result = userService.validaIntercambio(idUser);
-        Assertions.assertFalse(result.getPuedeIntercambiar());
+        Assertions.assertThrows(UserNotFoundException.class,() ->{
+            userService.validaIntercambio(idUser);
+        });
 
         // Caso 2. El usuario existe pero su correo no esta verificado
         User user = new User();
@@ -539,7 +540,13 @@ class UserServiceTest {
         when(userRepository.findById(idUserAceptante)).thenReturn(Optional.of(userAceptante));
         when(exchangeRepository.save(any(Exchange.class))).thenReturn(exchange);
         IntercambioDto intercambioDto = userService.solicitaIntercambio(idUserSolicitante,creacionIntercambioDto);
+
         Assertions.assertNotNull(intercambioDto);
+
+        Assertions.assertEquals(intercambioDto.getId(),exchange.getId());
+        Assertions.assertEquals(intercambioDto.getOfertante().getId(),userSolicitante.getId());
+        Assertions.assertEquals(intercambioDto.getAceptante().getId(),userAceptante.getId());
+        Assertions.assertEquals(intercambioDto.getLibroAceptante().getId(),book.getId());
 
 
     }
