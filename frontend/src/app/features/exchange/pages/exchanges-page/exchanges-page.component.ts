@@ -34,6 +34,11 @@ export class ExchangesPageComponent implements OnInit {
 
   async getExchanges(userId: number) {
     const exchangeList = await lastValueFrom(this.apiService.getIntercambios(userId))
+    if (exchangeList === null) {
+      this.pendingExchanges.set([])
+      this.otherExchanges.set([])
+      return
+    }
     const exchangePromises =
       exchangeList.intercambios?.map(async exchange => {
         const offeringBook = await this.getBookDetails(exchange.libroOfertante.isbn)
