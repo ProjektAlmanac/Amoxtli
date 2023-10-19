@@ -35,7 +35,9 @@ public class UserController implements UsuariosApi {
     @Override
     public ResponseEntity<IntercambioDto> aceptarIntercambio(Integer idUsuario, Integer idIntercambio,
             AceptarIntercambioRequestDto aceptarIntercambioRequestDto) {
-        return null;
+
+        IntercambioDto result = userService.aceptarIntercambio(idUsuario,idIntercambio, aceptarIntercambioRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @Override
