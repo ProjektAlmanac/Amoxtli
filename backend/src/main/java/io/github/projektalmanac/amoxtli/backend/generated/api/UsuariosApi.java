@@ -414,6 +414,51 @@ public interface UsuariosApi {
 
 
     /**
+     * GET /usuarios/{idUsuario}/intercambios/{idIntercambio} : Recuperar intercambio
+     * Recupera un intercambio
+     *
+     * @param idUsuario ID del usuario (required)
+     * @param idIntercambio ID del intercambio (required)
+     * @return OK (status code 200)
+     *         or Unauthorized (status code 401)
+     *         or Forbidden (status code 403)
+     *         or Not Found (status code 404)
+     */
+    @Operation(
+        operationId = "getIntercambio",
+        summary = "Recuperar intercambio",
+        description = "Recupera un intercambio",
+        tags = {  },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "OK", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = IntercambioDto.class))
+            }),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class))
+            })
+        },
+        security = {
+            @SecurityRequirement(name = "Token")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/usuarios/{idUsuario}/intercambios/{idIntercambio}",
+        produces = { "application/json" }
+    )
+    ResponseEntity<IntercambioDto> getIntercambio(
+        @Parameter(name = "idUsuario", description = "ID del usuario", required = true, in = ParameterIn.PATH) @PathVariable("idUsuario") Integer idUsuario,
+        @Parameter(name = "idIntercambio", description = "ID del intercambio", required = true, in = ParameterIn.PATH) @PathVariable("idIntercambio") Integer idIntercambio
+    );
+
+
+    /**
      * GET /usuarios/{id}/intercambios : Recuperar intercambios de usuario
      * Recupera todos los intercambios en los que participa un usuario
      *

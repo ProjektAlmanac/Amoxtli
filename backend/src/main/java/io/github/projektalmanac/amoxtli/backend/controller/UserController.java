@@ -148,4 +148,8 @@ public class UserController implements UsuariosApi {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+    @Override
+    public ResponseEntity<IntercambioDto> getIntercambio(Integer idUsuario, Integer idIntercambio) {
+        return null;
+    }
 }
