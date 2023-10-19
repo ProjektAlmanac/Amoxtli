@@ -92,7 +92,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(IntercambioNotFoundException.class)
     public final ResponseEntity<ErrorDto> handleIntercambioNotFoundException(IntercambioNotFoundException ex, WebRequest request) {
-        var error = new ErrorDto(ex.getMessage(), 10);
+        var error = new ErrorDto(ex.getMessage(), 12);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler()
+    public final ResponseEntity<ErrorDto> NumberFormatException(NumberFormatException ex, WebRequest request) {
+        var error = new ErrorDto(ex.getMessage(), 11);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }
