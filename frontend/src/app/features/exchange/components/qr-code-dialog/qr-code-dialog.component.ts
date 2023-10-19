@@ -1,8 +1,17 @@
-import { AfterViewInit, Component, ElementRef, Inject, ViewChild, signal } from '@angular/core'
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  ViewChild,
+  signal,
+} from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 import { DefaultService } from 'src/generated/openapi'
 //@ts-expect-error QRious is not typed
 import QRious from 'qrious'
+import { HttpErrorResponse } from '@angular/common/http'
 
 export interface DialogData {
   exchangeId: number
@@ -14,13 +23,17 @@ export interface DialogData {
   templateUrl: './qr-code-dialog.component.html',
   styleUrls: ['./qr-code-dialog.component.sass'],
 })
-export class QrCodeDialogComponent implements AfterViewInit {
+export class QrCodeDialogComponent implements AfterViewInit, OnDestroy {
   @ViewChild('qr')
   qrCanvas!: ElementRef<HTMLCanvasElement>
 
   qrCode!: QRious
 
   loading = signal(true)
+
+  done = signal(false)
+
+  intervalId = 0
 
   constructor(
     private apiService: DefaultService,
@@ -34,6 +47,11 @@ export class QrCodeDialogComponent implements AfterViewInit {
       size: 250,
     })
     this.getExchangeCode()
+    this.intervalId = setInterval(this.checkIfDone.bind(this), 1000)
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.intervalId)
   }
 
   private getExchangeCode() {
@@ -46,6 +64,17 @@ export class QrCodeDialogComponent implements AfterViewInit {
         })
         this.loading.set(false)
       })
+  }
+
+  private checkIfDone() {
+    this.apiService.getIntercambio(this.data.userId, this.data.exchangeId).subscribe({
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 404) {
+          this.done.set(true)
+          clearInterval(this.intervalId)
+        }
+      },
+    })
   }
 
   closeDialog() {
