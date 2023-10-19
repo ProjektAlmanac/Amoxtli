@@ -55,6 +55,24 @@ public interface BookMapper {
     @Mapping(target = "descripcion", source = "description")
     LibroAceptanteDto tOLibroAceptanteDto(Book book);
 
+    @Mapping(target = "isbn", source = "ISBN")
+    @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")
+    @Mapping(target = "titulo", source = "libroGoogleBooks.title")
+    @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks")
+    @Mapping(target = "generos", source = "libroGoogleBooks.categories")
+    @Mapping(target = "editorial", source = "libroGoogleBooks.publisher")
+    @Mapping(target = "sinopsis", source = "libroGoogleBooks.description")
+    @Mapping(target = "idioma", source = "libroGoogleBooks.language")
+    @Mapping(target = "fechaPublicacion", source = "libroGoogleBooks.publishedDate" )
+    //@Mapping(target = "duenos", source = "dueños" )
+    LibroConDuenosDto toLibroConDuenosDto(String ISBN, VolumeInfo libroGoogleBooks);
+
+    @Mapping(target = "isbn", source = "ISBN")
+    @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")
+    @Mapping(target = "titulo", source = "libroGoogleBooks.title")
+    @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks")
+    InfoBasicaLibroDto toInfoBasicaLibroDto(String ISBN, VolumeInfo libroGoogleBooks);
+
     default URI stringToUri(String string) {
         if (string == null) return null;
         return URI.create(string);
@@ -88,4 +106,5 @@ public interface BookMapper {
         if (imageLinks.getSmallThumbnail() != null) return imageLinks.getSmallThumbnail();
         return null;
     }
+
 }

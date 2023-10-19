@@ -1,37 +1,37 @@
 package io.github.projektalmanac.amoxtli.backend.service;
 
 
+import com.google.api.services.books.model.Volume.VolumeInfo;
+import io.github.projektalmanac.amoxtli.backend.config.SecurityConfig;
+import io.github.projektalmanac.amoxtli.backend.entity.Book;
+import io.github.projektalmanac.amoxtli.backend.entity.Exchange;
+import io.github.projektalmanac.amoxtli.backend.entity.User;
+import io.github.projektalmanac.amoxtli.backend.enums.Status;
+import io.github.projektalmanac.amoxtli.backend.exception.*;
+import io.github.projektalmanac.amoxtli.backend.generated.model.*;
+import io.github.projektalmanac.amoxtli.backend.mapper.BookMapper;
+import io.github.projektalmanac.amoxtli.backend.mapper.ExchangeMapper;
+import io.github.projektalmanac.amoxtli.backend.mapper.UserMapper;
 import io.github.projektalmanac.amoxtli.backend.repository.BookRepository;
 import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
-import io.github.projektalmanac.amoxtli.backend.enums.Status;
-import io.github.projektalmanac.amoxtli.backend.mapper.ExchangeMapper;
+import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
+import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.core.io.Resource;
-
-
-import com.google.api.services.books.model.Volume.VolumeInfo;
-import io.github.projektalmanac.amoxtli.backend.mapper.BookMapper;
-import io.github.projektalmanac.amoxtli.backend.mapper.UserMapper;
-import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
-import io.github.projektalmanac.amoxtli.backend.entity.*;
-import io.github.projektalmanac.amoxtli.backend.exception.*;
-import io.github.projektalmanac.amoxtli.backend.generated.model.*;
-import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
-import io.github.projektalmanac.amoxtli.backend.config.SecurityConfig;
-import java.io.IOException;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
-import java.util.*;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -127,7 +127,7 @@ public class UserService extends UserServiceKt {
     }
 
 
-    public void enviarCorreoVerificacion(int idusuario) throws MessagingException {
+    public void enviarCorreoVerificacion(Integer idusuario) throws MessagingException {
 
         Optional<User> userOpt = userRepository.findById(idusuario);
 
@@ -212,7 +212,7 @@ public class UserService extends UserServiceKt {
         this.userRepository.save(user);
     }
 
-    public boolean verificaCorreo(int id, @Valid CodigoVerificacionDto codigoVerificacionDto) {
+    public boolean verificaCorreo(Integer id, @Valid CodigoVerificacionDto codigoVerificacionDto) {
 
         Optional<User> usuarioOpt = userRepository.findById(id);
         if (usuarioOpt.isEmpty()) throw new UserNotFoundException(id);
