@@ -1,3 +1,4 @@
+<button mat-raised-button (click)="openQrCodeScanner()">Escanear QR</button>
 <div
   class="exchanges"
   *ngIf="pendingExchanges() !== undefined || otherExchanges() !== undefined; else loading">
@@ -27,7 +28,8 @@
         userId() === exchange.offeringUser.id
           ? exchange.acceptingUser.nombre + ' ' + exchange.acceptingUser.apellidos
           : exchange.offeringUser.nombre + ' ' + exchange.offeringUser.apellidos
-      ">
+      "
+      (accept)="acceptExchange(exchange)">
     </app-exchange-card>
   </div>
   <div

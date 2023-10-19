@@ -58,9 +58,6 @@ public interface IniciarSesionApi {
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class))
             })
-        },
-        security = {
-            @SecurityRequirement(name = "Token")
         }
     )
     @RequestMapping(

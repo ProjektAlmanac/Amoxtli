@@ -10,6 +10,8 @@ import {
 } from 'src/generated/openapi'
 import { BookListDialogComponent } from '../../components/book-list-dialog/book-list-dialog.component'
 import { lastValueFrom } from 'rxjs'
+import { QrCodeDialogComponent } from '../../components/qr-code-dialog/qr-code-dialog.component'
+import { QrCodeScannerDialogComponent } from '../../components/qr-code-scanner-dialog/qr-code-scanner-dialog.component'
 
 @Component({
   selector: 'app-exchanges-page',
@@ -79,6 +81,16 @@ export class ExchangesPageComponent implements OnInit {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     if (isbn === undefined) return Promise.resolve(undefined!)
     return lastValueFrom(this.apiService.getDetallesLibro(isbn))
+  }
+
+  acceptExchange(exchange: Exchange) {
+    this.dialog.open(QrCodeDialogComponent, {
+      data: { exchangeId: exchange.id, userId: this.userId() },
+    })
+  }
+
+  openQrCodeScanner() {
+    this.dialog.open(QrCodeScannerDialogComponent)
   }
 }
 
