@@ -51,4 +51,14 @@ open class UserServiceKt (private val userRepository: UserRepository, private va
 
        return ExchangeMapper.INSTANCE.toIntercambioDto(intercambio)
     }
+
+    fun getIntercambio(userId: Int, exchangeId: Int): IntercambioDto {
+        val user = userRepository.findById(userId).orElseThrow { UserNotFoundException(userId) }
+        val exchange = user.exchangesAccepting
+            .asSequence()
+            .plus(user.exchangesOfferor)
+            .filter { it.id == exchangeId }
+            .firstOrNull() ?: throw IntercambioNotFoundException(exchangeId)
+        return ExchangeMapper.INSTANCE.toIntercambioDto(exchange)
+    }
 }
