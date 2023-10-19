@@ -51,4 +51,27 @@ public class User {
         return books.add(book);
     }
 
+    public boolean addExchangesAccepting(Exchange intercambio) {
+
+        if (intercambio == null) {
+            throw new EmptyResourceException();
+        }
+
+        if (exchangesAccepting.contains(intercambio)) {
+            //Verificar que no se encuentre en intercambio todavia en la lista de intercambios aceptados en el usuario
+            return false;
+        }
+
+        return exchangesAccepting.add(intercambio);
+    }
+
+    public boolean removeExchangesOfferor(Exchange intercambio) {
+
+        if (intercambio == null) {
+            throw new EmptyResourceException();
+        }
+
+        return exchangesOfferor.remove(intercambio);
+    }
+
 }

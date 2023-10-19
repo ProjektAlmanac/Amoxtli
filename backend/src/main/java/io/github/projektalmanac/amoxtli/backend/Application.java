@@ -1,10 +1,8 @@
 package io.github.projektalmanac.amoxtli.backend;
 
-import io.github.projektalmanac.amoxtli.backend.entity.User;
-import io.github.projektalmanac.amoxtli.backend.entity.Book;
-import io.github.projektalmanac.amoxtli.backend.repository.BookRepository;
-import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
-import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
+import io.github.projektalmanac.amoxtli.backend.entity.*;
+import io.github.projektalmanac.amoxtli.backend.enums.Status;
+import io.github.projektalmanac.amoxtli.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,12 +29,13 @@ public class Application {
 	@PostConstruct
 	public void postConstruct() {
 		var user = new User();
-		user.setName("Juan");
+		user.setName("Maria");
 		user.setLastName("Pérez");
 		user.setId(1);
 		user.setPhone("1234567890");
 		user.setEmail("jperaz@gmail.com");
 		user.setVerifiedEmail(true);
+		user.setPhone("5578476989");
 
 		var user2 = new User();
 		user2.setName("Carlos");
