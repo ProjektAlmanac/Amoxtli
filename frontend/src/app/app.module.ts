@@ -18,13 +18,7 @@ import { MatBadgeModule } from '@angular/material/badge'
 import { MatListModule } from '@angular/material/list'
 import { MatCardModule } from '@angular/material/card'
 
-import {
-  ApiModule,
-  Configuration,
-  ConfigurationParameters,
-  DefaultService,
-  BASE_PATH,
-} from 'src/generated/openapi'
+import { ApiModule, Configuration, DefaultService, BASE_PATH } from 'src/generated/openapi'
 import { HttpClientModule, HttpHeaders } from '@angular/common/http'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { SignUpModule } from './features/sign-up/sign-up.module'
@@ -35,14 +29,8 @@ import { librosModule } from './features/libros/libros.module'
 import { CatalogoUsuarioModule } from './features/catalogo-usuario/catalogo-usuario.module'
 import { NotFoundComponent } from './core/pages/not-found/not-found.component'
 import { PerfilComponent } from './features/perfil/pages/perfil.component'
+import { LoginModule } from './features/login/login.module'
 import { LibroModule } from './features/libros/libro.module'
-
-export function apiConfigFactory(): Configuration {
-  const params: ConfigurationParameters = {
-    credentials: { Token: '123' },
-  }
-  return new Configuration(params)
-}
 
 @NgModule({
   declarations: [AppComponent, NotFoundComponent, PerfilComponent, SharedComponent],
@@ -50,7 +38,7 @@ export function apiConfigFactory(): Configuration {
     NgIf,
     BrowserModule,
     AppRoutingModule,
-    ApiModule.forRoot(apiConfigFactory),
+    ApiModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MatIconModule,
@@ -70,9 +58,22 @@ export function apiConfigFactory(): Configuration {
     MatSnackBarModule,
     librosModule,
     CatalogoUsuarioModule,
+    LoginModule,
     LibroModule,
   ],
-  providers: [{ provide: BASE_PATH, useValue: environment.apiBasePath }, ServicioUsuario],
+  providers: [
+    { provide: BASE_PATH, useValue: environment.apiBasePath },
+    ServicioUsuario,
+    {
+      provide: Configuration,
+      useFactory: (userService: ServicioUsuario) =>
+        new Configuration({
+          accessToken: () => userService.token(),
+        }),
+      deps: [ServicioUsuario],
+      multi: false,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {

@@ -1,7 +1,11 @@
 package io.github.projektalmanac.amoxtli.backend.service;
 
+import io.github.projektalmanac.amoxtli.backend.entity.Book;
+import io.github.projektalmanac.amoxtli.backend.entity.Exchange;
+import io.github.projektalmanac.amoxtli.backend.enums.Status;
 import io.github.projektalmanac.amoxtli.backend.exception.*;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
+import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,10 +19,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.swing.text.html.Option;
 
 import io.github.projektalmanac.amoxtli.backend.entity.User;
 import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
@@ -41,6 +48,10 @@ class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
+
+    @Mock
+    ExchangeRepository exchangeRepository;
+
 
     String email, password, passwordHash, salt;
     CredencialesDto credencialesDto;
@@ -313,19 +324,20 @@ class UserServiceTest {
         });
     }
 
+
     @Test
     void getUsuario() {
 
         //Caso 1. El usuario no existe en la base de datos
         Integer id = 0;
         when(userRepository.findById(id)).thenReturn(Optional.empty());
-        Assertions.assertThrows(UserNotFoundException.class, () -> {
+        Assertions.assertThrows(UserNotFoundException.class,() ->{
             userService.getUsuario(id);
         });
-        //Caso 2. El usuario existe pero su correo no está verificado
+        //Caso 2. El usuario existe, pero su correo no está verificado
         Integer idUser = 1;
         when(userRepository.findById(idUser)).thenReturn(Optional.of(this.user));
-        Assertions.assertThrows(EmailUserNotVerificationException.class, () -> {
+        Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
             userService.getUsuario(idUser);
         });
 
@@ -337,24 +349,24 @@ class UserServiceTest {
         // Caso 1. EL usuario no existe
         Integer idUser = 1;
         when(userRepository.findById(idUser)).thenReturn(Optional.empty());
-        Assertions.assertThrows(UserNotFoundException.class, () -> {
-            userService.actualizaUsuario(idUser, perfilUsuarioDto);
+        Assertions.assertThrows(UserNotFoundException.class,() ->{
+            userService.actualizaUsuario(idUser,perfilUsuarioDto);
         });
 
-        // Caso 2. El usuario existe pero su correo no esta autenticado
+        // Caso 2. El usuario existe, pero su correo no está verificado
         Integer idUser1 = 1;
-        when(userRepository.findById(idUser)).thenReturn(Optional.of(this.user));
-        Assertions.assertThrows(EmailUserNotVerificationException.class, () -> {
-            userService.actualizaUsuario(idUser1, perfilUsuarioDto);
+        when(userRepository.findById(idUser1)).thenReturn(Optional.of(this.user));
+        Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
+            userService.actualizaUsuario(idUser1,perfilUsuarioDto);
         });
 
         // Caso 3. Se actualizan los cambios correctamente
         Integer id = 2;
         when(userRepository.findById(id)).thenReturn(Optional.of(this.user1));
         when(userRepository.save(any(User.class))).then(returnsFirstArg());
-        PerfilUsuarioDto perfil = userService.actualizaUsuario(id, perfilUsuarioDtoCambio);
-        Assertions.assertEquals(perfilUsuarioDtoCambio.getApellidos(), perfil.getApellidos());
-        Assertions.assertEquals(perfilUsuarioDtoCambio.getTelefono(), perfil.getTelefono());
+        PerfilUsuarioDto perfil = userService.actualizaUsuario(id,perfilUsuarioDtoCambio);
+        Assertions.assertEquals(perfilUsuarioDtoCambio.getApellidos(),perfil.getApellidos());
+        Assertions.assertEquals(perfilUsuarioDtoCambio.getTelefono(),perfil.getTelefono());
 
     }
 
@@ -364,20 +376,174 @@ class UserServiceTest {
         Resource body = new ByteArrayResource(new byte[]{1, 2, 3});
         // Caso 1. El usuario no existe
         when(userRepository.findById(1)).thenReturn(Optional.empty());
-        Assertions.assertThrows(UserNotFoundException.class, () -> {
-            userService.actualizaFoto(1, body);
+        Assertions.assertThrows(UserNotFoundException.class,() ->{
+            userService.actualizaFoto(1,body);
         });
         // Caso 2: El correo del usuario verificado
         when(userRepository.findById(1)).thenReturn(Optional.of(this.user));
-        Assertions.assertThrows(EmailUserNotVerificationException.class, () -> {
-            userService.actualizaFoto(1, body);
+        Assertions.assertThrows(EmailUserNotVerificationException.class,() ->{
+            userService.actualizaFoto(1,body);
         });
 
         // Caso 3. Se guarda la foto correctamente
         when(userRepository.findById(2)).thenReturn(Optional.of(this.user1));
         when(userRepository.save(this.user1)).thenReturn(this.user1);
-        userService.actualizaFoto(2, body);
-        Assertions.assertArrayEquals(body.getInputStream().readAllBytes(), this.user1.getPhoto());
+        userService.actualizaFoto(2,body);
+        Assertions.assertArrayEquals(body.getInputStream().readAllBytes(),this.user1.getPhoto());
+
+    }
+
+    @Test
+    void validaIntercambio() {
+        // Caso 1. El usuario no existe
+        Integer idUser = 1;
+        ValidaPuedeIntercambiar200ResponseDto result;
+        Optional<User> userOptional = Optional.empty();
+        when(userRepository.findById(idUser)).thenReturn(userOptional);
+        Assertions.assertThrows(UserNotFoundException.class,() ->{
+            userService.validaIntercambio(idUser);
+        });
+
+        // Caso 2. El usuario existe, pero su correo no está verificado
+        User user = new User();
+        user.setId(idUser);
+        user.setVerifiedEmail(false);
+        userOptional = Optional.of(user);
+        when(userRepository.findById(idUser)).thenReturn(userOptional);
+        result = userService.validaIntercambio(idUser);
+        Assertions.assertFalse(result.getPuedeIntercambiar());
+
+        // Caso 3. El usuario no tiene información de contacto
+        user.setVerifiedEmail(true);
+        user.setPhone(null);
+        userOptional = Optional.of(user);
+        when(userRepository.findById(idUser)).thenReturn(userOptional);
+        result = userService.validaIntercambio(idUser);
+        Assertions.assertFalse(result.getPuedeIntercambiar());
+        // Caso 4. El usuario no tiene libros registrados
+
+        List<Book> books = new ArrayList<>();
+        user.setPhone("58587599");
+        user.setBooks(books);
+        userOptional = Optional.of(user);
+        when(userRepository.findById(idUser)).thenReturn(userOptional);
+        result = userService.validaIntercambio(idUser);
+        Assertions.assertFalse(result.getPuedeIntercambiar());
+
+        // Caso 5. El usuario tiene mas intercambios aceptados/solicitados de los permitidos
+        Book book = new Book();
+        book.setId(1);
+        book.setIsbn("123456789");
+        book.setDescription("Libro de prueba");
+
+        books.add(book);
+        user.setBooks(books);
+
+        Exchange auxIntercambio = new Exchange();
+        auxIntercambio.setId(1);
+        auxIntercambio.setStatus(Status.ACEPTADO);
+        auxIntercambio.setBookAccepting(book);
+        auxIntercambio.setBookOfferor(book);
+        auxIntercambio.setUserAccepting(user);
+
+        Exchange auxIntercambio2 = new Exchange();
+        auxIntercambio2.setId(2);
+        auxIntercambio2.setStatus(Status.PENDIENTE);
+        auxIntercambio2.setBookAccepting(book);
+        auxIntercambio2.setBookOfferor(null);
+        auxIntercambio2.setUserAccepting(user);
+
+        List<Exchange> intercambiosAceptados = new ArrayList<>();
+        intercambiosAceptados.add(auxIntercambio);
+        intercambiosAceptados.add(auxIntercambio);
+        intercambiosAceptados.add(auxIntercambio);
+        List<Exchange> intercambiosSolicitados = new ArrayList<>();
+        intercambiosSolicitados.add(auxIntercambio2);
+        intercambiosSolicitados.add(auxIntercambio2);
+
+        user.setExchangesOfferor(intercambiosSolicitados);
+        user.setExchangesAccepting(intercambiosAceptados);
+        userOptional = Optional.of(user);
+        when(userRepository.findById(idUser)).thenReturn(userOptional);
+        result = userService.validaIntercambio(idUser);
+        Assertions.assertFalse(result.getPuedeIntercambiar());
+
+        // Caso 6. El usuario tiene menos intercambios aceptados/solicitados de los permitidos
+        intercambiosAceptados.remove(0);
+        intercambiosSolicitados.remove(0);
+        user.setExchangesOfferor(intercambiosSolicitados);
+        user.setExchangesAccepting(intercambiosAceptados);
+        userOptional = Optional.of(user);
+        when(userRepository.findById(idUser)).thenReturn(userOptional);
+        result = userService.validaIntercambio(idUser);
+        Assertions.assertEquals(true,result.getPuedeIntercambiar());
+
+
+    }
+
+    @Test
+    void solicitaIntercambio() {
+        // Caso 1. El cuerpo de la petición es nulo
+        Assertions.assertThrows(IllegalArgumentException.class,() ->{
+            userService.solicitaIntercambio(1,null);
+        });
+
+        // Caso 2. Los id de los usuarios son iguales
+        CreacionIntercambioDto creacionIntercambioDto = new CreacionIntercambioDto(1,1);
+        Assertions.assertThrows(SelfExchangeException.class,() ->{
+            userService.solicitaIntercambio(1,creacionIntercambioDto);
+        });
+
+        // Caso 3. Los usuarios no existen
+        // 3.1. El usuario que solicita el intercambio no existe
+        Integer idUserSolicitante = 1;
+        creacionIntercambioDto.setIdAceptante(2);
+        when(userRepository.findById(idUserSolicitante)).thenReturn(Optional.empty());
+        Assertions.assertThrows(UserNotFoundException.class,() ->{
+            userService.solicitaIntercambio(idUserSolicitante,creacionIntercambioDto);
+        });
+
+        // 3.2. El usuario que acepta el intercambio no existe
+        Integer idUserAceptante = 2;
+        when(userRepository.findById(any())).thenReturn(Optional.empty());
+        Assertions.assertThrows(UserNotFoundException.class,() ->{
+            userService.solicitaIntercambio(idUserSolicitante,creacionIntercambioDto);
+        });
+
+        //Caso 4. La solicitud de intercambio se realiza correctamente
+
+        User userSolicitante = new User();
+        userSolicitante.setId(idUserSolicitante);
+        userSolicitante.setVerifiedEmail(true);
+        User userAceptante = new User();
+        userAceptante.setId(idUserAceptante);
+        userAceptante.setVerifiedEmail(true);
+        Book book = new Book();
+        book.setId(1);
+        book.setDescription("Libro de prueba");
+        List<Book> books = new ArrayList<>();
+        books.add(book);
+        userAceptante.setBooks(books);
+        Exchange exchange = new Exchange();
+        exchange.setId(1);
+        exchange.setUserOfferor(userSolicitante);
+        exchange.setUserAccepting(userAceptante);
+        exchange.setBookAccepting(book);
+        exchange.setStatus(Status.PENDIENTE);
+
+        creacionIntercambioDto.setIdAceptante(idUserAceptante);
+        when(userRepository.findById(idUserSolicitante)).thenReturn(Optional.of(userSolicitante));
+        when(userRepository.findById(idUserAceptante)).thenReturn(Optional.of(userAceptante));
+        when(exchangeRepository.save(any(Exchange.class))).thenReturn(exchange);
+        IntercambioDto intercambioDto = userService.solicitaIntercambio(idUserSolicitante,creacionIntercambioDto);
+
+        Assertions.assertNotNull(intercambioDto);
+
+        Assertions.assertEquals(intercambioDto.getId(),exchange.getId());
+        Assertions.assertEquals(intercambioDto.getOfertante().getId(),userSolicitante.getId());
+        Assertions.assertEquals(intercambioDto.getAceptante().getId(),userAceptante.getId());
+        Assertions.assertEquals(intercambioDto.getLibroAceptante().getId(),book.getId());
+
 
     }
 }
