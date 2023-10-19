@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core'
 import { CommonModule, NgIf } from '@angular/common'
 import { RouterModule } from '@angular/router'
 import { MostrarLibrosComponent } from './pages/mostrar-libros/mostrar-libros.component'
-import { DetallesLibroComponent } from './components/detalles-libro/detalles-libro.component'
 
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatButtonModule } from '@angular/material/button'
@@ -18,7 +17,7 @@ import { SharedModule } from 'src/app/shared/shared.module'
 import { HttpClientModule } from '@angular/common/http'
 
 @NgModule({
-  declarations: [MostrarLibrosComponent, DetallesLibroComponent],
+  declarations: [MostrarLibrosComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -35,6 +34,6 @@ import { HttpClientModule } from '@angular/common/http'
     SharedModule,
     HttpClientModule,
   ],
-  exports: [MostrarLibrosComponent, DetallesLibroComponent],
+  exports: [MostrarLibrosComponent],
 })
 export class librosModule {}

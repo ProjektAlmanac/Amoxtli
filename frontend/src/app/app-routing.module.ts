@@ -6,7 +6,6 @@ import { SignUpPageComponent } from './features/sign-up/pages/sign-up-page/sign-
 import { VerifyEmailPageComponent } from './features/sign-up/pages/verify-email-page/verify-email-page.component'
 import { WelcomePageComponent } from './features/sign-up/pages/welcome-page/welcome-page.component'
 import { MostrarLibrosComponent } from './features/libros/pages/mostrar-libros/mostrar-libros.component'
-import { DetallesLibroComponent } from './features/libros/components/detalles-libro/detalles-libro.component'
 import { AgregarLibroComponent } from './features/catalogo-usuario/components/agregar-libro/agregar-libro.component'
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component'
 import { NotFoundComponent } from './core/pages/not-found/not-found.component'
@@ -41,8 +40,6 @@ const routes: Routes = [
       { path: 'perfil', component: PerfilComponent },
 
       { path: 'libros', component: MostrarLibrosComponent },
-      { path: 'detallesLibro/:isbn', component: DetallesLibroComponent },
-
       { path: 'libro', component: LibroPageComponent },
     ],
   },
