@@ -35,7 +35,9 @@ public class UserController implements UsuariosApi {
     @Override
     public ResponseEntity<IntercambioDto> aceptarIntercambio(Integer idUsuario, Integer idIntercambio,
             AceptarIntercambioRequestDto aceptarIntercambioRequestDto) {
-        return null;
+
+        IntercambioDto result = userService.aceptarIntercambio(idUsuario,idIntercambio, aceptarIntercambioRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @Override
@@ -57,7 +59,8 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<IntercambioDto> addIntercambio(Integer id, CreacionIntercambioDto creacionIntercambioDto) {
-        return null;
+        IntercambioDto result = this.userService.solicitaIntercambio(id, creacionIntercambioDto);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @Override
@@ -130,7 +133,8 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<ValidaPuedeIntercambiar200ResponseDto> validaPuedeIntercambiar(Integer id) {
-        return null;
+        ValidaPuedeIntercambiar200ResponseDto result = userService.validaIntercambio(id);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 

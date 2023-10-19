@@ -3,7 +3,6 @@ package io.github.projektalmanac.amoxtli.backend.service;
 import com.google.api.services.books.model.Volume.VolumeInfo;
 import io.github.projektalmanac.amoxtli.backend.entity.Book;
 import io.github.projektalmanac.amoxtli.backend.entity.User;
-import io.github.projektalmanac.amoxtli.backend.exception.BookAlreadyExistsException;
 import io.github.projektalmanac.amoxtli.backend.exception.ResourceNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
@@ -53,10 +52,6 @@ public class BookService {
         User user = userOpt.get();
 
         libroRegistradoDto.setIsbn(libroRegistradoDto.getIsbn().replace("-",""));
-        // Regla de negocio: No se permite agregar dos libros con el mismo isbn en el mismo perfil
-        boolean result = userRepository.existsBookByIsbnAndUserId(libroRegistradoDto.getIsbn(), user.getId());
-
-        if (result) throw new BookAlreadyExistsException(); //Revisar el código del error
 
         // Se verifica si el ISBN es válido, en caso de no serlo, se mandará una excepción desde el servicio de Google Books
         googleBookService.getVolumeInfoByIsbn(libroRegistradoDto.getIsbn());
@@ -70,6 +65,7 @@ public class BookService {
 
         return BookMapper.INSTANCE.toLibroRegistradoDto(book);
     }
+
 
     public LibroConDuenosDto getLibroConDuenos(String isbn) {
         // obtener los detalles del libro

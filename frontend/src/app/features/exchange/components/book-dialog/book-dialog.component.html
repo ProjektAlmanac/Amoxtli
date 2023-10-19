@@ -1,0 +1,6 @@
+<div class="book-info">
+  <app-libro [libro]="bookDetails()!" *ngIf="bookDetails(); else loading"></app-libro>
+  <ng-template #loading>
+    <mat-spinner></mat-spinner>
+  </ng-template>
+</div>

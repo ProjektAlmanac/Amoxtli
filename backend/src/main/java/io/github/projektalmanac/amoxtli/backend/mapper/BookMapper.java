@@ -52,6 +52,8 @@ public interface BookMapper {
     @Mapping(target = "descripcion", source = "description")
     LibroRegistradoDto toLibroRegistradoDto(Book book);
 
+    @Mapping(target = "descripcion", source = "description")
+    LibroAceptanteDto tOLibroAceptanteDto(Book book);
 
     @Mapping(target = "isbn", source = "ISBN")
     @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")
@@ -64,7 +66,6 @@ public interface BookMapper {
     @Mapping(target = "fechaPublicacion", source = "libroGoogleBooks.publishedDate" )
     //@Mapping(target = "duenos", source = "dueños" )
     LibroConDuenosDto toLibroConDuenosDto(String ISBN, VolumeInfo libroGoogleBooks);
-
 
     @Mapping(target = "isbn", source = "ISBN")
     @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")

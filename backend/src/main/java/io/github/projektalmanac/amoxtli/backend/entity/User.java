@@ -27,7 +27,7 @@ public class User {
     private boolean verifiedEmail;
     private String verificationCode;
     @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_book")
+    @JoinColumn(name = "id_user")
     private List<Book> books = new ArrayList<>();
 
     @OneToMany(mappedBy = "userAccepting")
@@ -50,6 +50,29 @@ public class User {
         }
 
         return books.add(book);
+    }
+
+    public boolean addExchangesAccepting(Exchange intercambio) {
+
+        if (intercambio == null) {
+            throw new EmptyResourceException();
+        }
+
+        if (exchangesAccepting.contains(intercambio)) {
+            //Verificar que no se encuentre en intercambio todavia en la lista de intercambios aceptados en el usuario
+            return false;
+        }
+
+        return exchangesAccepting.add(intercambio);
+    }
+
+    public boolean removeExchangesOfferor(Exchange intercambio) {
+
+        if (intercambio == null) {
+            throw new EmptyResourceException();
+        }
+
+        return exchangesOfferor.remove(intercambio);
     }
 
 }
