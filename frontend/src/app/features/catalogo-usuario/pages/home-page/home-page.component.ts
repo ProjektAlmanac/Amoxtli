@@ -36,14 +36,11 @@ export class HomePageComponent implements OnInit {
     this.serviceApi.getLibros().subscribe(resp => {
       this.libros = resp
       this.libroscopy = resp.libros
-      // eslint-disable-next-line no-console
-      console.log(this.libros)
       this.mostrarSpinner = false
     })
   }
   onSubmit() {
     this.mostrarSpinner = true
-
     if (!this.form.valid) {
       this.mostrarSpinner = false
       this.form.markAllAsTouched()
@@ -51,16 +48,24 @@ export class HomePageComponent implements OnInit {
     }
 
     const isbn = this.form.get('isbn')?.value
-
-    if (isbn !== null && isbn !== undefined) this.filtrarLibros()
+    if (isbn !== null && isbn !== undefined) {
+      this.filtrarLibros(isbn) // Filtrar los libros basados en el ISBN
+    } else {
+      // En caso de que no se haya ingresado un ISBN, muestra el mensaje de "No se encontraron libros"
+      this.libros.libros = this.libroscopy
+      this.mostrarSpinner = false
+    }
   }
 
-  filtrarLibros() {
-    if (this.isbnFilter) {
+  filtrarLibros(isbn: string) {
+    if (isbn) {
       // Filter the libros array based on the entered ISBN
-      this.libros.libros = this.libros.libros.filter(libro => libro.isbn.includes(this.isbnFilter))
+      this.mostrarSpinner = false
+      this.libros.libros = this.libros.libros.filter(libro => libro.isbn.includes(isbn))
     } else {
+      this.mostrarSpinner = false
       this.libros.libros = this.libroscopy
+      this.form.reset()
     }
   }
 
@@ -80,7 +85,7 @@ export class HomePageComponent implements OnInit {
     if (this.libroscopy) {
       return Math.ceil(this.libroscopy.length / this.itemsPerPage)
     } else {
-      return 0 // Or handle this case as per your application's logic.
+      return 1 // Or handle this case as per your application's logic.
     }
   }
 }

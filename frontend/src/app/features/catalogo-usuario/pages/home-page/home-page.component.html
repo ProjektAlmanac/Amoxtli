@@ -1,4 +1,4 @@
-<div style="height: 92vh">
+<div style="height: 80vh">
   <mat-card class="centrado">
     <mat-card-header>
       <mat-card-title>
@@ -8,7 +8,7 @@
   </mat-card>
 
   <div class="centrado mt-3">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form">
       <mat-form-field class="input mb-2 mx-2">
         <mat-label>ISBN</mat-label>
         <input matInput placeholder="Ingresa el ISBN" formControlName="isbn" />
@@ -20,49 +20,57 @@
           El ISBN debe tener 10 ó 13 dígitos
         </mat-error>
       </mat-form-field>
-      <button mat-raised-button class="submit mx-2" type="submit" color="primary">Buscar</button>
+      <button
+        mat-raised-button
+        class="submit mx-2"
+        type="submit"
+        color="primary"
+        (click)="onSubmit()">
+        Buscar
+      </button>
     </form>
   </div>
 
   <app-progress-spinner *ngIf="mostrarSpinner"></app-progress-spinner>
 
-  <div *ngIf="!mostrarSpinner" class="centrado">
-    <div class="tarjeta-libro libros m-4">
-      <div class="row">
-        <div class="col">
-          <mat-card class="baseCard" *ngIf="libros?.libros?.length; else nohayLibros">
-            <table>
-              <thead>
-                <tr>
-                  <th>Libros disponibles</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="my-2 mx-1" *ngFor="let libro of libros.libros">
-                  <!--<tr *ngFor="let libro of getBooksForCurrentPage()">-->
-                  <a [routerLink]="['/detallesLibro', libro.isbn]">
-                    <button mat-raised-button class="btnLibro" color="primary">
-                      <mat-card-title-group>
-                        <mat-card-title> {{ libro.titulo }} </mat-card-title>
-                        <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
-                        <img
-                          class="mx-3"
-                          mat-card-md-image
-                          [src]="libro.urlPortada"
-                          alt="Img Libro"
-                          width="150px" />
-                      </mat-card-title-group>
-                    </button>
-                  </a>
-                </tr>
-              </tbody>
-            </table>
-          </mat-card>
-        </div>
+  <div
+    *ngIf="!mostrarSpinner"
+    class="justify-content-center container"
+    style="border: 1px solid red">
+    <div
+      class="row libros"
+      *ngIf="libros.libros.length > 0; else nohayLibros"
+      style="border: 1px solid rgb(38, 0, 255)">
+      <div>
+        <h1>Libros disponibles</h1>
       </div>
+      <div class="" *ngFor="let libro of libros.libros" style="border: 1px solid rgb(255, 0, 221)">
+        <mat-card class="col-12 col-md-12 col-sm-12" style="border: 1px solid rgb(0, 255, 191)">
+          <a [routerLink]="['/detallesLibro', libro.isbn]">
+            <mat-card-header>
+              <mat-card-title> {{ libro.titulo }} </mat-card-title>
+              <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
+            </mat-card-header>
+            <img
+              mat-card-image
+              class=""
+              mat-card-md-image
+              [src]="libro.urlPortada"
+              alt="Img Libro"
+              width="100px" />
+          </a>
+        </mat-card>
+      </div>
+      <!--<tr *ngFor="let libro of getBooksForCurrentPage()">-->
     </div>
     <ng-template #nohayLibros>
-      <div class="alert alert-primary" role="alert">No tienes libros en tu catálogo.</div>
+      <div style="text-align: center">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>¡Ops! No se encontraron libros</mat-card-title>
+          </mat-card-header>
+        </mat-card>
+      </div>
     </ng-template>
   </div>
 </div>
