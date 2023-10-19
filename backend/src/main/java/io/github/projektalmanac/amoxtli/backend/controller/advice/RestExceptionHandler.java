@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -77,5 +78,35 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<ErrorDto> handleInvalidEmailFormatException(InvalidEmailFormatException ex, WebRequest request) {
         var error = new ErrorDto(ex.getMessage(), 7);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(InvalidUserSessionException.class)
+    public final ResponseEntity<ErrorDto> handleInvalidUserSesionException(InvalidUserSessionException ex, WebRequest request) {
+        var error = new ErrorDto(ex.getMessage(), 9);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(InvalidVerificationCodeException.class)
+    public final ResponseEntity<ErrorDto> handleInvalidVerificationCodeException(InvalidVerificationCodeException ex, WebRequest request) {
+        var error = new ErrorDto(ex.getMessage(), 10);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(BookNotFoundException.class)
+    public final ResponseEntity<ErrorDto> handleBookNotFoundException(BookNotFoundException ex, WebRequest request) {
+        var error = new ErrorDto(ex.getMessage(), 10);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(SelfExchangeException.class)
+    public  final ResponseEntity<ErrorDto> handleSelfExchangeException(SelfExchangeException ex, WebRequest request){
+        var error = new ErrorDto(ex.getMessage(), 11);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(UnregisteredPhoneNumberException.class)
+    public final ResponseEntity<ErrorDto> handleUnregisteredPhoneNumberException(UnregisteredPhoneNumberException ex, WebRequest request) {
+        var error = new ErrorDto(ex.getMessage(), 12);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(NoBooksRegisteredException.class)
+    public final ResponseEntity<ErrorDto> handleNoBooksRegisteredException(NoBooksRegisteredException ex, WebRequest request) {
+        var error = new ErrorDto(ex.getMessage(), 13);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }

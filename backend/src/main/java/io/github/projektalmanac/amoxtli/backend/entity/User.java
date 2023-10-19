@@ -27,9 +27,14 @@ public class User {
     private boolean verifiedEmail;
     private String verificationCode;
     @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_book")
+    @JoinColumn(name = "id_user")
     private List<Book> books = new ArrayList<>();
 
+    @OneToMany(mappedBy = "userAccepting")
+    private List<Exchange> exchangesAccepting =  new ArrayList<>();
+
+    @OneToMany(mappedBy = "userOfferor")
+    private List<Exchange> exchangesOfferor =  new ArrayList<>();
     public boolean addBook(Book book) {
 
         if (book == null) {

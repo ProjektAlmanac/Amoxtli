@@ -8,7 +8,7 @@ import {
   LibroRegistradoConDetalles,
   Ofertante,
 } from 'src/generated/openapi'
-import { BookListDialogComponent } from '../../components/book-list/book-list-dialog/book-list-dialog.component'
+import { BookListDialogComponent } from '../../components/book-list-dialog/book-list-dialog.component'
 import { lastValueFrom } from 'rxjs'
 import { QrCodeDialogComponent } from '../../components/qr-code-dialog/qr-code-dialog.component'
 import { QrCodeScannerDialogComponent } from '../../components/qr-code-scanner-dialog/qr-code-scanner-dialog.component'
@@ -58,7 +58,10 @@ export class ExchangesPageComponent implements OnInit {
     const dialogRef = this.dialog.open(BookListDialogComponent, {
       data: { userId: exchange.offeringUser.id },
     })
-    const result: LibroRegistradoConDetalles = await lastValueFrom(dialogRef.afterClosed())
+    const result = (await lastValueFrom(dialogRef.afterClosed())) as
+      | LibroRegistradoConDetalles
+      | undefined
+    if (result === undefined) return
     this.apiService
       .aceptarIntercambio(exchange.acceptingUser.id, exchange.id, {
         idLibro: result.id,

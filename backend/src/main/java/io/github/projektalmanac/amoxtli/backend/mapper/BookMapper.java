@@ -2,20 +2,14 @@ package io.github.projektalmanac.amoxtli.backend.mapper;
 
 import com.google.api.services.books.model.Volume.VolumeInfo;
 import io.github.projektalmanac.amoxtli.backend.entity.Book;
-import io.github.projektalmanac.amoxtli.backend.generated.model.DetallesLibroDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibroRegistradoConDetallesDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibroRegistradoDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibrosUsuarioDto;
-import jdk.jfr.Name;
+import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -58,6 +52,8 @@ public interface BookMapper {
     @Mapping(target = "descripcion", source = "description")
     LibroRegistradoDto toLibroRegistradoDto(Book book);
 
+    @Mapping(target = "descripcion", source = "description")
+    LibroAceptanteDto tOLibroAceptanteDto(Book book);
     default URI stringToUri(String string) {
         if (string == null) return null;
         return URI.create(string);

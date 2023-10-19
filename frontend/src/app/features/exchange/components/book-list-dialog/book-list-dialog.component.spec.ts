@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
 import { BookListDialogComponent } from './book-list-dialog.component'
-import { ExchangeModule } from '../../../exchange.module'
+import { ExchangeModule } from '../../exchange.module'
 import { HttpClientTestingModule } from '@angular/common/http/testing'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 

@@ -1,6 +1,7 @@
 package io.github.projektalmanac.amoxtli.backend.controller;
 
 import io.github.projektalmanac.amoxtli.backend.exception.InvalidPhotoException;
+import io.github.projektalmanac.amoxtli.backend.exception.InvalidVerificationCodeException;
 import io.github.projektalmanac.amoxtli.backend.generated.api.UsuariosApi;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.service.UserService;
@@ -56,7 +57,8 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<IntercambioDto> addIntercambio(Integer id, CreacionIntercambioDto creacionIntercambioDto) {
-        return null;
+        IntercambioDto result = this.userService.solicitaIntercambio(id, creacionIntercambioDto);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @Override
@@ -97,7 +99,9 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<GetIntercambios200ResponseDto> getIntercambios(Integer id) {
-        return null;
+        //HU-07
+        GetIntercambios200ResponseDto result = userService.getIntercambios(id);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @Override
@@ -110,6 +114,7 @@ public class UserController implements UsuariosApi {
     @Override
     public ResponseEntity<PerfilUsuarioDto> getUsuario(Integer id) {
         PerfilUsuarioDto perfilUsuarioDto = this.userService.getUsuario(id);
+
         return ResponseEntity.ok(perfilUsuarioDto);
     }
 
@@ -118,8 +123,6 @@ public class UserController implements UsuariosApi {
     @PostMapping(path = "/usuarios/{id}/mandarCorreoConfirmacion")
     @Override
     public ResponseEntity<Void> mandarCorreoConfirmacion(@PathVariable Integer id) {
-
-
         userService.enviarCorreoVerificacion(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(null);
@@ -128,22 +131,19 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<ValidaPuedeIntercambiar200ResponseDto> validaPuedeIntercambiar(Integer id) {
-        return null;
+        ValidaPuedeIntercambiar200ResponseDto result = userService.validaIntercambio(id);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 
     @PostMapping(path = "/usuarios/{id}/verificarCorreo")
     @Override
     public ResponseEntity<Void> verificarCorreo(@PathVariable Integer id, @RequestBody @Valid CodigoVerificacionDto codigoVerificacionDto) {
-
         boolean codigoCorrecto = userService.verificaCorreo(id, codigoVerificacionDto);
 
-        if (codigoCorrecto) {
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+        if (!codigoCorrecto) throw new InvalidVerificationCodeException();
 
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 }
