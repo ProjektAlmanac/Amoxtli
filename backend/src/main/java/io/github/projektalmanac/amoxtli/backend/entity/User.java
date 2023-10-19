@@ -26,8 +26,7 @@ public class User {
     private String interests;
     private boolean verifiedEmail;
     private String verificationCode;
-    @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_user")
+    @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Book> books = new ArrayList<>();
 
     @OneToMany(mappedBy = "userAccepting")

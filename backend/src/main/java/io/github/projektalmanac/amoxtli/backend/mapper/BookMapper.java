@@ -2,6 +2,7 @@ package io.github.projektalmanac.amoxtli.backend.mapper;
 
 import com.google.api.services.books.model.Volume.VolumeInfo;
 import io.github.projektalmanac.amoxtli.backend.entity.Book;
+import io.github.projektalmanac.amoxtli.backend.entity.User;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {UserMapper.class})
 public interface BookMapper {
     BookMapper INSTANCE = Mappers.getMapper(BookMapper.class);
 
@@ -55,7 +56,7 @@ public interface BookMapper {
     @Mapping(target = "descripcion", source = "description")
     LibroAceptanteDto tOLibroAceptanteDto(Book book);
 
-    @Mapping(target = "isbn", source = "ISBN")
+    @Mapping(target = "isbn", source = "isbn")
     @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")
     @Mapping(target = "titulo", source = "libroGoogleBooks.title")
     @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks")
@@ -64,8 +65,8 @@ public interface BookMapper {
     @Mapping(target = "sinopsis", source = "libroGoogleBooks.description")
     @Mapping(target = "idioma", source = "libroGoogleBooks.language")
     @Mapping(target = "fechaPublicacion", source = "libroGoogleBooks.publishedDate" )
-    //@Mapping(target = "duenos", source = "dueños" )
-    LibroConDuenosDto toLibroConDuenosDto(String ISBN, VolumeInfo libroGoogleBooks);
+    @Mapping(target = "duenos", source = "books" )
+    LibroConDuenosDto toLibroConDuenosDto(String isbn, VolumeInfo libroGoogleBooks, List<Book> books);
 
     @Mapping(target = "isbn", source = "ISBN")
     @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")

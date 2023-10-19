@@ -48,37 +48,19 @@ public class Application {
 		user3.setLastName("Morales");
 		user3.setId(3);
 		user3.setVerifiedEmail(true);
-		List<Book> libros = new ArrayList<>();
-		List<Book> libros2 = new ArrayList<>();
 
-		var book = new Book();
-		book.setIsbn("9783716026434");
-		book.setDescription("EL libro esta en buen estado");
-
-		var book1 = new Book();
-		book1.setIsbn("9780156014045");
-		book1.setDescription("Tiene algunas hojas dobladas");
-
-		var book2 = new Book();
-		book2.setIsbn("9786077350140");
-		book2.setDescription("Solo tiene una hoja rota");
-
-		libros.add(book);
-		libros.add(book1);
-		user.setBooks(libros);
-
-		libros2.add(book);
-		libros2.add(book1);
-		libros2.add(book2);
-		user2.setBooks(libros2);
+		var books = List.of(
+				new Book(0, "9783716026434", "El libro está en buen estado", user),
+				new Book(0, "9780156014045", "Tiene algunas hojas dobladas", user),
+				new Book(0, "9786077350140", "Solo tiene una hoja rota", user),
+				new Book(0, "9780156014045", "En buen estado", user2),
+				new Book(0, "9786077350140", "Portada despintada", user2)
+		);
 
 		userRepository.save(user);
 		userRepository.save(user2);
 		userRepository.save(user3);
 
-		bookRepository.save(book);
-		bookRepository.save(book1);
-		bookRepository.save(book2);
-
+		bookRepository.saveAll(books);
 	}
 }

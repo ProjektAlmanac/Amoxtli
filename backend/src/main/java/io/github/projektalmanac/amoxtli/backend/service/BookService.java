@@ -58,10 +58,9 @@ public class BookService {
 
         Book book = BookMapper.INSTANCE.toBook(libroRegistradoDto);
 
-        book = bookRepository.save(book);
-        user.addBook(book);
-        userRepository.save(user);
+        book.setOwner(user);
 
+        book = bookRepository.save(book);
 
         return BookMapper.INSTANCE.toLibroRegistradoDto(book);
     }
@@ -71,34 +70,9 @@ public class BookService {
         // obtener los detalles del libro
         VolumeInfo libroGoogleBooks = googleBookService.getVolumeInfoByIsbn(isbn);
 
-        // Verificar si el libro existe en la base de datos
-        Book book = bookRepository.findFirstByIsbn(isbn);
+        var books = bookRepository.findAllByIsbn(isbn);
 
-        if (book == null) {
-            throw new ResourceNotFoundException("Libro no encontrado con el ISBN proporcionado: " + isbn);
-        }
-
-        // Obtener los dueños del libro
-        List<User> duenos = userRepository.findUsersByBookIsbn(isbn);
-        List<DuenoDto> duenosDtoList = new ArrayList<>();
-
-        for (User dueno : duenos) {
-            DuenoDto duenoDto = new DuenoDto();
-
-            duenoDto = UserMapper.INSTANCE.userToUserDto1(dueno);
-            duenosDtoList.add(duenoDto);
-        }
-
-
-        LibroConDuenosDto libroConDuenosDto;
-
-
-        libroConDuenosDto = BookMapper.INSTANCE.toLibroConDuenosDto(isbn, libroGoogleBooks);
-        libroConDuenosDto.setDuenos(duenosDtoList);
-
-        // Retornar el libro mapeado con la información de los dueños
-        return libroConDuenosDto;
-
+        return BookMapper.INSTANCE.toLibroConDuenosDto(isbn, libroGoogleBooks, books);
     }
 
 

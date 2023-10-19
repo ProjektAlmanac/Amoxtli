@@ -80,7 +80,7 @@ export class LibroPageComponent implements OnInit {
     this.desactivarBotonIntercambiar = true
     const intercambio: CreacionIntercambio = {
       idAceptante: aceptante.id,
-      idLibroAceptante: parseInt(this.isbn),
+      idLibroAceptante: aceptante.idLibro,
     }
     this.servicioAPI.addIntercambio(this.idUsuario, intercambio).subscribe({
       next: () => {
