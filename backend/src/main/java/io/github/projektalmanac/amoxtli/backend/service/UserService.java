@@ -1,9 +1,10 @@
 package io.github.projektalmanac.amoxtli.backend.service;
 
 
+import io.github.projektalmanac.amoxtli.backend.repository.BookRepository;
+import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
 import io.github.projektalmanac.amoxtli.backend.enums.Status;
 import io.github.projektalmanac.amoxtli.backend.mapper.ExchangeMapper;
-import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,10 @@ public class UserService extends UserServiceKt {
             UserRepository userRepository,
             ExchangeRepository exchangeRepository,
             GoogleBookService googleBookService,
-            JavaMailSender javaMailSender
+            JavaMailSender javaMailSender,
+            BookRepository bookRepository
     ) {
+        super(userRepository, exchangeRepository, bookRepository);
         this.userRepository = userRepository;
         this.exchangeRepository = exchangeRepository;
         this.googleBookService = googleBookService;
