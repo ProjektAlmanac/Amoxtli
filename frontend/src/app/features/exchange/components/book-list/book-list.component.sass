@@ -1,0 +1,23 @@
+@import breakpoints
+
+.book-list
+    max-height: 80vh
+    overflow: auto
+
+.book-grid
+    display: grid
+    grid-template-columns: 1fr
+    grid-template-rows: repeat(auto-fill, 1fr)
+    gap: 1rem
+
+    @include md
+        width: 550px
+    @include lg
+        width: 650px
+    @include xl
+        width: 700px
+
+img
+    width: 120px
+    height: 180px
+    object-fit: cover

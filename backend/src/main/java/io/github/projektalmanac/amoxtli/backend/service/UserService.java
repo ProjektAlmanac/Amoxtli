@@ -3,6 +3,8 @@ package io.github.projektalmanac.amoxtli.backend.service;
 
 import io.github.projektalmanac.amoxtli.backend.repository.BookRepository;
 import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
+import io.github.projektalmanac.amoxtli.backend.enums.Status;
+import io.github.projektalmanac.amoxtli.backend.mapper.ExchangeMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,7 @@ import java.util.regex.Pattern;
 @Service
 public class UserService extends UserServiceKt {
     private final UserRepository userRepository;
+    private ExchangeRepository exchangeRepository;
     private GoogleBookService googleBookService;
     private final JavaMailSender javaMailSender;
 
@@ -46,14 +49,14 @@ public class UserService extends UserServiceKt {
 
     public UserService(
             UserRepository userRepository,
+            ExchangeRepository exchangeRepository,
             GoogleBookService googleBookService,
             JavaMailSender javaMailSender,
-            SecurityConfig securityConfig,
-            ExchangeRepository exchangeRepository,
             BookRepository bookRepository
     ) {
         super(userRepository, exchangeRepository, bookRepository);
         this.userRepository = userRepository;
+        this.exchangeRepository = exchangeRepository;
         this.googleBookService = googleBookService;
         this.javaMailSender = javaMailSender;
     }
@@ -269,6 +272,86 @@ public class UserService extends UserServiceKt {
         //creamos el DTO de SessionTokenDto con el dato de ID usuario y generamos un token
         int id = usuario.get().getId();
         return new SessionTokenDto(id, generadorToken(id));
+    }
+
+    public ValidaPuedeIntercambiar200ResponseDto validaIntercambio(Integer idUser) {
+
+        var response = new ValidaPuedeIntercambiar200ResponseDto();
+        response.setPuedeIntercambiar(false);
+
+        Optional<User> userOpt = userRepository.findById(idUser);
+        if (userOpt.isEmpty()) {
+            throw new UserNotFoundException(idUser);
+        }
+        User user = userOpt.get();
+        if (!user.isVerifiedEmail()) {
+            response.mensaje("No cuentas con un correo verificado.");
+            return response;
+        }
+
+        if (user.getPhone() == null || user.getPhone().isEmpty()) {
+            response.mensaje("No cuenta con información de contacto.");
+            return response;
+        }
+
+        if (user.getBooks().isEmpty()) {
+            response.mensaje("No cuentas con libros registrados.");
+            return response;
+        }
+
+        if (user.getExchangesAccepting().size() + user.getExchangesOfferor().size() >= 4 ) {
+            response.mensaje("No puedes aceptar o solicitar más de 4 intercambios.");
+            return response;
+        }
+
+        response.setPuedeIntercambiar(true);
+
+        return response;
+    }
+
+    public IntercambioDto solicitaIntercambio(Integer idOfertante, CreacionIntercambioDto creacionIntercambioDto) {
+
+        if(creacionIntercambioDto == null){
+            throw new IllegalArgumentException("El cuerpo de la petición no puede ser nulo.");
+        }
+        // Recuperamos la información del usuario y del libro que recibe el intercambio
+        Integer idAceptante = creacionIntercambioDto.getIdAceptante();
+        Integer idLibroAceptante = creacionIntercambioDto.getIdLibroAceptante();
+
+        if (idOfertante.equals(idAceptante)) {
+            throw new SelfExchangeException(idOfertante);
+        }
+
+        // Obtenemos a los usuarios y al libro que se intercambiará
+
+        User userOfertante = this.userRepository.findById(idOfertante).orElseThrow(() -> new UserNotFoundException(idOfertante));
+        User userAceptante = this.userRepository.findById(idAceptante).orElseThrow(() -> new UserNotFoundException(idAceptante));
+
+        // Extraemos el libro que se intercambiará de parte del usuario aceptante
+        List<Book> libros = userAceptante.getBooks();
+        Book book = libros.stream()
+                .filter(libro -> libro.getId() == idLibroAceptante)
+                .findFirst()
+                .orElseThrow(() -> new BookNotFoundException("El libro no fue encontrado."));
+
+        Exchange exchange = new Exchange();
+
+        exchange.setStatus(Status.PENDIENTE);
+        exchange.setUserOfferor(userOfertante);
+        exchange.setUserAccepting(userAceptante);
+        exchange.setBookAccepting(book);
+
+        exchange = this.exchangeRepository.save(exchange);
+
+        List<Exchange> exchangesOfertante = userOfertante.getExchangesOfferor();
+        exchangesOfertante.add(exchange);
+
+        userOfertante.setExchangesOfferor(exchangesOfertante);
+        this.userRepository.save(userOfertante);
+
+        // Se hace el mapeo de las entidades
+        return  ExchangeMapper.INSTANCE.toIntercambioDto(exchange);
+
     }
 }
 

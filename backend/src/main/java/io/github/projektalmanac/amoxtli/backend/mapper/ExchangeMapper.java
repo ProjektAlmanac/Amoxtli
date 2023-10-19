@@ -13,7 +13,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mapper(uses = {BookMapper.class})
+@Mapper(uses = {BookMapper.class, UserMapper.class})
 public interface ExchangeMapper {
     ExchangeMapper INSTANCE = Mappers.getMapper(ExchangeMapper.class);
 
@@ -40,6 +40,15 @@ public interface ExchangeMapper {
     @Mapping(target = "libroOfertante", source = "bookOfferor")
     @Mapping(target = "estado", source = "status")
     IntercambioDto toIntercambioDto(Exchange exchange);
+
+//    default IntercambioDto toIntercambioDto(Exchange exchange){
+//        var ofertante = toOfertanteDto(exchange.getUserOfferor());
+//        var aceptante = toAceptanteDto(exchange.getUserAccepting());
+//        var libroAceptante = BookMapper.INSTANCE.tOLibroAceptanteDto(exchange.getBookAccepting());
+//        var estado = toEstadoIntercambioDto(exchange.getStatus());
+//        return new IntercambioDto(exchange.getId(), ofertante, aceptante, libroAceptante, null, estado);
+//
+//    }
 
     default GetIntercambios200ResponseDto toGetIntercambios200ResponseDto(List<Exchange> intercambios){
         var resultado = new GetIntercambios200ResponseDto();

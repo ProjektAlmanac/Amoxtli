@@ -16,12 +16,11 @@ public class Application {
 
 	@Autowired
 	private UserRepository userRepository;
-
+	@Autowired
+	private ExchangeRepository exchangeRepository;
 	@Autowired
 	private BookRepository bookRepository;
 
-	@Autowired
-	private ExchangeRepository exchangeRepository;
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 
@@ -33,77 +32,53 @@ public class Application {
 		user.setName("Maria");
 		user.setLastName("Pérez");
 		user.setId(1);
+		user.setPhone("1234567890");
+		user.setEmail("jperaz@gmail.com");
 		user.setVerifiedEmail(true);
 		user.setPhone("5578476989");
 
-		userRepository.save(user);
-
 		var user2 = new User();
-		user2.setName("Juan");
-		user2.setLastName("Martinez");
+		user2.setName("Carlos");
+		user2.setLastName("Castro");
 		user2.setId(2);
 		user2.setVerifiedEmail(true);
-		user2.setPhone("5582134679");
-
-		userRepository.save(user2);
 
 		var user3 = new User();
-		user3.setName("Pedro");
-		user3.setLastName("Lopez");
+		user3.setName("Samuel");
+		user3.setLastName("Morales");
 		user3.setId(3);
 		user3.setVerifiedEmail(true);
-		user3.setPhone("5579461382");
-
-		userRepository.save(user3);
+		List<Book> libros = new ArrayList<>();
+		List<Book> libros2 = new ArrayList<>();
 
 		var book = new Book();
-		book.setId(1);
-		book.setIsbn("1111111111");
-		book.setDescription("Casi nuevo el libro");
+		book.setIsbn("9783716026434");
+		book.setDescription("EL libro esta en buen estado");
 
-		bookRepository.save(book);
+		var book1 = new Book();
+		book1.setIsbn("9780156014045");
+		book1.setDescription("Tiene algunas hojas dobladas");
 
 		var book2 = new Book();
-		book2.setId(2);
-		book2.setIsbn("2222222222");
-		book2.setDescription("Casi nuevo el libro");
+		book2.setIsbn("9786077350140");
+		book2.setDescription("Solo tiene una hoja rota");
 
+		libros.add(book);
+		libros.add(book1);
+		user.setBooks(libros);
+
+		libros2.add(book);
+		libros2.add(book1);
+		libros2.add(book2);
+		user2.setBooks(libros2);
+
+		userRepository.save(user);
+		userRepository.save(user2);
+		userRepository.save(user3);
+
+		bookRepository.save(book);
+		bookRepository.save(book1);
 		bookRepository.save(book2);
-
-		var book3 = new Book();
-		book3.setId(3);
-		book3.setIsbn("3333333333");
-		book3.setDescription("Casi nuevo el libro");
-
-		bookRepository.save(book3);
-
-		Status status = Status.PENDIENTE;
-		Status status2 = Status.ACEPTADO;
-
-		var intercambio = new Exchange();
-		intercambio.setId(1);
-		intercambio.setStatus(status2);
-		intercambio.setBookAccepting(book);
-		intercambio.setUserAccepting(user);
-		intercambio.setUserOfferor(user2);
-		intercambio.setBookOfferor(book2);
-
-		exchangeRepository.save(intercambio);
-
-		user.addExchangesAccepting(intercambio);
-		var intercambio2 = new Exchange();
-		intercambio2.setId(2);
-		intercambio2.setStatus(status);
-		intercambio2.setBookAccepting(book2);
-		intercambio2.setUserAccepting(user);
-		intercambio2.setUserOfferor(user3);
-		intercambio2.setBookOfferor(null);
-		exchangeRepository.save(intercambio2);
-
-		List<Exchange> exchangesOfferor =  new ArrayList<>();
-		exchangesOfferor.add(intercambio2);
-
-		user.setExchangesOfferor(exchangesOfferor);
 
 	}
 }
