@@ -40,10 +40,7 @@ export class VerifyEmailPageComponent implements OnInit {
       next: () => {
         this.snackbar.open('Correo enviado', 'Aceptar')
       },
-      error: (err: HttpErrorResponse) => {
-        const error: ModelError = err.error
-        this.snackbar.open(error.mensaje, 'Aceptar')
-      },
+      error: this.mostrarError.bind(this),
     })
   }
 
@@ -51,5 +48,13 @@ export class VerifyEmailPageComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.email = params['email']
     })
+    this.servicioApi.mandarCorreoConfirmacion(this.servicioUsuario.id()).subscribe({
+      error: this.mostrarError.bind(this),
+    })
+  }
+
+  mostrarError(err: HttpErrorResponse) {
+    const error: ModelError = err.error
+    this.snackbar.open(error.mensaje, 'Aceptar')
   }
 }
