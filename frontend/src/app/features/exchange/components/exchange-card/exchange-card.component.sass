@@ -1,0 +1,91 @@
+@import breakpoints
+
+.actions
+    display: grid
+    align-items: center
+    width: 100%
+
+    @include xs
+        grid-template-columns: 1fr
+        grid-template-rows: 1fr 1fr
+    @include sm
+        grid-template-columns: 1fr auto
+        grid-template-rows: 1fr
+
+.exchange-name
+    color: var(--mat-card-subtitle-text-color)
+
+.main-container
+    display: grid
+    grid-gap: 1rem
+    align-items: center
+    margin-bottom: 1rem
+
+    @include xs
+        grid-template-columns: auto 1fr
+        grid-template-rows: 1fr 25px 1fr
+    @include sm
+        grid-template-columns: 1fr auto 25px auto 1fr
+        grid-template-rows: 1fr
+
+.book-title-left
+    @include xs
+        text-align: left
+    @include sm
+        text-align: right
+
+.book-title-right
+    text-align: left
+
+img
+    width: 120px
+    height: 180px
+    object-fit: cover
+
+.arrows-left-right
+    flex-direction: column
+
+    @include xs
+        display: none
+    @include sm
+        display: flex
+
+.arrows-up-down
+    width: 100%
+    display: flex
+    justify-content: center
+
+    @include sm
+        display: none
+
+.left-cover
+    @include xs
+        grid-column: 1 / 2
+        grid-row: 1 / 2
+    @include sm
+        grid-column: 2 / 3
+        grid-row: 1 / 2
+
+.book-title-left
+    @include xs
+        grid-column: 2 / 3
+        grid-row: 1 / 2
+    @include sm
+        grid-column: 1 / 2
+        grid-row: 1 / 2
+
+.right-cover
+    @include xs
+        grid-column: 1 / 2
+        grid-row: 3 / 4
+    @include sm
+        grid-column: 4 / 5
+        grid-row: 1 / 2
+
+.book-title-right
+    @include xs
+        grid-column: 2 / 3
+        grid-row: 3 / 4
+    @include sm
+        grid-column: 5 / 6
+        grid-row: 1 / 2

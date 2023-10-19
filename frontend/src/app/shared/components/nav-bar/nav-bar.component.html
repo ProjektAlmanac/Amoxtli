@@ -1,35 +1,35 @@
-<mat-toolbar color="primary">
-  <button (click)="drawer.toggle()" mat-icon-button>
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>Amoxtli</span>
-  <span class="spacer"></span>
-  <button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
-  <mat-menu #menu="matMenu" position="end">
-    <button mat-menu-item>Cerrar sesión</button>
-    <button mat-menu-item>Manual de ayuda</button>
-  </mat-menu>
-</mat-toolbar>
-<mat-drawer-container autosize>
-  <mat-drawer #drawer opened="false" mode="over" position="start">
-    <mat-nav-list>
-      <mat-list-item routerLink="/home">
-        <mat-icon matListItemIcon>home</mat-icon>
-        <div matListItemTitle>Home</div>
-      </mat-list-item>
-      <mat-list-item routerLink="/perfil">
-        <mat-icon matListItemIcon>face</mat-icon>
-        <div matListItemTitle>Información de perfil</div>
-      </mat-list-item>
-      <mat-list-item routerLink="/miCatalogo">
-        <mat-icon matListItemIcon>book</mat-icon>
-        <div matListItemTitle>Mi catálogo</div>
-      </mat-list-item>
-    </mat-nav-list>
-  </mat-drawer>
-  <mat-drawer-content style="overflow: hidden">
-    <div style="height: 100vh">
+<div class="container">
+  <mat-toolbar color="primary">
+    <button (click)="drawer.toggle()" mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Amoxtli</span>
+    <span class="spacer"></span>
+    <button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+    <mat-menu #menu="matMenu" position="end">
+      <button mat-menu-item>Cerrar sesión</button>
+      <button mat-menu-item>Manual de ayuda</button>
+    </mat-menu>
+  </mat-toolbar>
+  <mat-drawer-container>
+    <mat-drawer #drawer opened="false" mode="over" position="start">
+      <mat-nav-list>
+        <mat-list-item routerLink="/home">
+          <mat-icon matListItemIcon>home</mat-icon>
+          <div matListItemTitle>Home</div>
+        </mat-list-item>
+        <mat-list-item routerLink="/perfil">
+          <mat-icon matListItemIcon>face</mat-icon>
+          <div matListItemTitle>Información de perfil</div>
+        </mat-list-item>
+        <mat-list-item routerLink="/miCatalogo">
+          <mat-icon matListItemIcon>book</mat-icon>
+          <div matListItemTitle>Mi catálogo</div>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-drawer>
+    <mat-drawer-content style="overflow: auto">
       <router-outlet></router-outlet>
-    </div>
-  </mat-drawer-content>
-</mat-drawer-container>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>
