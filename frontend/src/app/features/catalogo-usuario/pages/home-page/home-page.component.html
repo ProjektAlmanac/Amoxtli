@@ -1,4 +1,4 @@
-<div style="height: 80vh">
+<div style="height: 88vh">
   <mat-card class="centrado">
     <mat-card-header>
       <mat-card-title>
@@ -33,20 +33,14 @@
 
   <app-progress-spinner *ngIf="mostrarSpinner"></app-progress-spinner>
 
-  <div
-    *ngIf="!mostrarSpinner"
-    class="justify-content-center container"
-    style="border: 1px solid red">
-    <div
-      class="row libros"
-      *ngIf="libros.libros.length > 0; else nohayLibros"
-      style="border: 1px solid rgb(38, 0, 255)">
+  <div *ngIf="!mostrarSpinner" class="justify-content-center container">
+    <div class="row libros" *ngIf="libros.libros.length > 0; else nohayLibros" style="height: 60vh">
       <div>
         <h1>Libros disponibles</h1>
       </div>
-      <div class="" *ngFor="let libro of libros.libros" style="border: 1px solid rgb(255, 0, 221)">
-        <mat-card class="col-12 col-md-12 col-sm-12" style="border: 1px solid rgb(0, 255, 191)">
-          <a [routerLink]="['/detallesLibro', libro.isbn]">
+      <div class="" *ngFor="let libro of libros.libros">
+        <mat-card class="col-12 col-md-12 col-sm-12">
+          <a [routerLink]="">
             <mat-card-header>
               <mat-card-title> {{ libro.titulo }} </mat-card-title>
               <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
@@ -61,7 +55,6 @@
           </a>
         </mat-card>
       </div>
-      <!--<tr *ngFor="let libro of getBooksForCurrentPage()">-->
     </div>
     <ng-template #nohayLibros>
       <div style="text-align: center">
