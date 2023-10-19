@@ -5,7 +5,6 @@ import { MiCatalogoPageComponent } from './features/catalogo-usuario/pages/mi-ca
 import { SignUpPageComponent } from './features/sign-up/pages/sign-up-page/sign-up-page.component'
 import { VerifyEmailPageComponent } from './features/sign-up/pages/verify-email-page/verify-email-page.component'
 import { WelcomePageComponent } from './features/sign-up/pages/welcome-page/welcome-page.component'
-import { MostrarLibrosComponent } from './features/libros/pages/mostrar-libros/mostrar-libros.component'
 import { AgregarLibroComponent } from './features/catalogo-usuario/components/agregar-libro/agregar-libro.component'
 import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component'
 import { NotFoundComponent } from './core/pages/not-found/not-found.component'
@@ -38,8 +37,6 @@ const routes: Routes = [
       { path: 'miCatalogo', component: MiCatalogoPageComponent },
       { path: 'agregarLibro', component: AgregarLibroComponent },
       { path: 'perfil', component: PerfilComponent },
-
-      { path: 'libros', component: MostrarLibrosComponent },
       { path: 'libro', component: LibroPageComponent },
     ],
   },

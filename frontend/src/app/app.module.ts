@@ -25,7 +25,6 @@ import { SignUpModule } from './features/sign-up/sign-up.module'
 import { ServicioUsuario } from './core/services/servicio-usuario.service'
 import { SharedModule } from './shared/shared.module'
 import { SharedComponent } from './shared/shared.component'
-import { librosModule } from './features/libros/libros.module'
 import { CatalogoUsuarioModule } from './features/catalogo-usuario/catalogo-usuario.module'
 import { NotFoundComponent } from './core/pages/not-found/not-found.component'
 import { PerfilComponent } from './features/perfil/pages/perfil.component'
@@ -56,7 +55,6 @@ import { LibroModule } from './features/libros/libro.module'
     SharedModule,
     MatCardModule,
     MatSnackBarModule,
-    librosModule,
     CatalogoUsuarioModule,
     LoginModule,
     LibroModule,
