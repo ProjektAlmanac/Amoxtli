@@ -187,7 +187,7 @@ class UserServiceTest {
         intercambio2.setBookOfferor(book2);
     }
 
-    /*@Test
+    @Test
     void iniciarSesion() {
         // Indicación del test que se ejecuta
         System.out.println("Test:: iniciarSesion");
@@ -457,7 +457,7 @@ class UserServiceTest {
         userService.actualizaFoto(2, body);
         Assertions.assertArrayEquals(body.getInputStream().readAllBytes(), this.user1.getPhoto());
 
-    }*/
+    }
 
     @Test
     void getLibrosUsuario() {
