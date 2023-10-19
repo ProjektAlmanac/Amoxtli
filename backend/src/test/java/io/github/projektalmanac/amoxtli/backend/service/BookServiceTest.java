@@ -107,13 +107,13 @@ class BookServiceTest {
     @Test
     void getDetallesLibro() {
 
-        //Caso 1: El ISBN no es proporcionado o está vacío
+        //Caso 1: El ISBN no es proporcionado
         final String ISBN = null;
         assertThrows(ResourceNotFoundException.class, () -> {
             bookService.getDetallesLibro(ISBN);
         });
 
-        //Caso 2: El ISBN no es valido
+        //Caso 2: El ISBN no es válido
 
         final String ISBN2 = "ashwydr";
         when(googleBookService.getVolumeInfoByIsbn(ISBN2)).thenThrow(new ResourceNotFoundException("Libro con ISBN " + ISBN2 + " no encontrado en Google Books."));
@@ -121,7 +121,7 @@ class BookServiceTest {
             bookService.getDetallesLibro(ISBN2);
         });
 
-        //Caso 3: Caso de exito donde se obtine adecuadamente los detalles de un libro
+        //Caso 3: Caso de éxito donde se obtine adecuadamente los detalles de un libro
 
         final String ISBN3 = "1111111111";
         LocalDate fechaEsperada = LocalDate.ofYearDay(Integer.parseInt(volumeInfo.getPublishedDate()), 1);

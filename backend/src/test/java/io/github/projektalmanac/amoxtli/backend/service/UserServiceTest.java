@@ -469,7 +469,7 @@ class UserServiceTest {
             userService.getLibrosUsuario(1);
         });
 
-        //Caso 2: El usuario existe pero no tiene registrado ningun libro
+        //Caso 2: El usuario existe, pero no tiene registrado ningún libro
 
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
         user.setBooks(new ArrayList<>());
@@ -478,7 +478,7 @@ class UserServiceTest {
             userService.getLibrosUsuario(1);
         });
 
-        //Caso 3: Caso de exito en la obtencion de los libros de un usuario
+        //Caso 3: Caso de éxito en la obtención de los libros de un usuario
 
         List<Book> userBooks = new ArrayList<>();
         userBooks.add(book1);
@@ -493,6 +493,7 @@ class UserServiceTest {
 
         LibrosUsuarioDto result = userService.getLibrosUsuario(1);
 
+        Assertions.assertEquals(user.getBooks().size(), result.getLibros().size());
         Assertions.assertEquals(userBooks.get(0).getId(), result.getLibros().get(0).getId());
         Assertions.assertEquals(userBooks.get(0).getIsbn(), result.getLibros().get(0).getIsbn());
         Assertions.assertEquals(volumeInfo.getAuthors().get(0), result.getLibros().get(0).getAutor());
@@ -504,7 +505,7 @@ class UserServiceTest {
     void getIntercambios(){
 
         //Caso 1: El usuario no existe
-        when(userRepository.findById(3)).thenThrow(new UserNotFoundException(3));
+        when(userRepository.findById(3)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> {
             userService.getIntercambios(3);
@@ -519,7 +520,7 @@ class UserServiceTest {
             userService.getIntercambios(1);
         });
 
-        //Caso 3: El usuario existe y tiene registrado intercambios
+        //Caso 3: El usuario existe y tiene registrados intercambios
         List<Exchange> exchangesOfferor =  new ArrayList<>();
         exchangesOfferor.add(intercambio);
         user1.setExchangesOfferor(exchangesOfferor);
@@ -551,7 +552,7 @@ class UserServiceTest {
     void aceptarIntercambio(){
 
         //Caso 1: El usuario no existe
-        when(userRepository.findById(3)).thenThrow(new UserNotFoundException(3));
+        when(userRepository.findById(3)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> {
             userService.aceptarIntercambio(3, 1, aceptarIntercambio);
@@ -560,12 +561,12 @@ class UserServiceTest {
         //Caso 2: El intercambio no existe o no esta relacionado con el usuario
 
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
-        when(exchangeRepository.findByIdAndUserAccepting(3,user)).thenThrow(new IntercambioNotFoundException(3));
+        when(exchangeRepository.findByIdAndUserAccepting(3,user)).thenReturn(Optional.empty());
         assertThrows(IntercambioNotFoundException.class, () -> {
             userService.aceptarIntercambio(1, 3, aceptarIntercambio);
         });
 
-        //Caso 3: El id del libro es invalido
+        //Caso 3: El id del libro es inválido
 
         when(exchangeRepository.findByIdAndUserAccepting(2,user)).thenReturn(Optional.of(intercambio));
         assertThrows(InvalidIdException.class, () -> {
@@ -574,12 +575,12 @@ class UserServiceTest {
 
         //CASO 4: El libro no existe
 
-        when(bookRepository.findById(1)).thenThrow(new ResourceNotFoundException("El libro no existe"));
+        when(bookRepository.findById(1)).thenReturn(null);
         assertThrows(ResourceNotFoundException.class, () -> {
             userService.aceptarIntercambio(1, 2, aceptarIntercambio);
         });
 
-        //Caso 5: Caso de exito
+        //Caso 5: Caso de éxito
 
         when(userRepository.findById(2)).thenReturn(Optional.of(user1));
         when(exchangeRepository.findByIdAndUserAccepting(2,user1)).thenReturn(Optional.of(intercambio));
