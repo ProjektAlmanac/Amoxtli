@@ -21,10 +21,10 @@ export class SignUpPageComponent {
   onSubmit(usuario: Usuario) {
     this.servicioApi.crearUsuario(usuario).subscribe({
       next: value => {
-        const id = value.id
+        const id = value.idUsuario
         if (id) {
           this.servicioUsuario.id.set(id)
-          this.servicioApi.mandarCorreoConfirmacion(id)
+          this.servicioUsuario.token.set(value.token)
           this.router.navigate(['/signup/verify'], {
             queryParams: {
               email: usuario.correo,

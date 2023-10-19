@@ -15,8 +15,8 @@ import io.github.projektalmanac.amoxtli.backend.generated.model.IntercambioDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.LibroRegistradoDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.LibrosUsuarioDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.PerfilUsuarioDto;
+import io.github.projektalmanac.amoxtli.backend.generated.model.SessionTokenDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.UsuarioDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.UsuarioIdDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.ValidaPuedeIntercambiar200ResponseDto;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -296,7 +296,7 @@ public interface UsuariosApi {
         description = "Registra a un nuevo usuario en el sistema",
         responses = {
             @ApiResponse(responseCode = "201", description = "Created", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioIdDto.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = SessionTokenDto.class))
             }),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class))
@@ -312,7 +312,7 @@ public interface UsuariosApi {
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    ResponseEntity<UsuarioIdDto> crearUsuario(
+    ResponseEntity<SessionTokenDto> crearUsuario(
         @Parameter(name = "UsuarioDto", description = "") @Valid @RequestBody(required = false) UsuarioDto usuarioDto
     );
 

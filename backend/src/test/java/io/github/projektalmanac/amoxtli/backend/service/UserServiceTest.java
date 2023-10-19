@@ -257,7 +257,7 @@ class UserServiceTest {
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
         when(userRepository.save(any(User.class))).then(returnsFirstArg());
 
-        UsuarioIdDto result = userService.createuser(usuarioDto);
+        UsuarioIdDto result = userService.createUser(usuarioDto);
 
         assertNotNull(result);
 
@@ -271,7 +271,7 @@ class UserServiceTest {
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(new User()));
 
         assertThrows(EmailAlreadyExistsException.class, () -> {
-            userService.createuser(usuarioDto1);
+            userService.createUser(usuarioDto1);
         });
 
         ////// ingresa un correo con la sintaxis erronea:///////////////
@@ -282,7 +282,7 @@ class UserServiceTest {
         usuarioDto2.setPassword("12345");
 
         assertThrows(InvalidEmailFormatException.class, () -> {
-            userService.createuser(usuarioDto2);
+            userService.createUser(usuarioDto2);
         });
 
     }

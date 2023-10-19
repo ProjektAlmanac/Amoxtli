@@ -86,7 +86,7 @@ public class UserService extends UserServiceKt {
     }
 
 
-    public UsuarioIdDto createuser(UsuarioDto usuario) {
+    public SessionTokenDto createUser(UsuarioDto usuario) {
 
         // Verifica que ningún campo esté vacío
         if (usuario.getNombre().isEmpty()
@@ -117,13 +117,13 @@ public class UserService extends UserServiceKt {
         usuario1.setEmail(usuario.getCorreo());
         usuario1.setPasswordHash(hashedPassword);
         usuario1.setPasswordSalt(salt);
-        userRepository.save(usuario1);
+        usuario1 = userRepository.save(usuario1);
 
-        UsuarioIdDto usuarioidDto1 = new UsuarioIdDto();
-        usuarioidDto1.setId(usuario1.getId());
+        var userId = usuario1.getId();
+        var sessionToken = new SessionTokenDto(userId, generadorToken(userId));
+        generadorToken(usuario1.getId());
 
-        return usuarioidDto1;
-
+        return sessionToken;
     }
 
 
