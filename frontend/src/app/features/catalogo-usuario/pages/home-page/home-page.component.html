@@ -34,11 +34,14 @@
   <app-progress-spinner *ngIf="mostrarSpinner"></app-progress-spinner>
 
   <div *ngIf="!mostrarSpinner" class="justify-content-center container">
-    <div class="row libros" *ngIf="libros.libros.length > 0; else nohayLibros" style="height: 60vh">
+    <div
+      class="row libros"
+      *ngIf="paginaLibros && paginaLibros.libros.length > 0; else noHayLibros"
+      style="height: 60vh">
       <div>
         <h1>Libros disponibles</h1>
       </div>
-      <div class="" *ngFor="let libro of libros.libros">
+      <div class="" *ngFor="let libro of paginaLibros.libros">
         <mat-card class="col-12 col-md-12 col-sm-12">
           <!--aqui va el enlace a la otra pagina-->
           <a [routerLink]="['/libro']" [queryParams]="{ isbn: libro.isbn }">
@@ -57,7 +60,7 @@
         </mat-card>
       </div>
     </div>
-    <ng-template #nohayLibros>
+    <ng-template #noHayLibros>
       <div style="text-align: center">
         <mat-card>
           <mat-card-header>
@@ -70,11 +73,19 @@
 </div>
 <div class="centrado mt-3">
   <div class="pagination">
-    <button mat-icon-button (click)="irAnterior()" [disabled]="currentPage === 1">
+    <!-- La página anterior es 0 si estamos al principio -->
+    <button
+      mat-icon-button
+      (click)="irAnterior()"
+      [disabled]="(paginaLibros?.pagAnterior ?? 0) < 1">
       <mat-icon>chevron_left</mat-icon>
     </button>
     <span>Página {{ currentPage }} </span>
-    <button mat-icon-button (click)="irSiguiente()" [disabled]="currentPage === 0">
+    <!-- La página siguiente es 0 si llegamos al final -->
+    <button
+      mat-icon-button
+      (click)="irSiguiente()"
+      [disabled]="(paginaLibros?.pagSiguiente ?? 0) < 1">
       <mat-icon>chevron_right</mat-icon>
     </button>
   </div>
