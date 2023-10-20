@@ -84,7 +84,6 @@ public class BookService {
         Set<InfoBasicaLibroDto> librosDtoSet = new HashSet<>();
 
         // Convierte la página de libros a una lista de InfoBasicaLibroDto
-        List<InfoBasicaLibroDto> libros = new ArrayList<>();
         for (Book book : bookPage.getContent()) {
             VolumeInfo libroGoogleBooks = googleBookService.getVolumeInfoByIsbn(book.getIsbn());
             InfoBasicaLibroDto infoBasicaLibroDto = BookMapper.INSTANCE.toInfoBasicaLibroDto(book.getIsbn(), libroGoogleBooks);
@@ -93,11 +92,11 @@ public class BookService {
         // Convertir el HashSet a ArrayList
         List<InfoBasicaLibroDto> librosDto = new ArrayList<>(librosDtoSet);
 
-        return getPaginaLibros(pagina, tamanoPagina, librosDto, bookPage.hasNext());
+        return getPaginaLibros(pagina, librosDto, bookPage.hasNext());
 
     }
 
-    private PaginaLibrosDto getPaginaLibros(Integer pagina, Integer tamanoPagina, List<InfoBasicaLibroDto> libros, boolean hasNext) {
+    private PaginaLibrosDto getPaginaLibros(Integer pagina, List<InfoBasicaLibroDto> libros, boolean hasNext) {
         // Calcular página anterior y página siguiente
         int pagAnterior = pagina - 1;
         int pagSiguiente = hasNext ? pagina + 1 : 0;

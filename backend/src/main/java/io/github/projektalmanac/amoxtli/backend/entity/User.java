@@ -41,8 +41,7 @@ public class User {
     public boolean addBook(Book book) {
 
         if (book == null) {
-            // TODO: Cambiar a excepción correcta
-            throw new EmptyResourceException();
+            throw new IllegalArgumentException();
         }
 
         if (books.contains(book)) {

@@ -1,14 +1,12 @@
 package io.github.projektalmanac.amoxtli.backend;
 
 import io.github.projektalmanac.amoxtli.backend.entity.*;
-import io.github.projektalmanac.amoxtli.backend.enums.Status;
 import io.github.projektalmanac.amoxtli.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
