@@ -5,10 +5,10 @@
     </button>
     <span>Amoxtli</span>
     <span class="spacer"></span>
+    <button mat-button *ngIf="userService.id() === 0" (click)="login()">Iniciar sesión</button>
     <button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
     <mat-menu #menu="matMenu" position="end">
-      <button mat-menu-item>Cerrar sesión</button>
-      <button mat-menu-item>Manual de ayuda</button>
+      <button mat-menu-item (click)="logout()">Cerrar sesión</button>
     </mat-menu>
   </mat-toolbar>
   <mat-drawer-container>
