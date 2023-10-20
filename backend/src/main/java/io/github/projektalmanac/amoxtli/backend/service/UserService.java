@@ -2,7 +2,6 @@ package io.github.projektalmanac.amoxtli.backend.service;
 
 
 import com.google.api.services.books.model.Volume.VolumeInfo;
-import io.github.projektalmanac.amoxtli.backend.config.SecurityConfig;
 import io.github.projektalmanac.amoxtli.backend.entity.Book;
 import io.github.projektalmanac.amoxtli.backend.entity.Exchange;
 import io.github.projektalmanac.amoxtli.backend.entity.User;
@@ -39,10 +38,12 @@ import java.util.regex.Pattern;
 
 @Service
 public class UserService extends UserServiceKt {
+    private static final Random random = new Random();
     private final UserRepository userRepository;
-    private ExchangeRepository exchangeRepository;
-    private GoogleBookService googleBookService;
+    private final ExchangeRepository exchangeRepository;
+    private final GoogleBookService googleBookService;
     private final JavaMailSender javaMailSender;
+    private final SecurityService securityService;
 
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     private final Pattern pattern = Pattern.compile(EMAIL_REGEX);
@@ -52,13 +53,15 @@ public class UserService extends UserServiceKt {
             ExchangeRepository exchangeRepository,
             GoogleBookService googleBookService,
             JavaMailSender javaMailSender,
-            BookRepository bookRepository
+            BookRepository bookRepository,
+            SecurityService securityService
     ) {
         super(userRepository, exchangeRepository, bookRepository);
         this.userRepository = userRepository;
         this.exchangeRepository = exchangeRepository;
         this.googleBookService = googleBookService;
         this.javaMailSender = javaMailSender;
+        this.securityService = securityService;
     }
 
     public LibrosUsuarioDto getLibrosUsuario(Integer id) {
@@ -77,16 +80,7 @@ public class UserService extends UserServiceKt {
         return BookMapper.INSTANCE.toLibrosUsuarioDto(books, librosGoogleBooks);
     }
 
-    public String generadorToken(long idUsuario) {
-        return SecurityConfig.generadorToken(String.valueOf(idUsuario));
-    }
-
-    public String infoSesion(String token) {
-        return SecurityConfig.decodificarToken(token).getSubject();
-    }
-
-
-    public UsuarioIdDto createuser(UsuarioDto usuario) {
+    public SessionTokenDto createUser(UsuarioDto usuario) {
 
         // Verifica que ningún campo esté vacío
         if (usuario.getNombre().isEmpty()
@@ -117,13 +111,11 @@ public class UserService extends UserServiceKt {
         usuario1.setEmail(usuario.getCorreo());
         usuario1.setPasswordHash(hashedPassword);
         usuario1.setPasswordSalt(salt);
-        userRepository.save(usuario1);
+        usuario1 = userRepository.save(usuario1);
 
-        UsuarioIdDto usuarioidDto1 = new UsuarioIdDto();
-        usuarioidDto1.setId(usuario1.getId());
-
-        return usuarioidDto1;
-
+        var userId = usuario1.getId();
+        var token = securityService.generadorToken(userId.toString());
+        return new SessionTokenDto(userId, token);
     }
 
 
@@ -158,7 +150,6 @@ public class UserService extends UserServiceKt {
         String caracteresPermitidos = "0123456789";
 
         // Generar el código de verificación
-        Random random = new Random();
         for (int i = 0; i < longitud; i++) {
             int indice = random.nextInt(caracteresPermitidos.length());
             codigo.append(caracteresPermitidos.charAt(indice));
@@ -267,11 +258,12 @@ public class UserService extends UserServiceKt {
         if (usuario.isEmpty())
             throw new InvalidUserSessionException("Este correo no esta asociado a ninguna cuenta, intente registrarse.");
         //regla de negocio 2
-        if (!SecurityConfig.matchContrasena(credenciales.getContrasena() + usuario.get().getPasswordSalt(), usuario.get().getPasswordHash()))
+        if (!securityService.matchContrasena(credenciales.getContrasena() + usuario.get().getPasswordSalt(), usuario.get().getPasswordHash()))
             throw new InvalidUserSessionException("Contrasenia incorrecta.");
         //creamos el DTO de SessionTokenDto con el dato de ID usuario y generamos un token
-        int id = usuario.get().getId();
-        return new SessionTokenDto(id, generadorToken(id));
+        var id = usuario.get().getId();
+        var token = securityService.generadorToken(id.toString());
+        return new SessionTokenDto(id, token);
     }
 
     public ValidaPuedeIntercambiar200ResponseDto validaIntercambio(Integer idUser) {

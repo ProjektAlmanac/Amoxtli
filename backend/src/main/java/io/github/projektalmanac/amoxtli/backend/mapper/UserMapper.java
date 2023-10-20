@@ -1,5 +1,6 @@
 package io.github.projektalmanac.amoxtli.backend.mapper;
 
+import io.github.projektalmanac.amoxtli.backend.entity.Book;
 import io.github.projektalmanac.amoxtli.backend.entity.User;
 import io.github.projektalmanac.amoxtli.backend.generated.model.DuenoDto;
 import io.github.projektalmanac.amoxtli.backend.generated.model.PerfilUsuarioDto;
@@ -58,6 +59,13 @@ public interface UserMapper {
     @Mapping(source = "verifiedEmail", target = "correoVerificado")
     PerfilUsuarioDto userToUserDto(User user);
 
+    @Mapping(target = "id", source = "owner.id")
+    @Mapping(target = "apellido", source = "owner.lastName")
+    @Mapping(target = "nombre", source = "owner.name")
+    @Mapping(target = "foto", source = "owner.photo")
+    @Mapping(target = "idLibro", source = "id")
+    DuenoDto toDuenoDto(Book book);
+
     // Método para parsear unn byte Array en un URI, usando Base64
     default JsonNullable<URI> mapBytetoUri(byte[] photo) {
         if (photo == null) return JsonNullable.undefined();
@@ -79,10 +87,4 @@ public interface UserMapper {
             return JsonNullable.undefined();
         }
     }
-
-    @Mapping(source = "name", target = "nombre")
-    @Mapping(source = "lastName", target = "apellido")
-    @Mapping(target = "foto",expression = "java(mapBytetoUri(user.getPhoto()))")
-    DuenoDto userToUserDto1(User user);
-
 }

@@ -1,7 +1,7 @@
 package io.github.projektalmanac.amoxtli.backend.entity;
 
 import io.github.projektalmanac.amoxtli.backend.exception.EmptyResourceException;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +9,9 @@ import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -26,8 +29,7 @@ public class User {
     private String interests;
     private boolean verifiedEmail;
     private String verificationCode;
-    @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_user")
+    @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Book> books = new ArrayList<>();
 
     @OneToMany(mappedBy = "userAccepting")
@@ -39,8 +41,7 @@ public class User {
     public boolean addBook(Book book) {
 
         if (book == null) {
-            // TODO: Cambiar a excepción correcta
-            throw new EmptyResourceException();
+            throw new IllegalArgumentException();
         }
 
         if (books.contains(book)) {

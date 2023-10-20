@@ -1,15 +1,12 @@
 package io.github.projektalmanac.amoxtli.backend.service;
 
 import com.google.api.services.books.model.Volume;
-import io.github.projektalmanac.amoxtli.backend.config.SecurityConfig;
 import io.github.projektalmanac.amoxtli.backend.entity.Book;
 import io.github.projektalmanac.amoxtli.backend.entity.User;
-import io.github.projektalmanac.amoxtli.backend.exception.EmptyResourceException;
 import io.github.projektalmanac.amoxtli.backend.exception.ResourceNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.repository.BookRepository;
-import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
 import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
 import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
 import org.junit.jupiter.api.Assertions;
@@ -19,19 +16,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.openapitools.jackson.nullable.JsonNullable;
-import org.springframework.mail.javamail.JavaMailSender;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
-import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
@@ -71,6 +65,7 @@ class BookServiceTest {
         book1.setId(1);
         book1.setIsbn("1111111111");
         book1.setDescription("Casi nuevo el libro");
+        book1.setOwner(user);
 
         volumeInfo = new Volume.VolumeInfo();
         imageLinks = new Volume.VolumeInfo.ImageLinks();
@@ -160,8 +155,7 @@ class BookServiceTest {
 
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
         when(googleBookService.getVolumeInfoByIsbn(libroRegistradoDto.getIsbn())).thenReturn(volumeInfo);
-        when(bookRepository.save(book1)).thenReturn(book1);
-        when(userRepository.save(user)).thenReturn(user1);
+        when(bookRepository.save(any(Book.class))).then(returnsFirstArg());
 
         LibroRegistradoDto result = bookService.addLibro(1, libroRegistradoDto);
 

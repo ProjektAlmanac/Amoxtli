@@ -21,7 +21,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UsuarioId"
+                $ref: "#/components/schemas/SessionToken"
           headers:
             Location:
               schema:
@@ -1148,13 +1148,18 @@ components:
           type: string
           format: uri
           description: Foto de perfil del usuario
-          nullable: true
           x-faker: image.avatar
+          nullable: true
+        idLibro:
+          type: integer
+          x-stoplight:
+            id: 9up4y3vqpb7kf
       required:
         - id
         - nombre
         - apellido
         - foto
+        - idLibro
     UsuarioIntercambio:
       type: object
       x-examples: {}

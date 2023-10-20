@@ -34,7 +34,7 @@ const routes: Routes = [
     path: '',
     component: NavBarComponent,
     children: [
-      { path: 'home', component: HomePageComponent },
+      { path: '', component: HomePageComponent },
       { path: 'miCatalogo', component: MiCatalogoPageComponent },
       { path: 'agregarLibro', component: AgregarLibroComponent },
       { path: 'perfil', component: PerfilComponent },

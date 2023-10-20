@@ -1,15 +1,20 @@
 package io.github.projektalmanac.amoxtli.backend.generated.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import io.swagger.v3.oas.annotations.media.Schema;
-import org.openapitools.jackson.nullable.JsonNullable;
-
-import javax.annotation.Generated;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.net.URI;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
 
 /**
  * Detalles de un usuario que es dueño de un libro
@@ -28,6 +33,8 @@ public class DuenoDto {
 
   private JsonNullable<URI> foto = JsonNullable.<URI>undefined();
 
+  private Integer idLibro;
+
   public DuenoDto() {
     super();
   }
@@ -35,11 +42,12 @@ public class DuenoDto {
   /**
    * Constructor with only required parameters
    */
-  public DuenoDto(Integer id, String nombre, String apellido, URI foto) {
+  public DuenoDto(Integer id, String nombre, String apellido, URI foto, Integer idLibro) {
     this.id = id;
     this.nombre = nombre;
     this.apellido = apellido;
     this.foto = JsonNullable.of(foto);
+    this.idLibro = idLibro;
   }
 
   public DuenoDto id(Integer id) {
@@ -122,6 +130,26 @@ public class DuenoDto {
     this.foto = foto;
   }
 
+  public DuenoDto idLibro(Integer idLibro) {
+    this.idLibro = idLibro;
+    return this;
+  }
+
+  /**
+   * Get idLibro
+   * @return idLibro
+  */
+  @NotNull 
+  @Schema(name = "idLibro", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("idLibro")
+  public Integer getIdLibro() {
+    return idLibro;
+  }
+
+  public void setIdLibro(Integer idLibro) {
+    this.idLibro = idLibro;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -134,12 +162,13 @@ public class DuenoDto {
     return Objects.equals(this.id, dueno.id) &&
         Objects.equals(this.nombre, dueno.nombre) &&
         Objects.equals(this.apellido, dueno.apellido) &&
-        Objects.equals(this.foto, dueno.foto);
+        Objects.equals(this.foto, dueno.foto) &&
+        Objects.equals(this.idLibro, dueno.idLibro);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, nombre, apellido, foto);
+    return Objects.hash(id, nombre, apellido, foto, idLibro);
   }
 
   @Override
@@ -150,6 +179,7 @@ public class DuenoDto {
     sb.append("    nombre: ").append(toIndentedString(nombre)).append("\n");
     sb.append("    apellido: ").append(toIndentedString(apellido)).append("\n");
     sb.append("    foto: ").append(toIndentedString(foto)).append("\n");
+    sb.append("    idLibro: ").append(toIndentedString(idLibro)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -164,6 +194,5 @@ public class DuenoDto {
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 }
 

@@ -1,11 +1,11 @@
-<div style="height: 88vh">
-  <mat-card class="centrado">
+<div class="main">
+  <!-- <mat-card class="centrado">
     <mat-card-header>
       <mat-card-title>
         <h1>Libros</h1>
       </mat-card-title>
     </mat-card-header>
-  </mat-card>
+  </mat-card> -->
 
   <div class="centrado mt-3">
     <form [formGroup]="form">
@@ -36,8 +36,7 @@
   <div *ngIf="!mostrarSpinner" class="justify-content-center container">
     <div
       class="row libros"
-      *ngIf="paginaLibros && paginaLibros.libros.length > 0; else noHayLibros"
-      style="height: 60vh">
+      *ngIf="paginaLibros && paginaLibros.libros.length > 0; else noHayLibros">
       <div>
         <h1>Libros disponibles</h1>
       </div>
@@ -70,23 +69,24 @@
       </div>
     </ng-template>
   </div>
-</div>
-<div class="centrado mt-3">
-  <div class="pagination">
-    <!-- La página anterior es 0 si estamos al principio -->
-    <button
-      mat-icon-button
-      (click)="irAnterior()"
-      [disabled]="(paginaLibros?.pagAnterior ?? 0) < 1">
-      <mat-icon>chevron_left</mat-icon>
-    </button>
-    <span>Página {{ currentPage }} </span>
-    <!-- La página siguiente es 0 si llegamos al final -->
-    <button
-      mat-icon-button
-      (click)="irSiguiente()"
-      [disabled]="(paginaLibros?.pagSiguiente ?? 0) < 1">
-      <mat-icon>chevron_right</mat-icon>
-    </button>
+
+  <div class="centrado mt-3">
+    <div class="pagination">
+      <!-- La página anterior es 0 si estamos al principio -->
+      <button
+        mat-icon-button
+        (click)="irAnterior()"
+        [disabled]="(paginaLibros?.pagAnterior ?? 0) < 1">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <span>Página {{ currentPage }} </span>
+      <!-- La página siguiente es 0 si llegamos al final -->
+      <button
+        mat-icon-button
+        (click)="irSiguiente()"
+        [disabled]="(paginaLibros?.pagSiguiente ?? 0) < 1">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
   </div>
 </div>

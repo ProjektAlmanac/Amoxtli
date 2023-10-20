@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import io.github.projektalmanac.amoxtli.backend.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,21 +70,10 @@ public class UserController implements UsuariosApi {
 
     @PostMapping(path = "/usuarios")
     @Override
-    public ResponseEntity<UsuarioIdDto> crearUsuario(@RequestBody @Valid UsuarioDto usuario) {
+    public ResponseEntity<SessionTokenDto> crearUsuario(@RequestBody @Valid UsuarioDto usuario) {
+        var nuevoUsuario = userService.createUser(usuario);
 
-        UsuarioIdDto nuevousuario = userService.createuser(usuario);
-
-
-        if (nuevousuario != null) {
-            // devolveer solamente ID
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevousuario);
-
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
-        }
-
-
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
     }
 
     @Override

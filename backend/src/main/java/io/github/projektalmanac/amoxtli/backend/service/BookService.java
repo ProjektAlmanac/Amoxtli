@@ -7,7 +7,6 @@ import io.github.projektalmanac.amoxtli.backend.exception.ResourceNotFoundExcept
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.mapper.BookMapper;
-import io.github.projektalmanac.amoxtli.backend.mapper.UserMapper;
 import io.github.projektalmanac.amoxtli.backend.repository.BookRepository;
 import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
 import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
@@ -58,10 +57,9 @@ public class BookService {
 
         Book book = BookMapper.INSTANCE.toBook(libroRegistradoDto);
 
-        book = bookRepository.save(book);
-        user.addBook(book);
-        userRepository.save(user);
+        book.setOwner(user);
 
+        book = bookRepository.save(book);
 
         return BookMapper.INSTANCE.toLibroRegistradoDto(book);
     }
@@ -71,38 +69,13 @@ public class BookService {
         // obtener los detalles del libro
         VolumeInfo libroGoogleBooks = googleBookService.getVolumeInfoByIsbn(isbn);
 
-        // Verificar si el libro existe en la base de datos
-        Book book = bookRepository.findFirstByIsbn(isbn);
+        var books = bookRepository.findAllByIsbn(isbn);
 
-        if (book == null) {
-            throw new ResourceNotFoundException("Libro no encontrado con el ISBN proporcionado: " + isbn);
-        }
-
-        // Obtener los dueños del libro
-        List<User> duenos = userRepository.findUsersByBookIsbn(isbn);
-        List<DuenoDto> duenosDtoList = new ArrayList<>();
-
-        for (User dueno : duenos) {
-            DuenoDto duenoDto = new DuenoDto();
-
-            duenoDto = UserMapper.INSTANCE.userToUserDto1(dueno);
-            duenosDtoList.add(duenoDto);
-        }
-
-
-        LibroConDuenosDto libroConDuenosDto;
-
-
-        libroConDuenosDto = BookMapper.INSTANCE.toLibroConDuenosDto(isbn, libroGoogleBooks);
-        libroConDuenosDto.setDuenos(duenosDtoList);
-
-        // Retornar el libro mapeado con la información de los dueños
-        return libroConDuenosDto;
-
+        return BookMapper.INSTANCE.toLibroConDuenosDto(isbn, libroGoogleBooks, books);
     }
 
 
-    public List<InfoBasicaLibroDto> getLibros(Integer pagina, Integer tamanoPagina) {
+    public PaginaLibrosDto getLibros(Integer pagina, Integer tamanoPagina) {
 
         // Utiliza Spring Data JPA para obtener los resultados paginados del repositorio
         Pageable pageable = PageRequest.of(pagina - 1, tamanoPagina); // Spring Data JPA usa índices basados en 0, por eso se resta 1 a la página
@@ -111,7 +84,6 @@ public class BookService {
         Set<InfoBasicaLibroDto> librosDtoSet = new HashSet<>();
 
         // Convierte la página de libros a una lista de InfoBasicaLibroDto
-        List<InfoBasicaLibroDto> libros = new ArrayList<>();
         for (Book book : bookPage.getContent()) {
             VolumeInfo libroGoogleBooks = googleBookService.getVolumeInfoByIsbn(book.getIsbn());
             InfoBasicaLibroDto infoBasicaLibroDto = BookMapper.INSTANCE.toInfoBasicaLibroDto(book.getIsbn(), libroGoogleBooks);
@@ -120,14 +92,14 @@ public class BookService {
         // Convertir el HashSet a ArrayList
         List<InfoBasicaLibroDto> librosDto = new ArrayList<>(librosDtoSet);
 
-        return librosDto;
+        return getPaginaLibros(pagina, librosDto, bookPage.hasNext());
 
     }
 
-    public PaginaLibrosDto getLibrospag(Integer pagina, Integer tamanoPagina, List<InfoBasicaLibroDto> libros) {
+    private PaginaLibrosDto getPaginaLibros(Integer pagina, List<InfoBasicaLibroDto> libros, boolean hasNext) {
         // Calcular página anterior y página siguiente
-        int pagAnterior = (pagina > 1) ? pagina - 1 : 1;
-        int pagSiguiente = pagina + 1;
+        int pagAnterior = pagina - 1;
+        int pagSiguiente = hasNext ? pagina + 1 : 0;
 
         // Crear objeto PaginaLibrosDto
         PaginaLibrosDto paginaLibrosDto = new PaginaLibrosDto();

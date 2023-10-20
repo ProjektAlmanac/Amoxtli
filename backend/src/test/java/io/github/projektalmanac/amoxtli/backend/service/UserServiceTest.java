@@ -11,9 +11,7 @@ import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
 import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.core.io.ByteArrayResource;
@@ -62,11 +60,12 @@ class UserServiceTest {
     @Mock
     private BookRepository bookRepository;
 
-    String email, password, passwordHash, salt;
+    @Mock
+    private SecurityService securityService;
+
+    String email, password;
     CredencialesDto credencialesDto;
     SessionTokenDto sessionTokenDto;
-
-    SecurityConfig seguridad;
 
 
     private User user;
@@ -82,11 +81,8 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        seguridad = new SecurityConfig();
         email = "test@example.com";
         password = "passwordHash";
-        salt = SecurityConfig.saltHash();
-        passwordHash = SecurityConfig.hashContrasena(password + salt);
         // System.out.println("Password hash -> "+passwordHash);
 
         // credencialdto
@@ -207,8 +203,8 @@ class UserServiceTest {
         // Supongase que se tiene en el repositorio un usuario registrado
         User user = new User();
         user.setEmail(email);
-        user.setPasswordHash(passwordHash);
-        user.setPasswordSalt(salt);
+        user.setPasswordHash("passwordHash");
+        user.setPasswordSalt("passwordSalt");
         user.setId(1);
         Optional<User> expectedUser = Optional.of(user);
         // mock sobre el metodo findByEmail
@@ -219,6 +215,9 @@ class UserServiceTest {
         CredencialesDto credencialesDto1 = new CredencialesDto();
         credencialesDto1.setContrasena("otherPass");
         credencialesDto1.setEmail(email);
+
+        when(securityService.matchContrasena(anyString(), anyString())).thenReturn(false);
+
         Exception exception2 = assertThrows(InvalidUserSessionException.class, () -> {
             // no es la misma contrasenia a la que se tiene en el repositorio (DB)
             userService.iniciarSesion(credencialesDto1);
@@ -231,6 +230,8 @@ class UserServiceTest {
         // sus credenciales
 
         // Considere que el usuario registrado es user, definido en punto 2.
+
+        when(securityService.matchContrasena(anyString(), anyString())).thenReturn(true);
 
         Mockito.when(userRepository.findByEmail(email))
                 .thenReturn(expectedUser);
@@ -254,12 +255,23 @@ class UserServiceTest {
         usuarioDto.setCorreo("prueba1@example.com");
         usuarioDto.setPassword("password");
 
+        var captor = ArgumentCaptor.forClass(User.class);
+
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-        when(userRepository.save(any(User.class))).then(returnsFirstArg());
+        when(userRepository.save(captor.capture())).then(a -> {
+            var user = a.getArgument(0, User.class);
+            user.setId(this.user.getId());
+            return user;
+        });
 
-        UsuarioIdDto result = userService.createuser(usuarioDto);
+        var result = userService.createUser(usuarioDto);
 
-        assertNotNull(result);
+        assertEquals(user.getId(), result.getIdUsuario());
+        assertEquals(usuarioDto.getNombre(), captor.getValue().getName());
+        assertEquals(usuarioDto.getApellildos(), captor.getValue().getLastName());
+        assertEquals(usuarioDto.getCorreo(), captor.getValue().getEmail());
+        assertNotNull(captor.getValue().getPasswordHash());
+        assertNotNull(captor.getValue().getPasswordSalt());
 
         ////// ingresa un correo que ya existe./////////////
         UsuarioDto usuarioDto1 = new UsuarioDto();
@@ -271,7 +283,7 @@ class UserServiceTest {
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(new User()));
 
         assertThrows(EmailAlreadyExistsException.class, () -> {
-            userService.createuser(usuarioDto1);
+            userService.createUser(usuarioDto1);
         });
 
         ////// ingresa un correo con la sintaxis erronea:///////////////
@@ -282,31 +294,11 @@ class UserServiceTest {
         usuarioDto2.setPassword("12345");
 
         assertThrows(InvalidEmailFormatException.class, () -> {
-            userService.createuser(usuarioDto2);
+            userService.createUser(usuarioDto2);
         });
 
     }
 
-    @Test
-    void hashes() {
-        System.out.println("Test:: Hash sobre el password");
-        // usuario existente
-        User user = new User();
-        user.setEmail(email);
-        user.setPasswordHash(passwordHash);
-        user.setPasswordSalt(salt);
-        Optional<User> expectedUser = Optional.of(user);
-
-        // variable passwordRepositorio auxiliar para legibilidad
-        String passwRep = expectedUser.get().getPasswordHash();
-
-        // 1. considere un usuario que ingresa una constraseña incorrecta
-        assertFalse(SecurityConfig.matchContrasena(password.substring(2) + salt, passwRep));
-        assertFalse(SecurityConfig.matchContrasena("password" + salt, passwRep));
-
-        // 2. Considere que un usuario ingresa su contraseña correcta
-        assertTrue(SecurityConfig.matchContrasena(password + salt, passwRep));
-    }
 
     @Test
     void enviarCorreoVerificacion() throws MessagingException {
@@ -340,16 +332,6 @@ class UserServiceTest {
 
     }
 
-    @Test
-    void generadorToken() {
-        System.out.println("Test:: generadorToken");
-        // String clave = "email.com";
-        String token = userService.generadorToken(10);
-        System.out.println(token);
-        String userTokenInfo = userService.infoSesion(token);
-        System.out.println(userTokenInfo);
-        Assertions.assertNotNull(token, "Error: No se pudo generar el token");
-    }
 
     @Test
     void verificaCorreo() {
@@ -698,7 +680,7 @@ class UserServiceTest {
         Assertions.assertEquals(intercambio.getBookAccepting().getIsbn(), result.getIntercambios().get(0).getLibroAceptante().getIsbn());
         Assertions.assertEquals(intercambio.getBookAccepting().getDescription(), result.getIntercambios().get(0).getLibroAceptante().getDescripcion());
         Assertions.assertEquals(JsonNullable.of(intercambio.getBookOfferor()), result.getIntercambios().get(0).getLibroOfertante());
-        Assertions.assertEquals(intercambio.getStatus().getStatus(), result.getIntercambios().get(0).getEstado().getValue());
+        Assertions.assertEquals(intercambio.getStatus().getS(), result.getIntercambios().get(0).getEstado().getValue());
 
     }
 
@@ -761,7 +743,7 @@ class UserServiceTest {
         Assertions.assertEquals(intercambio2.getBookOfferor().getId(), result.getLibroOfertante().get().getId());
         Assertions.assertEquals(intercambio2.getBookOfferor().getIsbn(), result.getLibroOfertante().get().getIsbn());
         Assertions.assertEquals(intercambio2.getBookOfferor().getDescription(), result.getLibroOfertante().get().getDescripcion());
-        Assertions.assertEquals(intercambio2.getStatus().getStatus(), result.getEstado().getValue());
+        Assertions.assertEquals(intercambio2.getStatus().getS(), result.getEstado().getValue());
 
     }
 

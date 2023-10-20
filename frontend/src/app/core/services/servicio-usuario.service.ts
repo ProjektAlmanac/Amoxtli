@@ -21,4 +21,9 @@ export class ServicioUsuario {
       localStorage.setItem('token', String(this.token()))
     })
   }
+
+  logout() {
+    this.id.set(0)
+    this.token.set('')
+  }
 }

@@ -41,15 +41,6 @@ public interface ExchangeMapper {
     @Mapping(target = "estado", source = "status")
     IntercambioDto toIntercambioDto(Exchange exchange);
 
-//    default IntercambioDto toIntercambioDto(Exchange exchange){
-//        var ofertante = toOfertanteDto(exchange.getUserOfferor());
-//        var aceptante = toAceptanteDto(exchange.getUserAccepting());
-//        var libroAceptante = BookMapper.INSTANCE.tOLibroAceptanteDto(exchange.getBookAccepting());
-//        var estado = toEstadoIntercambioDto(exchange.getStatus());
-//        return new IntercambioDto(exchange.getId(), ofertante, aceptante, libroAceptante, null, estado);
-//
-//    }
-
     default GetIntercambios200ResponseDto toGetIntercambios200ResponseDto(List<Exchange> intercambios){
         var resultado = new GetIntercambios200ResponseDto();
         resultado.setIntercambios(new ArrayList<>());

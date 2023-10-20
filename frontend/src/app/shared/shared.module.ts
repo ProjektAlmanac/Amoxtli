@@ -12,9 +12,10 @@ import { MatMenuModule } from '@angular/material/menu'
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { AuthenticatedComponent } from './components/authenticated/authenticated.component'
 
 @NgModule({
-  declarations: [NavBarComponent, ProgressSpinnerComponent],
+  declarations: [NavBarComponent, ProgressSpinnerComponent, AuthenticatedComponent],
   imports: [
     CommonModule,
     MatButtonModule,

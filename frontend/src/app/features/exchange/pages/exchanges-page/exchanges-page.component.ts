@@ -36,9 +36,14 @@ export class ExchangesPageComponent implements OnInit {
 
   async getExchanges(userId: number) {
     const exchangeList = await lastValueFrom(this.apiService.getIntercambios(userId))
+    if (exchangeList === null) {
+      this.pendingExchanges.set([])
+      this.otherExchanges.set([])
+      return
+    }
     const exchangePromises =
       exchangeList.intercambios?.map(async exchange => {
-        const offeringBook = await this.getBookDetails(exchange.libroOfertante.isbn)
+        const offeringBook = await this.getBookDetails(exchange.libroOfertante?.isbn)
         const acceptingBook = await this.getBookDetails(exchange.libroAceptante.isbn)
         return {
           id: exchange.id,
@@ -50,7 +55,11 @@ export class ExchangesPageComponent implements OnInit {
         } satisfies Exchange
       }) ?? []
     const exchanges = await Promise.all(exchangePromises)
-    this.pendingExchanges.set(exchanges.filter(exchange => exchange.state === 'Pendiente'))
+    this.pendingExchanges.set(
+      exchanges.filter(
+        exchange => exchange.state === 'Pendiente' && exchange.offeringUser.id !== userId
+      )
+    )
     this.otherExchanges.set(exchanges.filter(exchange => exchange.state !== 'Pendiente'))
   }
 

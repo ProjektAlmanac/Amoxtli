@@ -49,8 +49,6 @@ import { SessionToken } from '../model/sessionToken';
 // @ts-ignore
 import { Usuario } from '../model/usuario';
 // @ts-ignore
-import { UsuarioId } from '../model/usuarioId';
-// @ts-ignore
 import { ValidaPuedeIntercambiar200Response } from '../model/validaPuedeIntercambiar200Response';
 
 // @ts-ignore
@@ -521,9 +519,9 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public crearUsuario(usuario?: Usuario, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<UsuarioId>;
-    public crearUsuario(usuario?: Usuario, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<UsuarioId>>;
-    public crearUsuario(usuario?: Usuario, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<UsuarioId>>;
+    public crearUsuario(usuario?: Usuario, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<SessionToken>;
+    public crearUsuario(usuario?: Usuario, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<SessionToken>>;
+    public crearUsuario(usuario?: Usuario, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<SessionToken>>;
     public crearUsuario(usuario?: Usuario, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -574,7 +572,7 @@ export class DefaultService {
         }
 
         let localVarPath = `/usuarios/`;
-        return this.httpClient.request<UsuarioId>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<SessionToken>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: usuario,
