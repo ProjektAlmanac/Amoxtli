@@ -99,7 +99,7 @@ public class BookService {
 
     private PaginaLibrosDto getPaginaLibros(Integer pagina, Integer tamanoPagina, List<InfoBasicaLibroDto> libros, boolean hasNext) {
         // Calcular página anterior y página siguiente
-        int pagAnterior = (pagina > 1) ? pagina - 1 : 0;
+        int pagAnterior = pagina - 1;
         int pagSiguiente = hasNext ? pagina + 1 : 0;
 
         // Crear objeto PaginaLibrosDto
