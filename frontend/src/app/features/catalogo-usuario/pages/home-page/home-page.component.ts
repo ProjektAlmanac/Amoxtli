@@ -13,9 +13,11 @@ export class HomePageComponent implements OnInit {
   public mostrarSpinner = false
   public isbnFilter = ''
   form: FormGroup
+  public ant = 0
+  public sig = 0
+  public res = 0
 
   public currentPage = 1
-  public itemsPerPage = 10
 
   constructor(
     private serviceApi: DefaultService,
@@ -32,10 +34,12 @@ export class HomePageComponent implements OnInit {
   }
 
   recuperaLibros() {
-    this.currentPage = 1
-    this.serviceApi.getLibros().subscribe(resp => {
+    this.serviceApi.getLibros(this.currentPage).subscribe(resp => {
       this.libros = resp
       this.libroscopy = resp.libros
+      this.ant = resp.pagAnterior
+      this.sig = resp.pagSiguiente
+      this.res = resp.resultados
       this.mostrarSpinner = false
     })
   }
@@ -69,23 +73,13 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  getBooksForCurrentPage(): InfoBasicaLibro[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage
-    const endIndex = startIndex + this.itemsPerPage
-    return this.libroscopy.slice(startIndex, endIndex)
+  irAnterior() {
+    this.currentPage = this.ant
+    this.recuperaLibros()
   }
 
-  goToPage(pageNumber: number) {
-    if (pageNumber >= 1 && pageNumber <= this.getTotalPages()) {
-      this.currentPage = pageNumber
-    }
-  }
-
-  getTotalPages(): number {
-    if (this.libroscopy) {
-      return Math.ceil(this.libroscopy.length / this.itemsPerPage)
-    } else {
-      return 1 // Or handle this case as per your application's logic.
-    }
+  irSiguiente() {
+    this.currentPage = this.sig
+    this.recuperaLibros()
   }
 }

@@ -70,14 +70,11 @@
 </div>
 <div class="centrado mt-3">
   <div class="pagination">
-    <button mat-icon-button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+    <button mat-icon-button (click)="irAnterior()" [disabled]="currentPage === 1">
       <mat-icon>chevron_left</mat-icon>
     </button>
-    <span>Página {{ currentPage }} de {{ getTotalPages() }}</span>
-    <button
-      mat-icon-button
-      (click)="goToPage(currentPage + 1)"
-      [disabled]="currentPage === getTotalPages()">
+    <span>Página {{ currentPage }} </span>
+    <button mat-icon-button (click)="irSiguiente()" [disabled]="currentPage === 0">
       <mat-icon>chevron_right</mat-icon>
     </button>
   </div>
