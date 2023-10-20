@@ -41,7 +41,7 @@
       <div class="" *ngFor="let libro of libros.libros">
         <mat-card class="col-12 col-md-12 col-sm-12">
           <!--aqui va el enlace a la otra pagina-->
-          <a [routerLink]="">
+          <a [routerLink]="['/libro']" [queryParams]="{ isbn: libro.isbn }">
             <mat-card-header>
               <mat-card-title> {{ libro.titulo }} </mat-card-title>
               <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
