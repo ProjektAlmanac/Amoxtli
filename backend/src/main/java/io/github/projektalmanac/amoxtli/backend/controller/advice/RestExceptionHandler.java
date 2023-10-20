@@ -84,4 +84,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         var error = new ErrorDto(ex.getMessage(), 9); // Código 3 par que es la historia de usuario que se trato
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ExchangeErrorProcess.class)
+    public final ResponseEntity<ErrorDto> handleExchangeErrorProcess(ExchangeErrorProcess ex, WebRequest request) {
+        var error = new ErrorDto(ex.getMessage(), 13);
+        var codigo_http = HttpStatus.NOT_FOUND;
+        if(ex.getMessage().equals("Usuario no autorizado"))//401
+            codigo_http= HttpStatus.UNAUTHORIZED;
+        if(ex.getMessage().equals("Intercambio no encontrado"))//404
+            codigo_http = HttpStatus.NOT_FOUND;
+        if(ex.getMessage().equals("Operacion prohibida"))//403
+            codigo_http = HttpStatus.FORBIDDEN;
+        return new ResponseEntity<>(error, codigo_http);
+    }
 }
