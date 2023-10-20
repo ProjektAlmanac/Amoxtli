@@ -23,7 +23,7 @@ export class LoginPageComponent {
       next: (sessionToken: SessionToken) => {
         this.servicioUsuario.id.set(sessionToken.idUsuario)
         this.servicioUsuario.token.set(sessionToken.token)
-        this.router.navigate(['/home'])
+        this.router.navigate(['/'])
       },
       error: (err: HttpErrorResponse) => {
         const error: ModelError = err.error
