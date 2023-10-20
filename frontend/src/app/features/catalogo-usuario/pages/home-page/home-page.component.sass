@@ -1,3 +1,8 @@
+.main
+  height: 100%
+  display: grid
+  grid-template-rows: auto 1fr auto
+
 .centrado
   display: flex
   justify-content: center
@@ -6,10 +11,11 @@
 .input
   margin-right: 20px
 
-
 .libros
   max-height: 700px
   overflow: auto
+  display: flex
+  gap: 0.5rem
 
 @import breakpoints
 
@@ -26,7 +32,6 @@
   @include xl
     width: 600px
 
-
 a
   text-decoration: none
   display: flex
@@ -37,4 +42,9 @@ mat-card-header
   padding: 0px
 
 .barra
-  overflow: auto  
+  overflow: auto
+
+img
+  width: 110px
+  height: 150px
+  object-fit: cover
