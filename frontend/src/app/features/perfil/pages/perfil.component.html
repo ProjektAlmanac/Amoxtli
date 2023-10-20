@@ -1,117 +1,136 @@
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
-<div
-  [formGroup]="form"
-  style="
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-  ">
-  <mat-card-content>
-    <mat-label>Ingrese una foto de perfil:</mat-label>
-    <th></th>
-    <!--<mat-form-field appearence="fill" class="mat-50"><mat-label><mat-icon> insert_photo</mat-icon></mat-label><input matInput formControlName="photo" (ngModelChange)="onChange(1); checkTouchedFielsd()" /></mat-form-field>-->
-    <div class="div-photo" style="display: flex; align-items: center">
-      <div class="mat-50">
-        <button (click)="mostrarCampoDeFoto()">
-          <img
-            class="image-button"
-            [src]="imageSrc"
-            alt="foto-perfil"
-            width="180"
-            height="180"
-            *ngIf="imageSrc"
-            [style.background-image]="'url(' + imageSrc + ')'"
-            style="display: block; margin: 0 auto" />
-        </button>
-      </div>
-      <div class="mat-50" position="inline-block">
-        <div style="margin-left: 10px" *ngIf="showInputPhoto">
-          <input
-            type="file"
-            (change)="onFileSelected($event)"
-            (ngModelChange)="onChange(1); checkTouchedFielsd()" />
+<div style="height: 92vh">
+  <mat-card class="centrado">
+    <mat-card-header>
+      <mat-card-title>
+        <h1>Perfil</h1>
+      </mat-card-title>
+    </mat-card-header>
+  </mat-card>
+  <div [formGroup]="form" class="container" style="overflow-y: auto; max-height: 80vh">
+    <mat-card-content>
+      <mat-label>Ingrese una foto de perfil:</mat-label>
+      <th></th>
+      <div class="row">
+        <div class="col">
+          <div class="">
+            <button (click)="mostrarCampoDeFoto()">
+              <img
+                class="image-button"
+                [src]="imageSrc"
+                alt="foto-perfil"
+                width="180"
+                height="180"
+                *ngIf="imageSrc"
+                [style.background-image]="'url(' + imageSrc + ')'"
+                style="display: block; margin: 0 auto" />
+            </button>
+          </div>
         </div>
-        <mat-form-field appearence="fill" style="margin-left: 10px">
-          <mat-label>Descripción de foto: </mat-label>
-          <input
-            matInput
-            formControlName="describePhoto"
-            placeholder="Ingrese una descripción sobre la foto"
-            (ngModelChange)="onChange(2); checkTouchedFielsd()" />
-        </mat-form-field>
+        <div class="col" position="inline-block">
+          <div style="margin-left: 10px" *ngIf="showInputPhoto">
+            <input
+              type="file"
+              (change)="onFileSelected($event)"
+              (ngModelChange)="onChange(1); checkTouchedFielsd()" />
+          </div>
+          <mat-form-field appearence="fill">
+            <mat-label>Descripción de foto: </mat-label>
+            <input
+              matInput
+              formControlName="describePhoto"
+              placeholder="Ingrese una descripción sobre la foto"
+              (ngModelChange)="onChange(2); checkTouchedFielsd()" />
+          </mat-form-field>
+        </div>
       </div>
-    </div>
-    <th></th>
-    <mat-label>Ingrese los siguientes datos: </mat-label>
-    <th></th>
+      <th></th>
+      <mat-label>Ingrese los siguientes datos: </mat-label>
+      <th></th>
+      <div class="row">
+        <div class="col">
+          <mat-form-field appearence="fill" class="">
+            <mat-label>Nombre(s):</mat-label>
+            <input
+              matInput
+              formControlName="name"
+              (ngModelChange)="onChange(3); checkTouchedFielsd()" />
+            <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+              <mat-error>El nombre es requerido</mat-error>
+            </div>
+          </mat-form-field>
+        </div>
 
-    <mat-form-field appearence="fill" class="mat-50">
-      <mat-label>Nombre(s):</mat-label>
-      <input matInput formControlName="name" (ngModelChange)="onChange(3); checkTouchedFielsd()" />
-      <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
-        <mat-error>El nombre es requerido</mat-error>
+        <div class="col">
+          <mat-form-field appearence="fill" class="">
+            <mat-label>Apellido(s):</mat-label>
+            <input
+              matInput
+              formControlName="lastname"
+              (ngModelChange)="onChange(4); checkTouchedFielsd()" />
+            <div *ngIf="form.get('lastname')?.invalid && form.get('lastname')?.touched">
+              <mat-error>El apellido es requerido</mat-error>
+            </div>
+          </mat-form-field>
+        </div>
       </div>
-    </mat-form-field>
 
-    <mat-form-field appearence="fill" class="mat-50">
-      <mat-label>Apellido(s):</mat-label>
-      <input
-        matInput
-        formControlName="lastname"
-        (ngModelChange)="onChange(4); checkTouchedFielsd()" />
-      <div *ngIf="form.get('lastname')?.invalid && form.get('lastname')?.touched">
-        <mat-error>El apellido es requerido</mat-error>
+      <div class="row">
+        <div class="col">
+          <mat-form-field appearence="fill" class="">
+            <mat-label>Correo electrónico:</mat-label>
+            <input
+              matInput
+              formControlName="email"
+              (ngModelChange)="onChange(5); checkTouchedFielsd()" />
+            <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+              <mat-error>El correo es requerido</mat-error>
+            </div>
+            <div *ngIf="form.get('email')?.hasError('email')">
+              <mat-error>El correo es invalido</mat-error>
+            </div>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field appearence="fill" class="">
+            <mat-label>Número de teléfono:</mat-label>
+            <input
+              matInput
+              formControlName="phoneNumber"
+              (ngModelChange)="onChange(6); checkTouchedFielsd()" />
+            <div *ngIf="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched">
+              <mat-error>El número es requerido</mat-error>
+            </div>
+            <div *ngIf="form.get('phoneNumber')?.hasError('minlength')">
+              <mat-error>El número debe tener 10 digitos</mat-error>
+            </div>
+            <div *ngIf="form.get('phoneNumber')?.hasError('number')">
+              <mat-error>Debe de registrar un número</mat-error>
+            </div>
+            <div *ngIf="form.get('phoneNumber')?.hasError('maxlength')">
+              <mat-error>El número debe tener 10 digitos</mat-error>
+            </div>
+          </mat-form-field>
+        </div>
       </div>
-    </mat-form-field>
-
-    <mat-form-field appearence="fill" class="mat-50">
-      <mat-label>Correo electrónico:</mat-label>
-      <input matInput formControlName="email" (ngModelChange)="onChange(5); checkTouchedFielsd()" />
-      <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
-        <mat-error>El correo es requerido</mat-error>
+      <div class="row">
+        <div class="col">
+          <mat-form-field appearence="fill">
+            <mat-label>Intereses:</mat-label>
+            <input
+              matInput
+              formControlName="interests"
+              placeholder="Hable sobre sus libros e intereses sobre libros"
+              (ngModelChange)="onChange(7); checkTouchedFielsd()" />
+          </mat-form-field>
+        </div>
       </div>
-      <div *ngIf="form.get('email')?.hasError('email')">
-        <mat-error>El correo es invalido</mat-error>
-      </div>
-    </mat-form-field>
-
-    <mat-form-field appearence="fill" class="mat-50">
-      <mat-label>Número de teléfono:</mat-label>
-      <input
-        matInput
-        formControlName="phoneNumber"
-        (ngModelChange)="onChange(6); checkTouchedFielsd()" />
-      <div *ngIf="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched">
-        <mat-error>El número es requerido</mat-error>
-      </div>
-      <div *ngIf="form.get('phoneNumber')?.hasError('minlength')">
-        <mat-error>El número debe tener 10 digitos</mat-error>
-      </div>
-      <div *ngIf="form.get('phoneNumber')?.hasError('number')">
-        <mat-error>Debe de registrar un número</mat-error>
-      </div>
-      <div *ngIf="form.get('phoneNumber')?.hasError('maxlength')">
-        <mat-error>El número debe tener 10 digitos</mat-error>
-      </div>
-    </mat-form-field>
-
-    <mat-form-field appearence="fill">
-      <mat-label>Intereses:</mat-label>
-      <input
-        matInput
-        formControlName="interests"
-        placeholder="Hable sobre sus libros e intereses sobre libros"
-        (ngModelChange)="onChange(7); checkTouchedFielsd()" />
-    </mat-form-field>
-  </mat-card-content>
-  <mat-card-actions *ngIf="showButtons">
-    <button mat-raised-button color="primary" (click)="sendValues()" [disabled]="form.invalid">
-      Actualizar
-    </button>
-    <button mat-raised-button color="primary" (click)="cancel()">Cancelar</button>
-  </mat-card-actions>
+    </mat-card-content>
+    <mat-card-actions *ngIf="showButtons" class="centrado">
+      <button mat-raised-button color="primary" (click)="sendValues()" [disabled]="form.invalid">
+        Actualizar
+      </button>
+      <button mat-raised-button color="primary" (click)="cancel()">Cancelar</button>
+    </mat-card-actions>
+  </div>
 </div>
