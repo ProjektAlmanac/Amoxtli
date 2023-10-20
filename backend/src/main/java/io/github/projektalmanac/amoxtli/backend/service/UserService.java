@@ -345,5 +345,17 @@ public class UserService extends UserServiceKt {
         return  ExchangeMapper.INSTANCE.toIntercambioDto(exchange);
 
     }
+
+
+    public void eliminarLibroCatalogoUsuario(Book book, Integer idUser){
+
+        Optional<User> usuario = userRepository.findById(idUser);
+        if(usuario.isPresent()){
+            usuario.get().getBooks().remove(book);
+            userRepository.save(usuario.get());
+        }else{
+            throw new ExchangeErrorProcess("Usuario no autorizado");
+        }
+    }
 }
 

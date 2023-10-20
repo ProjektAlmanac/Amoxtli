@@ -29,7 +29,8 @@ public enum EstadoIntercambioDto {
   
   RECHAZADO("Rechazado"),
   
-  CANCELADO("Cancelado");
+  CANCELADO("Cancelado"),
+  COMPLETADO("Completado");
 
   private String value;
 

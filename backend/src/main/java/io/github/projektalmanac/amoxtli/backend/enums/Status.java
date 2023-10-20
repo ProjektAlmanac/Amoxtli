@@ -7,6 +7,7 @@ public enum Status {
     CANCELADO("Cancelado"),
     ACEPTADO("Aceptado"),
     RECHAZADO("Rechazado"),
+    COMPLETADO("Completado"),
     PENDIENTE("Pendiente");
 
     private final String s;

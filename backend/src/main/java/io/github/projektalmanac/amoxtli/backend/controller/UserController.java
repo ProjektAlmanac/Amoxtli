@@ -1,5 +1,6 @@
 package io.github.projektalmanac.amoxtli.backend.controller;
 
+import io.github.projektalmanac.amoxtli.backend.exception.ExchangeErrorProcess;
 import io.github.projektalmanac.amoxtli.backend.exception.InvalidPhotoException;
 import io.github.projektalmanac.amoxtli.backend.exception.InvalidVerificationCodeException;
 import io.github.projektalmanac.amoxtli.backend.generated.api.UsuariosApi;
@@ -11,10 +12,7 @@ import io.github.projektalmanac.amoxtli.backend.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -23,6 +21,9 @@ import java.io.IOException;
 public class UserController implements UsuariosApi {
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private ExchangeService exchangeService;
 
     private UserService userService;
 
@@ -76,6 +77,16 @@ public class UserController implements UsuariosApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
     }
 
+    /**
+     * Metodo de solititud de finalizar un intercambio activo
+     *entre dos usuarios, que previamente aceptaron realizar el intercambio,
+     * se necesita que alguno de los dos genere el codigo QR
+     * @param idUsuario Id del usuario (required)
+     * @param idIntercambio Id del intercambio (required)
+     * @param codigoIntercambioDto  (optional)
+     * @return Intercmabio finalizado
+     */
+    @PostMapping(path = "/usuarios/{idUsuario}/intercambios/{idIntercambio}/finalizar")
     @Override
     public ResponseEntity<IntercambioDto> finalizarIntercambio(Integer idUsuario, Integer idIntercambio,
             CodigoIntercambioDto codigoIntercambioDto) {
@@ -84,6 +95,13 @@ public class UserController implements UsuariosApi {
         return ResponseEntity.status(HttpStatus.OK).body(exchange);
     }
 
+    /**
+     * Metodo para obtener un codigo para que front genere un Qr apartir del mismo
+     * @param idUsuario Id del usuario (required)
+     * @param idIntercambio Id del intercambio (required)
+     * @return codigo base con informacion del intercambio
+     */
+    @GetMapping(path = "/usuarios/{idUsuario}/intercambios/{idIntercambio}/codigo")
     @Override
     public ResponseEntity<CodigoIntercambioDto> getCodigoIntercambio(Integer idUsuario, Integer idIntercambio) {
         var code = userService.getCode(idUsuario, idIntercambio);
@@ -91,8 +109,9 @@ public class UserController implements UsuariosApi {
         return ResponseEntity.status(HttpStatus.OK).body(code);
     }
 
+    @GetMapping(path = "usuarios/{id}/intercambios")
     @Override
-    public ResponseEntity<GetIntercambios200ResponseDto> getIntercambios(Integer id) {
+    public ResponseEntity<GetIntercambios200ResponseDto> getIntercambios(@PathVariable Integer id) {
         //HU-07
         GetIntercambios200ResponseDto result = userService.getIntercambios(id);
         return ResponseEntity.status(HttpStatus.OK).body(result);

@@ -17,6 +17,10 @@ import java.util.List;
 public interface ExchangeMapper {
     ExchangeMapper INSTANCE = Mappers.getMapper(ExchangeMapper.class);
 
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "isbn", source = "isbn")
+    @Mapping(target = "descripcion", source = "description")
+    LibroRegistradoDto toLibroRegistradoDto(Book book);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "nombre", source = "name")
