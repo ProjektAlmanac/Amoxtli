@@ -1,3 +1,5 @@
+@import breakpoints
+
 .spacer
   flex: 1 1 auto
 
@@ -9,3 +11,9 @@
   max-width: unset
   margin: 0
   padding: 0
+
+.drawer
+  @include xs
+    width: 100vw
+  @include sm
+    width: 250px
