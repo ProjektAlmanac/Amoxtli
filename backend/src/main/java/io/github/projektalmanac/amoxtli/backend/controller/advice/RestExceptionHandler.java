@@ -130,13 +130,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ExchangeErrorProcess.class)
     public final ResponseEntity<ErrorDto> handleExchangeErrorProcess(ExchangeErrorProcess ex, WebRequest request) {
         var error = new ErrorDto(ex.getMessage(), 13);
-        var codigo_http = HttpStatus.NOT_FOUND;
+        var codigoHttp = HttpStatus.NOT_FOUND;
         if(ex.getMessage().equals("Usuario no autorizado"))//401
-            codigo_http= HttpStatus.UNAUTHORIZED;
+            codigoHttp= HttpStatus.UNAUTHORIZED;
         if(ex.getMessage().equals("Intercambio no encontrado"))//404
-            codigo_http = HttpStatus.NOT_FOUND;
+            codigoHttp = HttpStatus.NOT_FOUND;
         if(ex.getMessage().equals("Operacion prohibida"))//403
-            codigo_http = HttpStatus.FORBIDDEN;
-        return new ResponseEntity<>(error, codigo_http);
+            codigoHttp = HttpStatus.FORBIDDEN;
+        return new ResponseEntity<>(error, codigoHttp);
     }
 }

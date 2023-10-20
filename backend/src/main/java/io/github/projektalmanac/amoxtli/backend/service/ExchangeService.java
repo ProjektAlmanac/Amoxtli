@@ -53,12 +53,11 @@ public class ExchangeService {
         //regla 2
         //Quien genero el QR es quien también está escaneando el código
         //El usuario que oferto genero el QR y está tratando de escanear el código
-        if (Objects.equals(intercambio.getUserOfferor().getId(), usuario.get().getId()) && intercambio.getOfferorConfirmationCode()!=null)
+        if (
+                (Objects.equals(intercambio.getUserOfferor().getId(), usuario.get().getId()) && intercambio.getOfferorConfirmationCode() != null)
+                || (Objects.equals(intercambio.getUserAccepting().getId(), usuario.get().getId()) && intercambio.getConfirmationCodeAccepting()!=null)
+        )
         {
-            throw new ExchangeErrorProcess(MENSAJE_ERROR[1]); //403
-        }
-            //El usuario que solito el intercambio, genero el QR y está tratando de escanear el código
-        else if (Objects.equals(intercambio.getUserAccepting().getId(), usuario.get().getId()) && intercambio.getConfirmationCodeAccepting()!=null) {
             throw new ExchangeErrorProcess(MENSAJE_ERROR[1]); //403
         }
 
