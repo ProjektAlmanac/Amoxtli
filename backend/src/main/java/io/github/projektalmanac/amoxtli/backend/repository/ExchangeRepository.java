@@ -21,26 +21,4 @@ public interface ExchangeRepository extends JpaRepository<Exchange,Integer> {
 
     @Override
     Optional<Exchange> findById(Integer integer);
-
-    Optional<Exchange> findByIdAndUserOfferor(Integer id, User userOfferor);
-
-    Optional<Exchange> findByIdAndUserAccepting(Integer id,User userAccepting);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE Exchange e SET e.status = :statusNuevo WHERE e.id = :idIntercambio")
-    int actualizarStatusIntercambio(@Param("idIntercambio") Integer idIntercambio, @Param("statusNuevo") Status statusNuevo);
-
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE Exchange e SET e.offerorConfirmationCode = :offerorConfirmationCode WHERE e.id = :idIntercambio")
-    int actualizarOfferorConfirmationCode(@Param("idIntercambio") Integer idIntercambio, @Param("offerorConfirmationCode") String offerorConfirmationCode);
-
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE Exchange e SET e.confirmationCodeAccepting = :confirmationCodeAccepting WHERE e.id = :idIntercambio")
-    int actualizarConfirmationCodeAccepting(@Param("idIntercambio") Integer idIntercambio, @Param("confirmationCodeAccepting") String confirmationCodeAccepting);
-
 }
