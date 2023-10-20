@@ -120,4 +120,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         var error = new ErrorDto(ex.getMessage(), 14);
         return new ResponseEntity<>(error, HttpStatus.SERVICE_UNAVAILABLE);
     }
+
+    @ExceptionHandler(InvalidExchangeCodeException.class)
+    public final ResponseEntity<ErrorDto> handleInvalidExchangeCodeException(InvalidExchangeCodeException ex, WebRequest request) {
+        var error = new ErrorDto(ex.getMessage(), 15);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 }

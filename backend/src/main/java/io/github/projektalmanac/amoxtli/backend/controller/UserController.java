@@ -79,12 +79,16 @@ public class UserController implements UsuariosApi {
     @Override
     public ResponseEntity<IntercambioDto> finalizarIntercambio(Integer idUsuario, Integer idIntercambio,
             CodigoIntercambioDto codigoIntercambioDto) {
-        return null;
+        var exchange = userService.finalizeExchange(idUsuario, idIntercambio, codigoIntercambioDto.getCodigo());
+
+        return ResponseEntity.status(HttpStatus.OK).body(exchange);
     }
 
     @Override
     public ResponseEntity<CodigoIntercambioDto> getCodigoIntercambio(Integer idUsuario, Integer idIntercambio) {
-        return null;
+        var code = userService.getCode(idUsuario, idIntercambio);
+
+        return ResponseEntity.status(HttpStatus.OK).body(code);
     }
 
     @Override
