@@ -15,8 +15,6 @@ export class VerifyEmailPageComponent implements OnInit {
 
   email = ''
 
-  idUsuario = 0
-
   constructor(
     private servicioApi: DefaultService,
     private servicioUsuario: ServicioUsuario,
@@ -26,7 +24,7 @@ export class VerifyEmailPageComponent implements OnInit {
   ) {}
 
   onSubmit({ code }: { code: string }) {
-    this.servicioApi.verificarCorreo(this.idUsuario, { codigo: code }).subscribe({
+    this.servicioApi.verificarCorreo(this.servicioUsuario.id(), { codigo: code }).subscribe({
       next: () => {
         this.router.navigate(['/welcome'])
       },
@@ -38,14 +36,11 @@ export class VerifyEmailPageComponent implements OnInit {
   }
 
   resendCode() {
-    this.servicioApi.mandarCorreoConfirmacion(this.idUsuario).subscribe({
+    this.servicioApi.mandarCorreoConfirmacion(this.servicioUsuario.id()).subscribe({
       next: () => {
         this.snackbar.open('Correo enviado', 'Aceptar')
       },
-      error: (err: HttpErrorResponse) => {
-        const error: ModelError = err.error
-        this.snackbar.open(error.mensaje, 'Aceptar')
-      },
+      error: this.mostrarError.bind(this),
     })
   }
 
@@ -53,8 +48,13 @@ export class VerifyEmailPageComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.email = params['email']
     })
-    this.servicioUsuario.id.subscribe(id => {
-      this.idUsuario = id
+    this.servicioApi.mandarCorreoConfirmacion(this.servicioUsuario.id()).subscribe({
+      error: this.mostrarError.bind(this),
     })
+  }
+
+  mostrarError(err: HttpErrorResponse) {
+    const error: ModelError = err.error
+    this.snackbar.open(error.mensaje, 'Aceptar')
   }
 }

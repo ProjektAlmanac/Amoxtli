@@ -2,23 +2,17 @@ package io.github.projektalmanac.amoxtli.backend.mapper;
 
 import com.google.api.services.books.model.Volume.VolumeInfo;
 import io.github.projektalmanac.amoxtli.backend.entity.Book;
-import io.github.projektalmanac.amoxtli.backend.generated.model.DetallesLibroDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibroRegistradoConDetallesDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibroRegistradoDto;
-import io.github.projektalmanac.amoxtli.backend.generated.model.LibrosUsuarioDto;
-import jdk.jfr.Name;
+import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {UserMapper.class})
 public interface BookMapper {
     BookMapper INSTANCE = Mappers.getMapper(BookMapper.class);
 
@@ -40,7 +34,7 @@ public interface BookMapper {
         return resultado;
     }
 
-    @Mapping(target = "isbn", source = "ISBN")
+    @Mapping(target = "isbn", source = "isbn")
     @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")
     @Mapping(target = "titulo", source = "libroGoogleBooks.title")
     @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks")
@@ -49,7 +43,7 @@ public interface BookMapper {
     @Mapping(target = "sinopsis", source = "libroGoogleBooks.description")
     @Mapping(target = "idioma", source = "libroGoogleBooks.language")
     @Mapping(target = "fechaPublicacion", source = "libroGoogleBooks.publishedDate" )
-    DetallesLibroDto toDetallesLibroDto(String ISBN, VolumeInfo libroGoogleBooks);
+    DetallesLibroDto toDetallesLibroDto(String isbn, VolumeInfo libroGoogleBooks);
 
     @Mapping(target = "isbn", source = "libroRegistradoDto.isbn")
     @Mapping(target = "description", source = "libroRegistradoDto.descripcion")
@@ -57,6 +51,27 @@ public interface BookMapper {
 
     @Mapping(target = "descripcion", source = "description")
     LibroRegistradoDto toLibroRegistradoDto(Book book);
+
+    @Mapping(target = "descripcion", source = "description")
+    LibroAceptanteDto tOLibroAceptanteDto(Book book);
+
+    @Mapping(target = "isbn", source = "isbn")
+    @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")
+    @Mapping(target = "titulo", source = "libroGoogleBooks.title")
+    @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks")
+    @Mapping(target = "generos", source = "libroGoogleBooks.categories")
+    @Mapping(target = "editorial", source = "libroGoogleBooks.publisher")
+    @Mapping(target = "sinopsis", source = "libroGoogleBooks.description")
+    @Mapping(target = "idioma", source = "libroGoogleBooks.language")
+    @Mapping(target = "fechaPublicacion", source = "libroGoogleBooks.publishedDate" )
+    @Mapping(target = "duenos", source = "books" )
+    LibroConDuenosDto toLibroConDuenosDto(String isbn, VolumeInfo libroGoogleBooks, List<Book> books);
+
+    @Mapping(target = "isbn", source = "isbn")
+    @Mapping(target = "autor", expression = "java(libroGoogleBooks.getAuthors().get(0))")
+    @Mapping(target = "titulo", source = "libroGoogleBooks.title")
+    @Mapping(target = "urlPortada", source = "libroGoogleBooks.imageLinks")
+    InfoBasicaLibroDto toInfoBasicaLibroDto(String isbn, VolumeInfo libroGoogleBooks);
 
     default URI stringToUri(String string) {
         if (string == null) return null;
@@ -91,4 +106,5 @@ public interface BookMapper {
         if (imageLinks.getSmallThumbnail() != null) return imageLinks.getSmallThumbnail();
         return null;
     }
+
 }

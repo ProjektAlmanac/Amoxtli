@@ -1,5 +1,8 @@
 package io.github.projektalmanac.amoxtli.backend.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Status {
     CANCELADO("Cancelado"),
     ACEPTADO("Aceptado"),
@@ -7,9 +10,8 @@ public enum Status {
     COMPLETADO("Completado"),
     PENDIENTE("Pendiente");
 
-    private final String status;
-    Status(String s){status = s;}
-    public String getStatus(){
-        return status;
+    private final String s;
+    Status(String s) {
+        this.s = s;
     }
 }

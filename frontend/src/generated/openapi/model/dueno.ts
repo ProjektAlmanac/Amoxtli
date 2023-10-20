@@ -31,5 +31,6 @@ export interface Dueno {
      * Foto de perfil del usuario
      */
     foto: string | null;
+    idLibro: number;
 }
 

@@ -1,3 +1,25 @@
+.centrado
+    display: flex
+    /*flex-direction: column*/
+    justify-content: center
+    align-items: center
+    gap: 10px
+
+@import breakpoints
+
+.tarjeta-libro
+
+  @include xs
+    width: auto
+  @include sm
+    width: auto
+  @include md
+    width: 600px
+  @include lg
+    width: 600px
+  @include xl
+    width: 600px
+
 mat-card
     margin:2%
     text-align: left
@@ -6,21 +28,14 @@ mat-card
     width: 98%
     margin: 1%
 
-.mat-50
-    width: 48%
-    margin: 1%
-
-.mat-30
-    width: 34%
-    margin: 1%
 
 .div-photo
     display: inline
 
 mat-card-actions
-    width: 20%
+    width: 90%
     margin: 2%
-    text-aling: center
+    text-align: center
     button
         margin: 2%
 
@@ -32,4 +47,3 @@ mat-card-actions
   background-repeat: no-repeat
   border: none 
   cursor: pointer 
-  /* Agrega otros estilos según tus necesidades */

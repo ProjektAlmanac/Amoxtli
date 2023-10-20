@@ -1,2 +1,19 @@
+@import breakpoints
+
 .spacer
   flex: 1 1 auto
+
+.container
+  display: grid
+  grid-template-rows: auto 1fr
+  width: 100vw
+  height: 100vh
+  max-width: unset
+  margin: 0
+  padding: 0
+
+.drawer
+  @include xs
+    width: 100vw
+  @include sm
+    width: 250px

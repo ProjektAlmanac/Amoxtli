@@ -49,8 +49,6 @@ import { SessionToken } from '../model/sessionToken';
 // @ts-ignore
 import { Usuario } from '../model/usuario';
 // @ts-ignore
-import { UsuarioId } from '../model/usuarioId';
-// @ts-ignore
 import { ValidaPuedeIntercambiar200Response } from '../model/validaPuedeIntercambiar200Response';
 
 // @ts-ignore
@@ -521,9 +519,9 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public crearUsuario(usuario?: Usuario, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<UsuarioId>;
-    public crearUsuario(usuario?: Usuario, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<UsuarioId>>;
-    public crearUsuario(usuario?: Usuario, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<UsuarioId>>;
+    public crearUsuario(usuario?: Usuario, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<SessionToken>;
+    public crearUsuario(usuario?: Usuario, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<SessionToken>>;
+    public crearUsuario(usuario?: Usuario, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<SessionToken>>;
     public crearUsuario(usuario?: Usuario, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -574,7 +572,7 @@ export class DefaultService {
         }
 
         let localVarPath = `/usuarios/`;
-        return this.httpClient.request<UsuarioId>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<SessionToken>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: usuario,
@@ -787,6 +785,76 @@ export class DefaultService {
 
         let localVarPath = `/libros/${this.configuration.encodeParam({name: "isbn", value: isbn, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/detalles`;
         return this.httpClient.request<DetallesLibro>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Recuperar intercambio
+     * Recupera un intercambio
+     * @param idUsuario ID del usuario
+     * @param idIntercambio ID del intercambio
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getIntercambio(idUsuario: number, idIntercambio: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Intercambio>;
+    public getIntercambio(idUsuario: number, idIntercambio: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Intercambio>>;
+    public getIntercambio(idUsuario: number, idIntercambio: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Intercambio>>;
+    public getIntercambio(idUsuario: number, idIntercambio: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (idUsuario === null || idUsuario === undefined) {
+            throw new Error('Required parameter idUsuario was null or undefined when calling getIntercambio.');
+        }
+        if (idIntercambio === null || idIntercambio === undefined) {
+            throw new Error('Required parameter idIntercambio was null or undefined when calling getIntercambio.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (Token) required
+        localVarCredential = this.configuration.lookupCredential('Token');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/usuarios/${this.configuration.encodeParam({name: "idUsuario", value: idUsuario, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}/intercambios/${this.configuration.encodeParam({name: "idIntercambio", value: idIntercambio, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
+        return this.httpClient.request<Intercambio>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -1124,13 +1192,6 @@ export class DefaultService {
     public iniciarSesion(credenciales?: Credenciales, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (Token) required
-        localVarCredential = this.configuration.lookupCredential('Token');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {

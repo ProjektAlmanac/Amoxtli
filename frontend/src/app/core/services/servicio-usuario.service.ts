@@ -1,22 +1,29 @@
-import { Injectable } from '@angular/core'
-import { BehaviorSubject } from 'rxjs'
+import { Injectable, WritableSignal, effect, signal } from '@angular/core'
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServicioUsuario {
-  public readonly id: BehaviorSubject<number>
+  public readonly id: WritableSignal<number>
+  public readonly token: WritableSignal<string>
 
   constructor() {
     const idInicial = Number(localStorage.getItem('idUsuario')) || 0
-    this.id = new BehaviorSubject(idInicial)
+    this.id = signal(idInicial)
 
-    this.id.subscribe(id => {
-      localStorage.setItem('idUsuario', String(id))
+    const tokenInicial = localStorage.getItem('token') || ''
+    this.token = signal(tokenInicial)
+
+    effect(() => {
+      localStorage.setItem('idUsuario', String(this.id()))
+    })
+    effect(() => {
+      localStorage.setItem('token', String(this.token()))
     })
   }
 
-  setId(userId: number) {
-    this.id.next(userId)
+  logout() {
+    this.id.set(0)
+    this.token.set('')
   }
 }

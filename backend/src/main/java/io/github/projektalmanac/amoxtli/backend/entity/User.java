@@ -1,7 +1,7 @@
 package io.github.projektalmanac.amoxtli.backend.entity;
 
 import io.github.projektalmanac.amoxtli.backend.exception.EmptyResourceException;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +9,9 @@ import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -26,8 +29,7 @@ public class User {
     private String interests;
     private boolean verifiedEmail;
     private String verificationCode;
-    @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_book")
+    @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Book> books = new ArrayList<>();
 
     @OneToMany(mappedBy = "userAccepting")
@@ -35,11 +37,11 @@ public class User {
 
     @OneToMany(mappedBy = "userOfferor")
     private List<Exchange> exchangesOfferor =  new ArrayList<>();
+
     public boolean addBook(Book book) {
 
         if (book == null) {
-            // TODO: Cambiar a excepción correcta
-            throw new EmptyResourceException();
+            throw new IllegalArgumentException();
         }
 
         if (books.contains(book)) {
@@ -49,6 +51,29 @@ public class User {
         }
 
         return books.add(book);
+    }
+
+    public boolean addExchangesAccepting(Exchange intercambio) {
+
+        if (intercambio == null) {
+            throw new EmptyResourceException();
+        }
+
+        if (exchangesAccepting.contains(intercambio)) {
+            //Verificar que no se encuentre en intercambio todavia en la lista de intercambios aceptados en el usuario
+            return false;
+        }
+
+        return exchangesAccepting.add(intercambio);
+    }
+
+    public boolean removeExchangesOfferor(Exchange intercambio) {
+
+        if (intercambio == null) {
+            throw new EmptyResourceException();
+        }
+
+        return exchangesOfferor.remove(intercambio);
     }
 
 }

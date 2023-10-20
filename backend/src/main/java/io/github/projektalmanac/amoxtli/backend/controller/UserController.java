@@ -2,6 +2,7 @@ package io.github.projektalmanac.amoxtli.backend.controller;
 
 import io.github.projektalmanac.amoxtli.backend.exception.ExchangeErrorProcess;
 import io.github.projektalmanac.amoxtli.backend.exception.InvalidPhotoException;
+import io.github.projektalmanac.amoxtli.backend.exception.InvalidVerificationCodeException;
 import io.github.projektalmanac.amoxtli.backend.generated.api.UsuariosApi;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.service.UserService;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import io.github.projektalmanac.amoxtli.backend.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +35,9 @@ public class UserController implements UsuariosApi {
     @Override
     public ResponseEntity<IntercambioDto> aceptarIntercambio(Integer idUsuario, Integer idIntercambio,
             AceptarIntercambioRequestDto aceptarIntercambioRequestDto) {
-        return null;
+
+        IntercambioDto result = userService.aceptarIntercambio(idUsuario,idIntercambio, aceptarIntercambioRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @Override
@@ -57,7 +59,8 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<IntercambioDto> addIntercambio(Integer id, CreacionIntercambioDto creacionIntercambioDto) {
-        return null;
+        IntercambioDto result = this.userService.solicitaIntercambio(id, creacionIntercambioDto);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @Override
@@ -68,21 +71,10 @@ public class UserController implements UsuariosApi {
 
     @PostMapping(path = "/usuarios")
     @Override
-    public ResponseEntity<UsuarioIdDto> crearUsuario(@RequestBody @Valid UsuarioDto usuario) {
+    public ResponseEntity<SessionTokenDto> crearUsuario(@RequestBody @Valid UsuarioDto usuario) {
+        var nuevoUsuario = userService.createUser(usuario);
 
-        UsuarioIdDto nuevousuario = userService.createuser(usuario);
-
-
-        if (nuevousuario != null) {
-            // devolveer solamente ID
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevousuario);
-
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
-        }
-
-
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
     }
 
     /**
@@ -96,16 +88,11 @@ public class UserController implements UsuariosApi {
      */
     @PostMapping(path = "/usuarios/{idUsuario}/intercambios/{idIntercambio}/finalizar")
     @Override
-    public ResponseEntity<IntercambioDto> finalizarIntercambio(@PathVariable Integer idUsuario, @PathVariable Integer idIntercambio,
-                                                               @RequestBody @Valid CodigoIntercambioDto codigoIntercambioDto) {
-        if(codigoIntercambioDto != null) {
-            IntercambioDto intercambioDto = exchangeService.intercambioFinalizado(idUsuario,idIntercambio,codigoIntercambioDto);
-            return ResponseEntity.status(HttpStatus.OK).body(intercambioDto);
+    public ResponseEntity<IntercambioDto> finalizarIntercambio(Integer idUsuario, Integer idIntercambio,
+            CodigoIntercambioDto codigoIntercambioDto) {
+        var exchange = userService.finalizeExchange(idUsuario, idIntercambio, codigoIntercambioDto.getCodigo());
 
-        } else {
-            //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            throw new ExchangeErrorProcess("Intercambio no encontrado"); //403
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(exchange);
     }
 
     /**
@@ -116,12 +103,10 @@ public class UserController implements UsuariosApi {
      */
     @GetMapping(path = "/usuarios/{idUsuario}/intercambios/{idIntercambio}/codigo")
     @Override
-    public ResponseEntity<CodigoIntercambioDto> getCodigoIntercambio(@PathVariable Integer idUsuario, @PathVariable Integer idIntercambio) {
+    public ResponseEntity<CodigoIntercambioDto> getCodigoIntercambio(Integer idUsuario, Integer idIntercambio) {
+        var code = userService.getCode(idUsuario, idIntercambio);
 
-        CodigoIntercambioDto codigoIntercambioDto = exchangeService.codigo(idUsuario,idIntercambio);
-
-        return ResponseEntity.status(HttpStatus.OK).body(codigoIntercambioDto);
-
+        return ResponseEntity.status(HttpStatus.OK).body(code);
     }
 
     @GetMapping(path = "usuarios/{id}/intercambios")
@@ -142,6 +127,7 @@ public class UserController implements UsuariosApi {
     @Override
     public ResponseEntity<PerfilUsuarioDto> getUsuario(Integer id) {
         PerfilUsuarioDto perfilUsuarioDto = this.userService.getUsuario(id);
+
         return ResponseEntity.ok(perfilUsuarioDto);
     }
 
@@ -150,8 +136,6 @@ public class UserController implements UsuariosApi {
     @PostMapping(path = "/usuarios/{id}/mandarCorreoConfirmacion")
     @Override
     public ResponseEntity<Void> mandarCorreoConfirmacion(@PathVariable Integer id) {
-
-
         userService.enviarCorreoVerificacion(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(null);
@@ -160,22 +144,24 @@ public class UserController implements UsuariosApi {
 
     @Override
     public ResponseEntity<ValidaPuedeIntercambiar200ResponseDto> validaPuedeIntercambiar(Integer id) {
-        return null;
+        ValidaPuedeIntercambiar200ResponseDto result = userService.validaIntercambio(id);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 
     @PostMapping(path = "/usuarios/{id}/verificarCorreo")
     @Override
     public ResponseEntity<Void> verificarCorreo(@PathVariable Integer id, @RequestBody @Valid CodigoVerificacionDto codigoVerificacionDto) {
-
         boolean codigoCorrecto = userService.verificaCorreo(id, codigoVerificacionDto);
 
-        if (codigoCorrecto) {
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+        if (!codigoCorrecto) throw new InvalidVerificationCodeException();
 
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+    @Override
+    public ResponseEntity<IntercambioDto> getIntercambio(Integer idUsuario, Integer idIntercambio) {
+        var intercambio = userService.getIntercambio(idUsuario, idIntercambio);
+        return ResponseEntity.status(HttpStatus.OK).body(intercambio);
+    }
 }

@@ -1,1 +1,92 @@
-<p>home-page works!</p>
+<div class="main">
+  <!-- <mat-card class="centrado">
+    <mat-card-header>
+      <mat-card-title>
+        <h1>Libros</h1>
+      </mat-card-title>
+    </mat-card-header>
+  </mat-card> -->
+
+  <div class="centrado mt-3">
+    <form [formGroup]="form">
+      <mat-form-field class="input mb-2 mx-2">
+        <mat-label>ISBN</mat-label>
+        <input matInput placeholder="Ingresa el ISBN" formControlName="isbn" />
+
+        <mat-error *ngIf="form.get('isbn')?.hasError('maxlength')">
+          El ISBN debe tener 10 ó 13 dígitos
+        </mat-error>
+        <mat-error *ngIf="form.get('isbn')?.hasError('minlength')">
+          El ISBN debe tener 10 ó 13 dígitos
+        </mat-error>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        class="submit mx-2"
+        type="submit"
+        color="primary"
+        (click)="onSubmit()">
+        Buscar
+      </button>
+    </form>
+  </div>
+
+  <app-progress-spinner *ngIf="mostrarSpinner"></app-progress-spinner>
+
+  <div *ngIf="!mostrarSpinner" class="justify-content-center container">
+    <div
+      class="row libros"
+      *ngIf="paginaLibros && paginaLibros.libros.length > 0; else noHayLibros">
+      <div>
+        <h1>Libros disponibles</h1>
+      </div>
+      <div class="" *ngFor="let libro of paginaLibros.libros">
+        <mat-card class="col-12 col-md-12 col-sm-12">
+          <!--aqui va el enlace a la otra pagina-->
+          <a [routerLink]="['/libro']" [queryParams]="{ isbn: libro.isbn }">
+            <mat-card-header>
+              <mat-card-title> {{ libro.titulo }} </mat-card-title>
+              <mat-card-subtitle>Autor: {{ libro.autor }}</mat-card-subtitle>
+            </mat-card-header>
+            <img
+              mat-card-image
+              class=""
+              mat-card-md-image
+              [src]="libro.urlPortada"
+              alt="Img Libro"
+              width="100px" />
+          </a>
+        </mat-card>
+      </div>
+    </div>
+    <ng-template #noHayLibros>
+      <div style="text-align: center">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>¡Ops! No se encontraron libros</mat-card-title>
+          </mat-card-header>
+        </mat-card>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="centrado mt-3">
+    <div class="pagination">
+      <!-- La página anterior es 0 si estamos al principio -->
+      <button
+        mat-icon-button
+        (click)="irAnterior()"
+        [disabled]="(paginaLibros?.pagAnterior ?? 0) < 1">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <span>Página {{ currentPage }} </span>
+      <!-- La página siguiente es 0 si llegamos al final -->
+      <button
+        mat-icon-button
+        (click)="irSiguiente()"
+        [disabled]="(paginaLibros?.pagSiguiente ?? 0) < 1">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
