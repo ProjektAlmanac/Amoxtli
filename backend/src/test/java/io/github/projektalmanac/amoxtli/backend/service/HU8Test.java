@@ -9,7 +9,6 @@ import io.github.projektalmanac.amoxtli.backend.generated.model.IntercambioDto;
 import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
 import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -52,7 +51,7 @@ class HU8Test {
      *************************************
      */
     @Test
-    public void testIntercambioFinalizadoR1() {
+    void testIntercambioFinalizadoR1() {
 
         // Configurar que el usuario no existe
         when(userRepository.findById(1)).thenReturn(Optional.empty());
@@ -70,7 +69,7 @@ class HU8Test {
     }
 
     @Test
-    public void testIntercambioFinalizadoR2(){
+    void testIntercambioFinalizadoR2(){
         System.out.println("Inicio test testIntercambioFinalizadoR2");
         int id=1;
         int idIntercambio = 5;
@@ -96,7 +95,7 @@ class HU8Test {
     }
 
     @Test
-    public void testIntercambioFinalizadoR2_2(){
+    void testIntercambioFinalizadoR2_2(){
         System.out.println("Inicio test testIntercambioFinalizadoR2_2");
         int id=1;
         int idIntercambio = 5;
@@ -169,7 +168,7 @@ class HU8Test {
         // Verificar que el dto no está vacío
         assertNotNull(intercambioDto.getAceptante().toString());
         //verificar que el estado del intercambio pasa a COMPLETADO
-        assertEquals(exchange.getStatus(),Status.COMPLETADO);
+        assertEquals(Status.COMPLETADO, exchange.getStatus());
 
         //System.out.println(intercambioDto.toString());
 
@@ -188,7 +187,7 @@ class HU8Test {
      *************************************
      */
     @Test
-    public void testCodigo_Success() {
+    void testCodigo_Success() {
         int id=1;
         int idIntercambio = 5;
         //supongase que es el usuario ofertador
@@ -223,7 +222,7 @@ class HU8Test {
 
 
     @Test
-    public void testCodigo_UserNotAutorized() {
+    void testCodigo_UserNotAutorized() {
         // Configurar que el usuario no existe
         when(userRepository.findById(1)).thenReturn(Optional.empty());
 
@@ -240,7 +239,7 @@ class HU8Test {
 
 
     @Test
-    public void testCodigo_ExchangeNotFound() {
+    void testCodigo_ExchangeNotFound() {
         // Configurar que el usuario existe
         int id=1;
         int idIntercambio = 5;
@@ -265,7 +264,7 @@ class HU8Test {
 
 
     @Test
-    public void testCodigo_CompletedExchange() {
+    void testCodigo_CompletedExchange() {
         // Configurar que el usuario existe
         int id=1;
         int idIntercambio = 5;
@@ -296,7 +295,7 @@ class HU8Test {
 
 
     @Test
-    public void testCodigo_CancelledExchange() {
+    void testCodigo_CancelledExchange() {
         // Configurar que el usuario existe
         int id=1;
         int idIntercambio = 5;
