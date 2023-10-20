@@ -7,7 +7,6 @@ import io.github.projektalmanac.amoxtli.backend.exception.ResourceNotFoundExcept
 import io.github.projektalmanac.amoxtli.backend.exception.UserNotFoundException;
 import io.github.projektalmanac.amoxtli.backend.generated.model.*;
 import io.github.projektalmanac.amoxtli.backend.mapper.BookMapper;
-import io.github.projektalmanac.amoxtli.backend.mapper.UserMapper;
 import io.github.projektalmanac.amoxtli.backend.repository.BookRepository;
 import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
 import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
@@ -76,7 +75,7 @@ public class BookService {
     }
 
 
-    public List<InfoBasicaLibroDto> getLibros(Integer pagina, Integer tamanoPagina) {
+    public PaginaLibrosDto getLibros(Integer pagina, Integer tamanoPagina) {
 
         // Utiliza Spring Data JPA para obtener los resultados paginados del repositorio
         Pageable pageable = PageRequest.of(pagina - 1, tamanoPagina); // Spring Data JPA usa índices basados en 0, por eso se resta 1 a la página
@@ -94,14 +93,14 @@ public class BookService {
         // Convertir el HashSet a ArrayList
         List<InfoBasicaLibroDto> librosDto = new ArrayList<>(librosDtoSet);
 
-        return librosDto;
+        return getPaginaLibros(pagina, tamanoPagina, librosDto, bookPage.hasNext());
 
     }
 
-    public PaginaLibrosDto getLibrospag(Integer pagina, Integer tamanoPagina, List<InfoBasicaLibroDto> libros) {
+    private PaginaLibrosDto getPaginaLibros(Integer pagina, Integer tamanoPagina, List<InfoBasicaLibroDto> libros, boolean hasNext) {
         // Calcular página anterior y página siguiente
-        int pagAnterior = (pagina > 1) ? pagina - 1 : 1;
-        int pagSiguiente = pagina + 1;
+        int pagAnterior = (pagina > 1) ? pagina - 1 : 0;
+        int pagSiguiente = hasNext ? pagina + 1 : 0;
 
         // Crear objeto PaginaLibrosDto
         PaginaLibrosDto paginaLibrosDto = new PaginaLibrosDto();

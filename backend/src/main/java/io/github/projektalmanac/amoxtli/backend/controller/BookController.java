@@ -39,13 +39,10 @@ public class BookController implements LibrosApi {
         // Establecer el tamaño de la página (por ejemplo, 10 resultados por página)
         int tamanoPagina = 10;
 
-        // Obtener la lista de libros de la página especificada
-        List<InfoBasicaLibroDto> libros = bookService.getLibros(pagina, tamanoPagina);
+        // Obtener los libros de la página especificada
+        var libros = bookService.getLibros(pagina, tamanoPagina);
 
-
-        // Retornar la respuesta con el objeto PaginaLibrosDto
-        PaginaLibrosDto paginaLibrosDto = bookService.getLibrospag(pagina, tamanoPagina, libros);
-        return ResponseEntity.status(HttpStatus.OK).body(paginaLibrosDto);
+        return ResponseEntity.status(HttpStatus.OK).body(libros);
 
     }
 
