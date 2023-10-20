@@ -1,7 +1,7 @@
 package io.github.projektalmanac.amoxtli.backend.entity;
 
 import io.github.projektalmanac.amoxtli.backend.exception.EmptyResourceException;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +9,9 @@ import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class User {
 
     @Id
