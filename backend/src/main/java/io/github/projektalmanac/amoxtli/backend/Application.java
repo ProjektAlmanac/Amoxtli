@@ -37,10 +37,11 @@ public class Application {
                                 .lastName("Pérez")
                                 .phone("1234567890")
                                 .email("jperez@example.com")
-                                .passwordHash("$2a$12$2cFDfIxQp1c7AU./jk2sdu/I7x/EGC1F0OkfiWvk.CHQ6FlHTF/9.") // 123456789
-                                .passwordSalt("$2a$12$ZD7KBp.Dlki/7pQvg1i6ae")
                                 .verifiedEmail(true),
-                        User.builder().name("Eduardo").lastName("Castro").verifiedEmail(true),
+                        User.builder().name("Eduardo").lastName("Castro").verifiedEmail(true)
+                                .email("eduardo@test.com")
+                                .passwordHash("$2a$12$2cFDfIxQp1c7AU./jk2sdu/I7x/EGC1F0OkfiWvk.CHQ6FlHTF/9.") // 123456789
+                                .passwordSalt("$2a$12$ZD7KBp.Dlki/7pQvg1i6ae"),
                         User.builder().name("Abigail").lastName("Mariscal").verifiedEmail(true),
                         User.builder().name("Gisell").lastName("Soriano").verifiedEmail(true),
                         User.builder().name("Andy Leonardo").lastName("Serrano").verifiedEmail(true),
@@ -49,6 +50,7 @@ public class Application {
                 .map(User.UserBuilder::build)
                 .toList();
 
+        var testIsbn = "1617293997";
 
         var books = List.of(
                 new Book(0, "8439729391", "", users.get(1)),
@@ -63,6 +65,12 @@ public class Application {
                 new Book(0, "8498382661", "", users.get(2)),
                 new Book(0, "6075509534", "", users.get(2)),
 
+                new Book(0, testIsbn, "", users.get(1)),
+                new Book(0, testIsbn, "", users.get(2)),
+                new Book(0, testIsbn, "", users.get(3)),
+                new Book(0, testIsbn, "", users.get(4)),
+                new Book(0, testIsbn, "", users.get(5)),
+
                 new Book(0, "8425426537", "", users.get(3)),
                 new Book(0, "8804723963", "", users.get(3)),
                 new Book(0, "8804723963", "", users.get(3)),
@@ -75,7 +83,6 @@ public class Application {
                 new Book(0, "6073167016", "", users.get(4)),
 
                 new Book(0, "9684110545", "", users.get(5))
-//                new Book(0, "", "", users.get(5))
         );
 
         userRepository.saveAll(users);
