@@ -39,8 +39,9 @@ public class Application {
                         User.builder().name("Eduardo").lastName("Castro").verifiedEmail(true)
                                 .email("eduardo@test.com")
                                 .passwordHash("$2a$12$2cFDfIxQp1c7AU./jk2sdu/I7x/EGC1F0OkfiWvk.CHQ6FlHTF/9.") // 123456789
-                                .passwordSalt("$2a$12$ZD7KBp.Dlki/7pQvg1i6ae"),
-                        User.builder().name("Abigail").lastName("Mariscal").verifiedEmail(true),
+                                .passwordSalt("$2a$12$ZD7KBp.Dlki/7pQvg1i6ae")
+                                .phone("1234567890"),
+                        User.builder().name("Abigail").lastName("Mariscal").verifiedEmail(true).phone("0987654321"),
                         User.builder().name("Gisell").lastName("Soriano").verifiedEmail(true),
                         User.builder().name("Andy Leonardo").lastName("Serrano").verifiedEmail(true),
                         User.builder().name("Miguel").lastName("Guzmán").verifiedEmail(true)
