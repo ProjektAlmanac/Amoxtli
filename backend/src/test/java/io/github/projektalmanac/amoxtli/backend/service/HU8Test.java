@@ -122,7 +122,7 @@ class HU8Test {
             exchangeService.intercambioFinalizado(id, idIntercambio,codigoIntercambioDto);
         });
 
-        String mensajeEsperado = "Operacion prohibida";
+        String mensajeEsperado = "Operación prohibida";
         String mensajeEncontrado = exception.getMessage();
 
         System.out.println(mensajeEncontrado);
@@ -286,7 +286,7 @@ class HU8Test {
             exchangeService.codigo(id, idIntercambio);
         });
 
-        String mensajeEsperado = "Operacion prohibida";
+        String mensajeEsperado = "Operación prohibida";
         String mensajeEncontrado = exception.getMessage();
 
         System.out.println(mensajeEncontrado);
@@ -317,7 +317,7 @@ class HU8Test {
             exchangeService.codigo(id, idIntercambio);
         });
 
-        String mensajeEsperado = "Operacion prohibida";
+        String mensajeEsperado = "Operación prohibida";
         String mensajeEncontrado = exception.getMessage();
 
         System.out.println(mensajeEncontrado);
