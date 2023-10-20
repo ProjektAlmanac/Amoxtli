@@ -11,6 +11,7 @@ import io.github.projektalmanac.amoxtli.backend.repository.ExchangeRepository;
 import io.github.projektalmanac.amoxtli.backend.service.consume.GoogleBookService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -254,12 +255,24 @@ class UserServiceTest {
         usuarioDto.setCorreo("prueba1@example.com");
         usuarioDto.setPassword("password");
 
+        var captor = ArgumentCaptor.forClass(User.class);
+
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-        when(userRepository.save(any(User.class))).then(returnsFirstArg());
+        when(userRepository.save(captor.capture())).then(a -> {
+            var user = a.getArgument(0, User.class);
+            user.setId(this.user.getId());
+            return user;
+        });
 
-        UsuarioIdDto result = userService.createUser(usuarioDto);
+        var result = userService.createUser(usuarioDto);
 
-        assertNotNull(result);
+        assertEquals(user.getId(), result.getIdUsuario());
+        assertNotEquals(0, result.getToken().length());
+        assertEquals(usuarioDto.getNombre(), captor.getValue().getName());
+        assertEquals(usuarioDto.getApellildos(), captor.getValue().getLastName());
+        assertEquals(usuarioDto.getCorreo(), captor.getValue().getEmail());
+        assertNotNull(captor.getValue().getPasswordHash());
+        assertNotNull(captor.getValue().getPasswordSalt());
 
         ////// ingresa un correo que ya existe./////////////
         UsuarioDto usuarioDto1 = new UsuarioDto();
