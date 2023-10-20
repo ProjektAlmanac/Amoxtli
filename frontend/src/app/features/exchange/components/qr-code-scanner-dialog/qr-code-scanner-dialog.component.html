@@ -1,0 +1,23 @@
+<mat-card class="qr-scanner">
+  <ng-container *ngIf="scanning()">
+    <mat-card-content>
+      <div id="qr-scanner" #qrReader></div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button (click)="closeDialog()">Cancelar</button>
+    </mat-card-actions>
+  </ng-container>
+
+  <ng-container *ngIf="!scanning() && state() === 'pending'">
+    <mat-card-content>
+      <mat-spinner></mat-spinner>
+    </mat-card-content>
+  </ng-container>
+
+  <ng-container *ngIf="!scanning() && state() === 'success'">
+    <mat-card-content> El intercambio finalizó exitosamente </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button (click)="closeDialog()">Aceptar</button>
+    </mat-card-actions>
+  </ng-container>
+</mat-card>

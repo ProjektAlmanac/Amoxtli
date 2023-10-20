@@ -36,11 +36,11 @@ import io.github.projektalmanac.amoxtli.backend.repository.UserRepository;
 import io.github.projektalmanac.amoxtli.backend.config.SecurityConfig;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -353,7 +353,7 @@ class UserServiceTest {
 
     @Test
     void verificaCorreo() {
-        int userId = 1;
+        Integer userId = 1;
 
         //////// Codigo valido.///////
         CodigoVerificacionDto codigoVerificacionDto = new CodigoVerificacionDto();
@@ -763,5 +763,67 @@ class UserServiceTest {
         Assertions.assertEquals(intercambio2.getBookOfferor().getDescription(), result.getLibroOfertante().get().getDescripcion());
         Assertions.assertEquals(intercambio2.getStatus().getStatus(), result.getEstado().getValue());
 
+    }
+
+    @Test
+    void getIntercambioTest() {
+
+        // Caso 1: El usuario no existe
+
+        // Arrange
+        when(userRepository.findById(1)).thenReturn(Optional.empty());
+
+        // Assert
+        assertThrows(UserNotFoundException.class, () -> {
+            // Act
+            userService.getIntercambio(1, 1);
+        });
+
+        // Caso 2: El usuario no tiene un intercambio con el ID dado
+
+        // Arrange
+        var usuario = new User();
+        user.setId(1);
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(usuario));
+
+        // Assert
+        assertThrows(IntercambioNotFoundException.class, () -> {
+            // Act
+            userService.getIntercambio(1, 1);
+        });
+
+        // Caso 3: El usuario tiene el intercambio como aceptante
+
+        // Arrange
+        var intercambio = new Exchange();
+        intercambio.setId(1);
+        intercambio.setUserAccepting(usuario);
+
+        usuario.getExchangesAccepting().add(intercambio);
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(usuario));
+
+        // Act
+        var result = userService.getIntercambio(1, 1);
+
+        // Assert
+        assertEquals(intercambio.getId(), result.getId());
+
+        // Caso 4: El usuario tiene el intercambio como ofertante
+
+        // Arrange
+        intercambio.setUserAccepting(null);
+        intercambio.setUserOfferor(usuario);
+        usuario.getExchangesOfferor().add(intercambio);
+        usuario.getExchangesAccepting().clear();
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(usuario));
+
+        // Act
+        result = userService.getIntercambio(1, 1);
+
+        // Assert
+        assertEquals(intercambio.getId(), result.getId());
     }
 }

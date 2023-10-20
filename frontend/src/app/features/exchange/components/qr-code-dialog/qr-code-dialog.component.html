@@ -1,0 +1,16 @@
+<mat-card [ngStyle]="{ display: loading() ? 'none' : 'block' }">
+  <mat-card-content>
+    <canvas #qr [ngStyle]="{ display: done() ? 'none' : 'block' }"></canvas>
+    <div *ngIf="done()">
+      <mat-icon color="primary">check_circle</mat-icon>
+      <span class="mat-h2">¡Listo!</span>
+    </div>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button [color]="done() ? 'primary' : 'warn'" (click)="closeDialog()">
+      {{ done() ? 'Aceptar' : 'Cancelar' }}
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+<mat-spinner *ngIf="loading()"> </mat-spinner>
